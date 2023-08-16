@@ -1,0 +1,7 @@
+com\openclassrooms\paymybuddy_testauth\entity\User.class
+com\openclassrooms\paymybuddy_testauth\security\CustomUserDetails.class
+com\openclassrooms\paymybuddy_testauth\Application.class
+com\openclassrooms\paymybuddy_testauth\SecurityConfig.class
+com\openclassrooms\paymybuddy_testauth\service\CustomUserDetailsService.class
+com\openclassrooms\paymybuddy_testauth\repository\UserRepository.class
+com\openclassrooms\paymybuddy_testauth\controller\HomeController.class
