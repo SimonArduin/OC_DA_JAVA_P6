@@ -56,4 +56,21 @@ public class HomeController {
         model.addAttribute("connectedUser", connectedUser);
         return "connected_user";
     }
+
+    @GetMapping("/connection_register")
+    public String showConnectionRegistrationForm(Model model) {
+        User user_2 = new User();
+        model.addAttribute("user_2", user_2);
+        return "connection_register_form";
+    }
+    @PostMapping("/process_connection_register")
+    public String processConnectionRegister(User userToAdd, Model model, HttpServletRequest request) {
+        User connectedUser = userRepository.findByUsername(request.getUserPrincipal().getName());
+        userToAdd = userRepository.findById((userToAdd.getId()));
+        if (userToAdd != null) {
+            connectedUser.addConnection(userToAdd);
+        }
+        model.addAttribute("connectedUser", connectedUser);
+        return "connected_user";
+    }
 }

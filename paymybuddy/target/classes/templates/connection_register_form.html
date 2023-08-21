@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Pay my buddy - Sign Up</title>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container text-center">
+  <div>
+    <h1>Connection Registration</h1>
+  </div>
+  <form th:action="@{/process_connection_register}" th:object="${user_2}"
+        method="post" style="max-width: 600px; margin: 0 auto;">
+  <div class="m-3">
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Id : </label>
+        <div class="col-8">
+          <input type="number" th:field="*{id}" class="form-control" required />
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-primary">Register connection</button>
+      </div>
+    </div>
+  </form>
+
+  <h3><a th:href="@{/users}">List of Users</a></h3>
+  <h3><a th:href="@{/connected_user}">Connected user</a></h3>
+</div>
+</body>
+</html>

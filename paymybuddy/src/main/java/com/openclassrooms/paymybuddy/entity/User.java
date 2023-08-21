@@ -112,4 +112,10 @@ public class User {
     public void setConnections(List<User> connections) {
         this.connections = connections;
     }
+
+    public boolean addConnection(User connection) {
+        if(!this.connections.contains(connection))
+            return this.connections.add(connection);
+        return false;
+    }
 }
