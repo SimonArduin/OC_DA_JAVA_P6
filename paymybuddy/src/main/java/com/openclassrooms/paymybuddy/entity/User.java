@@ -2,6 +2,8 @@ package com.openclassrooms.paymybuddy.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table
 public class User {
@@ -30,6 +32,14 @@ public class User {
 
     @Column(nullable = false, unique = true, length = 100)
     private String username;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_user",
+            joinColumns = @JoinColumn(name = "user_1_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_2_id")
+    )
+    private List<User> connections;
 
     public int getId() {
         return id;
@@ -93,5 +103,13 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public List<User> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<User> connections) {
+        this.connections = connections;
     }
 }
