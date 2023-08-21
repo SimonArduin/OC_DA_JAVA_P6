@@ -14,7 +14,7 @@ public class User {
     private Double account_balance = 0.0;
 
     @Column(name = "currency_id", nullable = false)
-    private int currencyId;
+    private int currencyId = 1;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
