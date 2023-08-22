@@ -50,25 +50,25 @@ public class HomeController {
         return "users";
     }
 
-    @GetMapping("/connected_user")
-    public String connectedUser(Model model, HttpServletRequest request) {
+    @GetMapping("/profile")
+    public String profile(Model model, HttpServletRequest request) {
         User connectedUser = userRepository.findByUsername(request.getUserPrincipal().getName());
         model.addAttribute("connectedUser", connectedUser);
-        return "connected_user";
+        return "profile";
     }
 
-    @GetMapping("/connection_register")
-    public String showConnectionRegistrationForm(Model model) {
-        User user_2 = new User();
-        model.addAttribute("user_2", user_2);
-        return "connection_register_form";
+    @GetMapping("/add_connection")
+    public String showAddConnectionForm(Model model) {
+        User connection = new User();
+        model.addAttribute("connection", connection);
+        return "add_connection_form";
     }
-    @PostMapping("/process_connection_register")
-    public String processConnectionRegister(User userToAdd, Model model, HttpServletRequest request) {
+    @PostMapping("/process_add_connection")
+    public String processAddConnection(User connection, Model model, HttpServletRequest request) {
         User connectedUser = userRepository.findByUsername(request.getUserPrincipal().getName());
-        userToAdd = userRepository.findById((userToAdd.getId()));
-        if (userToAdd != null) {
-            connectedUser.addConnection(userToAdd);
+        connection = userRepository.findById((connection.getId()));
+        if (connection != null) {
+            connectedUser.addConnection(connection);
         }
         userRepository.save(connectedUser);
         model.addAttribute("connectedUser", connectedUser);

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Pay My Buddy</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+            <use xlink:href="#bootstrap"></use>
+        </svg>
+        <span class="fs-4">Pay My Buddy</span>
+    </a>
+
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="/transfer" class="nav-link">Transfer</a></li>
+        <li class="nav-item"><a href="/profile" class="nav-link active" aria-current="page">Profile</a></li>
+        <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="/logout" class="nav-link">Log off</a></li>
+    </ul>
+</header>
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+        </ol>
+    </nav>
+
+    <div>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Account balance</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${connectedUser.id}">User ID</td>
+                <td th:text="${connectedUser.username}">Username</td>
+                <td th:text="${connectedUser.email}">Email</td>
+                <td th:text="${connectedUser.account_balance}">Account balance</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row mb-3 justify-content-between align-items-center">
+        <div class="col-md-3 themed-grid-col"><h1>Connections</h1></div>
+        <div class="col-md-3 themed-grid-col"><a href="/add_connection" class="nav-link"><button type="button" class="btn btn-primary btn-md">Add connection</button></a></div>
+    </div>
+
+    <div>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Connection ID</th>
+                <th>Username</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="connection: ${connectedUser.connections}">
+                <td th:text="${connection.id}">User ID</td>
+                <td th:text="${connection.username}">Username</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
