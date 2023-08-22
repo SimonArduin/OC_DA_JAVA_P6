@@ -70,6 +70,7 @@ public class HomeController {
         if (userToAdd != null) {
             connectedUser.addConnection(userToAdd);
         }
+        userRepository.save(connectedUser);
         model.addAttribute("connectedUser", connectedUser);
         return "connected_user";
     }
