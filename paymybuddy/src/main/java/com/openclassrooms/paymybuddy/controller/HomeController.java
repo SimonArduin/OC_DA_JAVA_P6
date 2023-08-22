@@ -68,10 +68,12 @@ public class HomeController {
         User connectedUser = userRepository.findByUsername(request.getUserPrincipal().getName());
         connection = userRepository.findById((connection.getId()));
         if (connection != null) {
-            connectedUser.addConnection(connection);
+            if (connectedUser.addConnection(connection)) {
+                userRepository.save(connectedUser);
+                model.addAttribute("connectedUser", connectedUser);
+                return "profile";
+            }
         }
-        userRepository.save(connectedUser);
-        model.addAttribute("connectedUser", connectedUser);
-        return "connected_user";
+        return "error";
     }
 }

@@ -20,7 +20,7 @@
   <ul class="nav nav-pills">
     <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
     <li class="nav-item"><a href="/transfer" class="nav-link">Transfer</a></li>
-    <li class="nav-item"><a href="/profile" class="nav-link active" aria-current="page">Profile</a></li>
+    <li class="nav-item"><a href="/profile" class="nav-link active">Profile</a></li>
     <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
     <li class="nav-item"><a href="/logout" class="nav-link">Log off</a></li>
   </ul>
@@ -29,14 +29,11 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
     <li class="breadcrumb-item"><a href="/home">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+    <li class="breadcrumb-item active" aria-current="page">Add connection</li>
   </ol>
 </nav>
 
 <div class="container text-center">
-  <div>
-    <h1>Connection Registration</h1>
-  </div>
   <form th:action="@{/process_add_connection}" th:object="${connection}"
         method="post" style="max-width: 600px; margin: 0 auto;">
   <div class="m-3">
@@ -48,7 +45,7 @@
       </div>
 
       <div>
-        <button type="submit" class="btn btn-primary">Register connection</button>
+        <button type="submit" class="btn btn-primary">Add connection</button>
       </div>
     </div>
   </form>
