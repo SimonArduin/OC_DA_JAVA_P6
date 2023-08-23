@@ -1,4 +1,4 @@
-package com.openclassrooms.paymybuddy_testauth;
+package com.openclassrooms.paymybuddy.unit;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

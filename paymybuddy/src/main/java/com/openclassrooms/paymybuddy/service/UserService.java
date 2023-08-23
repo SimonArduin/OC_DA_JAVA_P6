@@ -7,32 +7,32 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
 
     public User addUser (User user) {
+        if(user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null)
+            throw new IllegalArgumentException();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
-    public User findById (int id) {
-        User user = userRepository.findById(id);
-        if(user==null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
+    public User findById (Integer id) {
+        if(id==null)
+            throw new IllegalArgumentException();
+        return userRepository.findById(id);
     }
 
     public User findByUsername (String username) {
-        User user = userRepository.findByUsername(username);
-        if(user==null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
+        if(username==null)
+            throw new IllegalArgumentException();
+        return userRepository.findByUsername(username);
     }
 
     public User addConnectionToUser (User connection, User user) {

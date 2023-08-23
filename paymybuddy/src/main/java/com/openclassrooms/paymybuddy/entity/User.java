@@ -41,6 +41,21 @@ public class User {
     )
     private List<User> connections;
 
+    public User() {
+    }
+
+    public User(int id, Double account_balance, int currencyId, String email, String iban, String password, int roleId, String username, List<User> connections) {
+        this.id = id;
+        this.account_balance = account_balance;
+        this.currencyId = currencyId;
+        this.email = email;
+        this.iban = iban;
+        this.password = password;
+        this.roleId = roleId;
+        this.username = username;
+        this.connections = connections;
+    }
+
     public int getId() {
         return id;
     }
