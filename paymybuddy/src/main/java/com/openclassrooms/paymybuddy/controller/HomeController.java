@@ -2,6 +2,7 @@ package com.openclassrooms.paymybuddy.controller;
 
 import com.openclassrooms.paymybuddy.entity.User;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
+import com.openclassrooms.paymybuddy.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +18,7 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/")
     public String viewHomePage() {
@@ -32,27 +33,13 @@ public class HomeController {
 
     @PostMapping("/process_register")
     public String processRegister(User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-
-        userRepository.save(user);
-
-        System.out.println("---user successfully saved");
-
+        userService.addUser(user);
         return "register_success";
     }
 
-    @GetMapping("/users")
-    public String listUsers(Model model) {
-        List<User> listUsers = userRepository.findAll();
-        model.addAttribute("listUsers", listUsers);
-        return "users";
-    }
-
     @GetMapping("/profile")
-    public String profile(Model model, HttpServletRequest request) {
-        User connectedUser = userRepository.findByUsername(request.getUserPrincipal().getName());
+    public String profile(Model model, Principal principal) {
+        User connectedUser = userService.findByUsername(principal.getName());
         model.addAttribute("connectedUser", connectedUser);
         return "profile";
     }
@@ -64,15 +51,12 @@ public class HomeController {
         return "add_connection_form";
     }
     @PostMapping("/process_add_connection")
-    public String processAddConnection(User connection, Model model, HttpServletRequest request) {
-        User connectedUser = userRepository.findByUsername(request.getUserPrincipal().getName());
-        connection = userRepository.findById((connection.getId()));
-        if (connection != null) {
-            if (connectedUser.addConnection(connection)) {
-                userRepository.save(connectedUser);
-                model.addAttribute("connectedUser", connectedUser);
-                return "profile";
-            }
+    public String processAddConnection(User connection, Model model, Principal principal) {
+        User connectedUser = userService.findByUsername(principal.getName());
+        connection = userService.findById((connection.getId()));
+        if(userService.addConnectionToUser(connection, connectedUser)!=null) {
+            model.addAttribute("connectedUser", connectedUser);
+            return "profile";
         }
         return "error";
     }

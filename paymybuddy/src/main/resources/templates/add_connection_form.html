@@ -37,14 +37,14 @@
   <form th:action="@{/process_add_connection}" th:object="${connection}"
         method="post" style="max-width: 600px; margin: 0 auto;">
   <div class="m-3">
-      <div class="form-group row">
-        <label class="col-4 col-form-label">Id : </label>
-        <div class="col-8">
+      <div class="form-group row justify-content-center">
+        <label class="col-1 col-form-label">Id : </label>
+        <div class="col-2">
           <input type="number" th:field="*{id}" class="form-control" required />
         </div>
       </div>
 
-      <div>
+      <div class="justify-content-center">
         <button type="submit" class="btn btn-primary">Add connection</button>
       </div>
     </div>
