@@ -129,8 +129,16 @@ public class User {
     }
 
     public boolean addConnection(User connection) {
-        if(!this.connections.contains(connection))
+        if(connection!=null && !connection.isEmpty() && !this.equals(connection) && !this.connections.contains(connection))
             return this.connections.add(connection);
         return false;
+    }
+    
+    public boolean isEmpty() {
+         return (this.getUsername() == null || this.getPassword() == null || this.getEmail() == null);
+    }
+
+    public boolean equals(User user) {
+        return (this.id == user.getId());
     }
 }

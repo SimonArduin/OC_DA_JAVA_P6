@@ -15,7 +15,7 @@ public class UserService {
     UserRepository userRepository;
 
     public User addUser (User user) {
-        if(user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null)
+        if(user == null || user.isEmpty())
             throw new IllegalArgumentException();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());

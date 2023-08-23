@@ -13,6 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,7 +29,7 @@ public class UserServiceTest {
     @MockBean
     UserRepository userRepository;
 
-    final User user = new User(1, 0.00,1,"email","iban","password",1,"username",null);
+    final User user = new User(1, 0.00,1,"email","iban","password",1,"username",new ArrayList<>());
     @BeforeEach
     private void setUp() {
         when(userRepository.findById(any(Integer.class))).thenReturn(user);
