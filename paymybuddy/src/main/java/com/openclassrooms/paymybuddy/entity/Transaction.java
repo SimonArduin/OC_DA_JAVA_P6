@@ -28,16 +28,32 @@ public class Transaction {
     private String iban;
 
     @Column(name = "receiver_id")
-    private int receiverId;
+    private Integer receiverId;
 
     @Column(name = "sender_id", nullable = false)
-    private int senderId;
+    private Integer senderId;
 
     @Column(nullable = false)
     private Timestamp timestamp;
 
     @Column(name = "to_iban")
     private boolean toIban;
+
+    public Transaction() {
+    }
+
+    public Transaction(int id, Double amount, Double commission, int currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
+        this.id = id;
+        this.amount = amount;
+        this.commission = commission;
+        this.currencyId = currencyId;
+        this.description = description;
+        this.iban = iban;
+        this.receiverId = receiverId;
+        this.senderId = senderId;
+        this.timestamp = timestamp;
+        this.toIban = toIban;
+    }
 
     public int getId() {
         return id;
@@ -117,5 +133,9 @@ public class Transaction {
 
     public void setToIban(boolean toIban) {
         this.toIban = toIban;
+    }
+
+    public boolean isEmpty() {
+        return(this.amount==null || this.senderId==null || this.receiverId==null);
     }
 }
