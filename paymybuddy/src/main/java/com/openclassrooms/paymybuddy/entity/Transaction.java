@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.entity;
 
+import com.openclassrooms.paymybuddy.dto.TransactionDto;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -19,7 +20,7 @@ public class Transaction {
     private Double commission;
 
     @Column(name = "currency_id", nullable = false)
-    private int currencyId;
+    private int currencyId = 1;
 
     @Column
     private String description;
@@ -28,10 +29,10 @@ public class Transaction {
     private String iban;
 
     @Column(name = "receiver_id")
-    private Integer receiverId;
+    private int receiverId;
 
     @Column(name = "sender_id", nullable = false)
-    private Integer senderId;
+    private int senderId;
 
     @Column(nullable = false)
     private Timestamp timestamp;
@@ -53,6 +54,19 @@ public class Transaction {
         this.senderId = senderId;
         this.timestamp = timestamp;
         this.toIban = toIban;
+    }
+    
+    public Transaction(TransactionDto transactionDto) {
+        this.id = transactionDto.getId();
+        this.amount = transactionDto.getAmount();
+        this.commission = transactionDto.getCommission();
+        this.currencyId = transactionDto.getCurrencyId();
+        this.description = transactionDto.getDescription();
+        this.iban = transactionDto.getIban();
+        this.receiverId = transactionDto.getReceiverId();
+        this.senderId = transactionDto.getSenderId();
+        this.timestamp = transactionDto.getTimestamp();
+        this.toIban = transactionDto.isToIban();
     }
 
     public int getId() {
@@ -136,6 +150,6 @@ public class Transaction {
     }
 
     public boolean isEmpty() {
-        return(this.amount==null || this.senderId==null || this.receiverId==null);
+        return(this.amount==null || this.senderId==0 || this.receiverId==0);
     }
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Pay My Buddy</title>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <svg class="bi me-2" width="40" height="32">
+      <use xlink:href="#bootstrap"></use>
+    </svg>
+    <span class="fs-4">Pay My Buddy</span>
+  </a>
+
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+    <li class="nav-item"><a href="/transfer" class="nav-link active">Transfer</a></li>
+    <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>
+    <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+    <li class="nav-item"><a href="/logout" class="nav-link">Log off</a></li>
+  </ul>
+</header>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
+    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Transfer</li>
+  </ol>
+</nav>
+
+<div class="container text-center">
+  <form th:action="@{/process_add_transaction}" th:object="${transaction}"
+        method="post" style="max-width: 600px; margin: 0 auto;">
+    <div class="m-3">
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Amount : </label>
+        <div class="col-8">
+          <input type="number" th:field="*{amount}" class="form-control" required />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Receiver : </label>
+        <div class="col-8">
+          <input type="number" th:field="*{receiverId}" class="form-control" required />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4 col-form-label">Description : </label>
+        <div class="col-8">
+          <input type="text" th:field="*{description}" class="form-control"/>
+        </div>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Transfer</button>
+      </div>
+    </div>
+  </form>
+</div>
+</body>
+</html>

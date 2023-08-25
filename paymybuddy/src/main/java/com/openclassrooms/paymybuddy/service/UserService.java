@@ -44,4 +44,25 @@ public class UserService {
         }
         return null;
     }
+
+    public User removeFromAccountBalance(User user, Double amount) {
+        if(user==null || user.isEmpty() || user!=userRepository.findById(user.getId()))
+            throw new IllegalArgumentException("Invalid user");
+        if(amount == null || amount <= 0)
+            throw new IllegalArgumentException("No amount to remove");
+        if(user.getAccount_balance()-amount>=0) {
+            user.setAccount_balance(user.getAccount_balance() - amount);
+            return userRepository.save(user);
+        }
+        return null;
+    }
+
+    public User addToAccountBalance(User user, Double amount) {
+        if(user==null || user.isEmpty() || user!=userRepository.findById(user.getId()))
+            throw new IllegalArgumentException("Invalid user");
+        if(amount == null || amount <= 0)
+            throw new IllegalArgumentException("No amount to add");
+        user.setAccount_balance(user.getAccount_balance()+amount);
+        return userRepository.save(user);
+    }
 }

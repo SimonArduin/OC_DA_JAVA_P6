@@ -1,7 +1,10 @@
 package com.openclassrooms.paymybuddy.controller;
 
+import com.openclassrooms.paymybuddy.dto.TransactionDto;
+import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.entity.User;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
+import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @GetMapping("/")
     public String viewHomePage() {
@@ -56,6 +62,22 @@ public class HomeController {
         connection = userService.findById((connection.getId()));
         if(userService.addConnectionToUser(connection, connectedUser)!=null) {
             model.addAttribute("connectedUser", connectedUser);
+            return "profile";
+        }
+        return "error";
+    }
+
+    @GetMapping("/transfer")
+    public String showAddTransactionForm(Model model) {
+        TransactionDto transaction = new TransactionDto();
+        model.addAttribute("transaction", transaction);
+        return "add_transaction_form";
+    }
+    @PostMapping("/process_add_transaction")
+    public String processAddTransaction(TransactionDto transaction, Model model, Principal principal) {
+        transaction.setSenderId(userService.findByUsername(principal.getName()).getId());
+        if (transactionService.addTransaction(transaction) != null) {
+            model.addAttribute("connectedUser", userService.findByUsername(principal.getName()));
             return "profile";
         }
         return "error";
