@@ -152,4 +152,34 @@ public class Transaction {
     public boolean isEmpty() {
         return(this.amount==null || this.senderId==0 || this.receiverId==0);
     }
+
+    public void calculateCommission() {
+        commission = 0.05*amount;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            if (this.isEmpty())
+                return true;
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Transaction objTransaction = (Transaction) obj;
+        if (objTransaction.getId() == this.getId()
+                && objTransaction.getAmount() == this.getAmount()
+                && objTransaction.getCommission() == this.getCommission()
+                && objTransaction.getCurrencyId() == this.getCurrencyId()
+                && objTransaction.getDescription() == this.getDescription()
+                && objTransaction.getIban() == this.getIban()
+                && objTransaction.getReceiverId() == this.getReceiverId()
+                && objTransaction.getSenderId() == this.getSenderId()
+                && objTransaction.getTimestamp() == this.getTimestamp()
+                && objTransaction.isToIban() == this.isToIban()) {
+            return true;
+        }
+        return false;
+    }
 }
