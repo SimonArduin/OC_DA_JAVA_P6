@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.entity;
 
+import com.openclassrooms.paymybuddy.dto.UserDto;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -54,6 +55,21 @@ public class User {
         this.roleId = roleId;
         this.username = username;
         this.connections = connections;
+    }
+
+    public User(UserDto userDto) {
+        this.id = userDto.getId();
+        this.account_balance = userDto.getAccount_balance();
+        this.currencyId = userDto.getCurrencyId();
+        this.email = userDto.getEmail();
+        this.iban = userDto.getIban();
+        this.password = userDto.getPassword();
+        this.roleId = userDto.getRoleId();
+        this.username = userDto.getUsername();
+        this.connections = null;
+        if(userDto.getConnections() != null && !userDto.getConnections().isEmpty())
+            for(UserDto connection : userDto.getConnections())
+                this.connections.add(new User(connection));
     }
 
     public int getId() {
@@ -133,9 +149,9 @@ public class User {
             return this.connections.add(connection);
         return false;
     }
-    
+
     public boolean isEmpty() {
-         return (this.getUsername() == null || this.getPassword() == null || this.getEmail() == null);
+        return (this.getUsername() == null || this.getPassword() == null || this.getEmail() == null);
     }
 
     public boolean equals(User user) {

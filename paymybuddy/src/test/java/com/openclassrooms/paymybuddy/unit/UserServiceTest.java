@@ -1,9 +1,9 @@
 package com.openclassrooms.paymybuddy.unit;
 
+import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.User;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import com.openclassrooms.paymybuddy.service.UserService;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 
@@ -31,10 +29,14 @@ public class UserServiceTest {
     UserRepository userRepository;
 
     final User user = new User(1, 100.00,1,"email","iban","password",1,"username",new ArrayList<>());
+    final UserDto userDto = new UserDto(user);
+    UserDto userDtoTest = new UserDto(userDto);
     final Double amount = 10.0;
 
     @BeforeEach
     private void setUp() {
+        userDtoTest = new UserDto(userDto);
+
         when(userRepository.findById(any(Integer.class))).thenReturn(user);
         when(userRepository.findByUsername(any(String.class))).thenReturn(user);
         when(userRepository.save(any(User.class))).thenReturn(user);
@@ -48,16 +50,13 @@ public class UserServiceTest {
 
         @Test
         public void addUserTest() {
-            User userWithEncryptedPassword = user;
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            userWithEncryptedPassword.setPassword(passwordEncoder.encode(userWithEncryptedPassword.getPassword()));
-            assertEquals(userWithEncryptedPassword, userService.addUser(user));
+            assertEquals(userDtoTest, userService.addUser(userDto));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
 
         @Test
         public void addUserTestIfEmpty() {
-            assertThrows(IllegalArgumentException.class, () -> userService.addUser(new User()));
+            assertThrows(IllegalArgumentException.class, () -> userService.addUser(new UserDto()));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
@@ -70,7 +69,7 @@ public class UserServiceTest {
         @Test
         public void addUserTestIfErrorOnSave() {
             when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());
-            assertThrows(IllegalArgumentException.class, () -> userService.addUser(user));
+            assertThrows(IllegalArgumentException.class, () -> userService.addUser(userDto));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
     }
@@ -80,7 +79,7 @@ public class UserServiceTest {
 
         @Test
         public void findByIdTest() {
-            assertEquals(user, userService.findById(user.getId()));
+            assertEquals(userDto, userService.findById(user.getId()));
             verify(userRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 
@@ -103,7 +102,7 @@ public class UserServiceTest {
 
         @Test
         public void findByUsernameTest() {
-            assertEquals(user, userService.findByUsername(user.getUsername()));
+            assertEquals(userDto, userService.findByUsername(user.getUsername()));
             verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));
         }
 
@@ -126,13 +125,13 @@ public class UserServiceTest {
 
         @Test
         public void removeFromAccountBalanceTest() {
-            assertEquals(user, userService.removeFromAccountBalance(user, amount));
+            assertEquals(userDtoTest, userService.removeFromAccountBalance(userDto, amount));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
 
         @Test
         public void removeFromAccountBalanceTestIfUserEmpty() {
-            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(new User(), amount));
+            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(new UserDto(), amount));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
@@ -143,30 +142,30 @@ public class UserServiceTest {
         }
         @Test
         public void removeFromAccountBalanceTestIfAmountNegative() {
-            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(user, -amount));
+            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(userDto, -amount));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
         @Test
         public void removeFromAccountBalanceTestIfAmountZero() {
-            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(user, 0.0));
+            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(userDto, 0.0));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
         @Test
         public void removeFromAccountBalanceTestIfAmountNull() {
-            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(user, null));
+            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(userDto, null));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
         @Test
         public void removeFromAccountBalanceTestIfAmountMoreThanAccountBalance() {
-            assertEquals(null, userService.removeFromAccountBalance(user, user.getAccount_balance() + amount));
+            assertEquals(null, userService.removeFromAccountBalance(userDto, user.getAccount_balance() + amount));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
         @Test
         public void removeFromAccountBalanceTestIfErrorOnSave() {
             when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());
-            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(user, amount));
+            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(userDto, amount));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
     }
@@ -176,13 +175,13 @@ public class UserServiceTest {
 
         @Test
         public void addToAccountBalanceTest() {
-            assertEquals(user, userService.addToAccountBalance(user, amount));
+            assertEquals(userDtoTest, userService.addToAccountBalance(userDto, amount));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
 
         @Test
         public void addToAccountBalanceTestIfUserEmpty() {
-            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(new User(), amount));
+            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(new UserDto(), amount));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
@@ -193,24 +192,24 @@ public class UserServiceTest {
         }
         @Test
         public void addToAccountBalanceTestIfAmountNegative() {
-            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(user, -amount));
+            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(userDto, -amount));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
         @Test
         public void addToAccountBalanceTestIfAmountZero() {
-            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(user, 0.0));
+            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(userDto, 0.0));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
         @Test
         public void addToAccountBalanceTestIfAmountNull() {
-            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(user, null));
+            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(userDto, null));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
         @Test
         public void addToAccountBalanceTestIfErrorOnSave() {
             when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());
-            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(user, amount));
+            assertThrows(IllegalArgumentException.class, () -> userService.addToAccountBalance(userDto, amount));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
     }

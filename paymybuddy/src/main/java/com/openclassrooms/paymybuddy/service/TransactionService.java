@@ -1,8 +1,8 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.dto.TransactionDto;
+import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.Transaction;
-import com.openclassrooms.paymybuddy.entity.User;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,11 @@ public class TransactionService {
     @Autowired
     UserService userService;
 
-    public Transaction addTransaction(TransactionDto transactionDto) {
+    public TransactionDto addTransaction(TransactionDto transactionDto) {
         if(transactionDto == null || transactionDto.isEmpty())
             throw new IllegalArgumentException();
-        User sender = userService.findById(transactionDto.getSenderId());
-        User receiver = userService.findById(transactionDto.getReceiverId());
+        UserDto sender = userService.findById(transactionDto.getSenderId());
+        UserDto receiver = userService.findById(transactionDto.getReceiverId());
         transactionDto.calculateCommission();
         Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommission();
         if(sender!=null && receiver!=null && sender.getAccount_balance()>=(fullTransactionAmount)) {
@@ -31,26 +31,35 @@ public class TransactionService {
             Transaction transaction = new Transaction(transactionDto);
             userService.removeFromAccountBalance(sender, fullTransactionAmount);
             userService.addToAccountBalance(receiver, fullTransactionAmount);
-            return transactionRepository.save(transaction);
+            return new TransactionDto(transactionRepository.save(transaction));
         }
         return null;
     }
 
-    public Transaction findById(Integer id) {
+    public TransactionDto findById(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        return transactionRepository.findById(id);
+        Transaction transaction = transactionRepository.findById(id);
+        if(transaction!=null && !transaction.isEmpty())
+            return new TransactionDto(transaction);
+        return null;
     }
 
-    public Transaction findBySenderId(Integer id) {
+    public TransactionDto findBySenderId(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        return transactionRepository.findBySenderId(id);
+        Transaction transaction = transactionRepository.findBySenderId(id);
+        if(transaction!=null && !transaction.isEmpty())
+            return new TransactionDto(transaction);
+        return null;
     }
 
-    public Transaction findByReceiverId(Integer id) {
+    public TransactionDto findByReceiverId(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        return transactionRepository.findByReceiverId(id);
+        Transaction transaction = transactionRepository.findByReceiverId(id);
+        if(transaction!=null && !transaction.isEmpty())
+            return new TransactionDto(transaction);
+        return null;
     }
 }

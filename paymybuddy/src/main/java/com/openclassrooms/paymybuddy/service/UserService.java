@@ -1,68 +1,73 @@
 package com.openclassrooms.paymybuddy.service;
 
+import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.User;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import static java.util.Objects.isNull;
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User addUser (User user) {
-        if(user == null || user.isEmpty())
+    public UserDto addUser (UserDto userDto) {
+        if(userDto == null || userDto.isEmpty())
             throw new IllegalArgumentException();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        return userRepository.save(user);
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        userDto.setPassword(encodedPassword);
+        return new UserDto(userRepository.save(new User(userDto)));
     }
 
-    public User findById (Integer id) {
+    public UserDto findById (Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        return userRepository.findById(id);
+        User user = userRepository.findById(id);
+        if(user!=null && !user.isEmpty())
+            return new UserDto(user);
+        return null;
     }
 
-    public User findByUsername (String username) {
+    public UserDto findByUsername (String username) {
         if(username==null)
             throw new IllegalArgumentException();
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if(user!=null && !user.isEmpty())
+            return new UserDto(user);
+        return null;
     }
 
-    public User addConnectionToUser (User connection, User user) {
+    public UserDto addConnectionToUser (UserDto connection, UserDto userDto) {
         if (connection != null) {
-            if (user.addConnection(connection)) {
-                userRepository.save(user);
-                return user;
+            if (userDto.addConnection(connection)) {
+                User user = userRepository.save(new User(userDto));
+                return new UserDto(user);
             }
         }
         return null;
     }
 
-    public User removeFromAccountBalance(User user, Double amount) {
-        if(user==null || user.isEmpty() || user!=userRepository.findById(user.getId()))
+    public UserDto removeFromAccountBalance(UserDto userDto, Double amount) {
+        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))
             throw new IllegalArgumentException("Invalid user");
         if(amount == null || amount <= 0)
             throw new IllegalArgumentException("No amount to remove");
-        if(user.getAccount_balance()-amount>=0) {
-            user.setAccount_balance(user.getAccount_balance() - amount);
-            return userRepository.save(user);
+        if(userDto.getAccount_balance()-amount>=0) {
+            userDto.setAccount_balance(userDto.getAccount_balance() - amount);
+            User user = userRepository.save(new User(userDto));
+            return new UserDto(user);
         }
         return null;
     }
 
-    public User addToAccountBalance(User user, Double amount) {
-        if(user==null || user.isEmpty() || user!=userRepository.findById(user.getId()))
+    public UserDto addToAccountBalance(UserDto userDto, Double amount) {
+        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))
             throw new IllegalArgumentException("Invalid user");
         if(amount == null || amount <= 0)
             throw new IllegalArgumentException("No amount to add");
-        user.setAccount_balance(user.getAccount_balance()+amount);
-        return userRepository.save(user);
+        userDto.setAccount_balance(userDto.getAccount_balance()+amount);
+        return new UserDto(userRepository.save(new User(userDto)));
     }
 }
