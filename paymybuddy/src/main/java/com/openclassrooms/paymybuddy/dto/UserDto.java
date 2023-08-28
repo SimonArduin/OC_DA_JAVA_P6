@@ -164,12 +164,16 @@ public class UserDto {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
+            if (this.isEmpty())
+                return true;
             return false;
         }
         if (obj.getClass() != this.getClass()) {
             return false;
         }
         UserDto objUserDto = (UserDto) obj;
+        if (objUserDto.isEmpty() && this.isEmpty())
+            return true;
         if (objUserDto.getId() == this.getId()
                 && objUserDto.getAccountBalance() == this.getAccountBalance()
                 && objUserDto.getCurrencyId() == this.getCurrencyId()
