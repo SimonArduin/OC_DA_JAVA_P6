@@ -49,4 +49,60 @@ public class UserTest {
             assertFalse(user.addConnection(user));
         }
     }
+
+    @Nested
+    class equalsTests {
+
+        @Nested
+        class thisNotEmpty {
+            @Test
+            public void equalsTest() {
+                assertTrue(user.equals(user));
+            }
+
+            @Test
+            public void equalsTestIfEmpty() {
+                assertFalse(user.equals(new User()));
+            }
+
+            @Test
+            public void equalsTestIfNull() {
+                assertFalse(user.equals(null));
+            }
+
+            @Test
+            public void equalsTestIfNotUser() {
+                assertFalse(user.equals("notUser"));
+            }
+
+            @Test
+            public void equalsTestIfDifferentUser() {
+                assertFalse(user.equals(userOther));
+            }
+        }
+
+        @Nested
+        class thisEmpty {
+
+            @Test
+            public void equalsTestIfEmpty() {
+                assertTrue(new User().equals(new User()));
+            }
+
+            @Test
+            public void equalsTestIfNull() {
+                assertTrue(new User().equals(null));
+            }
+
+            @Test
+            public void equalsTestIfNotUser() {
+                assertFalse(new User().equals("notUser"));
+            }
+
+            @Test
+            public void equalsTestIfDifferentUser() {
+                assertFalse(new User().equals(userOther));
+            }
+        }
+    }
 }

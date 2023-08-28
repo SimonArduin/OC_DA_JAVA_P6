@@ -157,7 +157,34 @@ public class User {
         return (this.getUsername() == null || this.getPassword() == null || this.getEmail() == null);
     }
 
-    public boolean equals(User user) {
-        return (this.id == user.getId());
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            if (this.isEmpty())
+                return true;
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        User objUser = (User) obj;
+        if(objUser.isEmpty() && this.isEmpty())
+            return true;
+        if (objUser.getId() == this.getId()
+                && objUser.getAccountBalance() == this.getAccountBalance()
+                && objUser.getCurrencyId() == this.getCurrencyId()
+                && objUser.getEmail() == this.getEmail()
+                && objUser.getIban() == this.getIban()
+                && objUser.getPassword() == this.getPassword()
+                && objUser.getRoleId() == this.getRoleId()
+                && objUser.getUsername() == this.getUsername()) {
+            if (objUser.getConnections() == null && this.getConnections() == null)
+                return true;
+            if (!(objUser.getConnections() != null && this.getConnections() != null))
+                return false;
+            if (objUser.getConnections().equals(this.getConnections()))
+                return true;
+        }
+        return false;
     }
 }
