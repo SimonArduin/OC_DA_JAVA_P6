@@ -41,6 +41,8 @@ public class HomeController {
     @GetMapping("/profile")
     public String profile(Model model, Principal principal) {
         UserDto connectedUser = userService.findByUsername(principal.getName());
+        if(connectedUser==null || connectedUser.isEmpty())
+            return "error";
         model.addAttribute("connectedUser", connectedUser);
         return "profile";
     }
@@ -63,7 +65,11 @@ public class HomeController {
     }
 
     @GetMapping("/transfer")
-    public String showAddTransactionForm(Model model) {
+    public String showAddTransactionForm(Model model, Principal principal) {
+        UserDto connectedUser = userService.findByUsername(principal.getName());
+        if(connectedUser==null || connectedUser.isEmpty())
+            return "error";
+        model.addAttribute("connectedUser", connectedUser);
         TransactionDto transaction = new TransactionDto();
         model.addAttribute("transaction", transaction);
         return "add_transaction_form";

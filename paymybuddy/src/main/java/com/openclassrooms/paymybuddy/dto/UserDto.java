@@ -2,6 +2,7 @@ package com.openclassrooms.paymybuddy.dto;
 
 import com.openclassrooms.paymybuddy.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto {
@@ -21,7 +22,7 @@ public class UserDto {
 
     private String username;
 
-    private List<UserDto> connections;
+    private List<UserDto> connections = new ArrayList<>();
 
     public UserDto() {
     }
@@ -50,7 +51,7 @@ public class UserDto {
             this.password = user.getPassword();
             this.roleId = user.getRoleId();
             this.username = user.getUsername();
-            this.connections = null;
+            this.connections = new ArrayList<>();
             if (user.getConnections() != null && !user.getConnections().isEmpty())
                 for (User connection : user.getConnections())
                     this.connections.add(new UserDto(connection));
@@ -69,7 +70,7 @@ public class UserDto {
             this.password = userDto.getPassword();
             this.roleId = userDto.getRoleId();
             this.username = userDto.getUsername();
-            this.connections = null;
+            this.connections = new ArrayList<>();
             if (userDto.getConnections() != null && !userDto.getConnections().isEmpty())
                 for (UserDto connection : userDto.getConnections())
                     this.connections.add(new UserDto(connection));
@@ -149,6 +150,8 @@ public class UserDto {
     }
 
     public boolean addConnection(UserDto connection) {
+        if(this.connections==null)
+            this.connections = new ArrayList<>();
         if(connection!=null && !connection.isEmpty() && !this.equals(connection) && !this.connections.contains(connection))
             return this.connections.add(connection);
         return false;
@@ -179,7 +182,7 @@ public class UserDto {
                 return true;
             if (!(objUserDto.getConnections() != null && this.getConnections() != null))
                 return false;
-            if(objUserDto.getConnections() == this.getConnections())
+            if (objUserDto.getConnections().equals(this.getConnections()))
                 return true;
         }
             return false;

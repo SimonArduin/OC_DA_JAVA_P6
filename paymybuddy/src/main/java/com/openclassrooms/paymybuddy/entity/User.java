@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.entity;
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,7 +41,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_1_id"),
             inverseJoinColumns = @JoinColumn(name = "user_2_id")
     )
-    private List<User> connections;
+    private List<User> connections = new ArrayList<>();
 
     public User() {
     }
@@ -66,7 +67,7 @@ public class User {
         this.password = userDto.getPassword();
         this.roleId = userDto.getRoleId();
         this.username = userDto.getUsername();
-        this.connections = null;
+        this.connections = new ArrayList<>();
         if(userDto.getConnections() != null && !userDto.getConnections().isEmpty())
             for(UserDto connection : userDto.getConnections())
                 this.connections.add(new User(connection));
@@ -145,6 +146,8 @@ public class User {
     }
 
     public boolean addConnection(User connection) {
+        if(this.connections==null)
+            this.connections = new ArrayList<>();
         if(connection!=null && !connection.isEmpty() && !this.equals(connection) && !this.connections.contains(connection))
             return this.connections.add(connection);
         return false;

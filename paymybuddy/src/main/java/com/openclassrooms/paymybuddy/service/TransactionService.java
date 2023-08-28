@@ -30,7 +30,7 @@ public class TransactionService {
             transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
             Transaction transaction = new Transaction(transactionDto);
             userService.removeFromAccountBalance(sender, fullTransactionAmount);
-            userService.addToAccountBalance(receiver, fullTransactionAmount);
+            userService.addToAccountBalance(receiver, transaction.getAmount());
             return new TransactionDto(transactionRepository.save(transaction));
         }
         return null;
