@@ -26,7 +26,7 @@ public class TransactionService {
         UserDto receiver = userService.findById(transactionDto.getReceiverId());
         transactionDto.calculateCommission();
         Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommission();
-        if(sender!=null && receiver!=null && sender.getAccount_balance()>=(fullTransactionAmount)) {
+        if(sender!=null && receiver!=null && sender.getAccountBalance()>=(fullTransactionAmount)) {
             transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
             Transaction transaction = new Transaction(transactionDto);
             userService.removeFromAccountBalance(sender, fullTransactionAmount);

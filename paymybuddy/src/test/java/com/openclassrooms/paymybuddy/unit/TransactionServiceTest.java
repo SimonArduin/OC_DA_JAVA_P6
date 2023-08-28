@@ -109,7 +109,7 @@ public class TransactionServiceTest {
         @Test
         public void addTransactionTestIfNotEnoughOnAccount() {
             UserDto userTest = userDto;
-            userTest.setAccount_balance(0.00);
+            userTest.setAccountBalance(0.00);
             when(userService.findById(any(Integer.class))).thenReturn(userTest);
             assertEquals(null, transactionService.addTransaction(transactionDto));
             verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));

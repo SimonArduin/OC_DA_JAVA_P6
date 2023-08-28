@@ -54,8 +54,8 @@ public class UserService {
             throw new IllegalArgumentException("Invalid user");
         if(amount == null || amount <= 0)
             throw new IllegalArgumentException("No amount to remove");
-        if(userDto.getAccount_balance()-amount>=0) {
-            userDto.setAccount_balance(userDto.getAccount_balance() - amount);
+        if(userDto.getAccountBalance()-amount>=0) {
+            userDto.setAccountBalance(userDto.getAccountBalance() - amount);
             User user = userRepository.save(new User(userDto));
             return new UserDto(user);
         }
@@ -67,7 +67,7 @@ public class UserService {
             throw new IllegalArgumentException("Invalid user");
         if(amount == null || amount <= 0)
             throw new IllegalArgumentException("No amount to add");
-        userDto.setAccount_balance(userDto.getAccount_balance()+amount);
+        userDto.setAccountBalance(userDto.getAccountBalance()+amount);
         return new UserDto(userRepository.save(new User(userDto)));
     }
 }

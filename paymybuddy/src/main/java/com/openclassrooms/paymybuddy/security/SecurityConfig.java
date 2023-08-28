@@ -55,7 +55,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests( auth -> {
-                    auth.requestMatchers("/","register").permitAll();
+                    auth.requestMatchers("/","register","/process_register").permitAll();
                     auth.requestMatchers("/users").authenticated();
                     auth.anyRequest().authenticated();
                 })

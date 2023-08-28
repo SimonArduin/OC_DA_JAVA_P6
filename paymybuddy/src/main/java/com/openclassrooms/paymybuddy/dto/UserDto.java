@@ -1,14 +1,13 @@
 package com.openclassrooms.paymybuddy.dto;
 
 import com.openclassrooms.paymybuddy.entity.User;
-import jakarta.persistence.*;
 
 import java.util.List;
 
 public class UserDto {
     private int id;
 
-    private Double account_balance = 0.0;
+    private Double accountBalance = 0.0;
 
     private int currencyId = 1;
 
@@ -27,9 +26,9 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(int id, Double account_balance, int currencyId, String email, String iban, String password, int roleId, String username, List<UserDto> connections) {
+    public UserDto(int id, Double accountBalance, int currencyId, String email, String iban, String password, int roleId, String username, List<UserDto> connections) {
         this.id = id;
-        this.account_balance = account_balance;
+        this.accountBalance = accountBalance;
         this.currencyId = currencyId;
         this.email = email;
         this.iban = iban;
@@ -44,7 +43,7 @@ public class UserDto {
             throw new IllegalArgumentException();
         else {
             this.id = user.getId();
-            this.account_balance = user.getAccount_balance();
+            this.accountBalance = user.getAccountBalance();
             this.currencyId = user.getCurrencyId();
             this.email = user.getEmail();
             this.iban = user.getIban();
@@ -63,7 +62,7 @@ public class UserDto {
             throw new IllegalArgumentException();
         else {
             this.id = userDto.getId();
-            this.account_balance = userDto.getAccount_balance();
+            this.accountBalance = userDto.getAccountBalance();
             this.currencyId = userDto.getCurrencyId();
             this.email = userDto.getEmail();
             this.iban = userDto.getIban();
@@ -85,12 +84,12 @@ public class UserDto {
         this.id = id;
     }
 
-    public Double getAccount_balance() {
-        return account_balance;
+    public Double getAccountBalance() {
+        return accountBalance;
     }
 
-    public void setAccount_balance(Double account_balance) {
-        this.account_balance = account_balance;
+    public void setAccountBalance(Double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
     public int getCurrencyId() {
@@ -169,7 +168,7 @@ public class UserDto {
         }
         UserDto objUserDto = (UserDto) obj;
         if (objUserDto.getId() == this.getId()
-                && objUserDto.getAccount_balance() == this.getAccount_balance()
+                && objUserDto.getAccountBalance() == this.getAccountBalance()
                 && objUserDto.getCurrencyId() == this.getCurrencyId()
                 && objUserDto.getEmail() == this.getEmail()
                 && objUserDto.getIban() == this.getIban()

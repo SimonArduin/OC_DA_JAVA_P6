@@ -14,7 +14,7 @@ public class User {
     private int id;
 
     @Column(nullable = false)
-    private Double account_balance = 0.0;
+    private Double accountBalance = 0.0;
 
     @Column(name = "currency_id", nullable = false)
     private int currencyId = 1;
@@ -45,9 +45,9 @@ public class User {
     public User() {
     }
 
-    public User(int id, Double account_balance, int currencyId, String email, String iban, String password, int roleId, String username, List<User> connections) {
+    public User(int id, Double accountBalance, int currencyId, String email, String iban, String password, int roleId, String username, List<User> connections) {
         this.id = id;
-        this.account_balance = account_balance;
+        this.accountBalance = accountBalance;
         this.currencyId = currencyId;
         this.email = email;
         this.iban = iban;
@@ -59,7 +59,7 @@ public class User {
 
     public User(UserDto userDto) {
         this.id = userDto.getId();
-        this.account_balance = userDto.getAccount_balance();
+        this.accountBalance = userDto.getAccountBalance();
         this.currencyId = userDto.getCurrencyId();
         this.email = userDto.getEmail();
         this.iban = userDto.getIban();
@@ -80,12 +80,12 @@ public class User {
         this.id = id;
     }
 
-    public Double getAccount_balance() {
-        return account_balance;
+    public Double getAccountBalance() {
+        return accountBalance;
     }
 
-    public void setAccount_balance(Double account_balance) {
-        this.account_balance = account_balance;
+    public void setAccountBalance(Double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
     public int getCurrencyId() {

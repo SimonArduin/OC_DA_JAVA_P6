@@ -158,7 +158,7 @@ public class UserServiceTest {
 
         @Test
         public void removeFromAccountBalanceTestIfAmountMoreThanAccountBalance() {
-            assertEquals(null, userService.removeFromAccountBalance(userDto, user.getAccount_balance() + amount));
+            assertEquals(null, userService.removeFromAccountBalance(userDto, user.getAccountBalance() + amount));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
