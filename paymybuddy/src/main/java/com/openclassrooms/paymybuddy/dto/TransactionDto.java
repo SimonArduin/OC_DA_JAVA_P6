@@ -168,6 +168,8 @@ public class TransactionDto {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
+            if (this.isEmpty())
+                return true;
             return false;
         }
         if (obj.getClass() != this.getClass()) {
