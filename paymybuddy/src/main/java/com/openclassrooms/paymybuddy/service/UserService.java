@@ -39,12 +39,14 @@ public class UserService {
         return null;
     }
 
-    public UserDto addConnectionToUser (UserDto connection, UserDto userDto) {
-        if (connection != null) {
-            if (userDto.addConnection(connection)) {
-                User user = userRepository.save(new User(userDto));
-                return new UserDto(user);
-            }
+    public UserDto addConnectionToUser (UserDto userDto, UserDto connection) {
+        if (userDto == null)
+            throw new IllegalArgumentException("Invalid user");
+        if (connection == null || connection.isEmpty())
+            throw new IllegalArgumentException("Invalid connection");
+        if (userDto.addConnection(connection)) {
+            User user = userRepository.save(new User(userDto));
+            return new UserDto(user);
         }
         return null;
     }

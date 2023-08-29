@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Transaction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.entity</a> &gt; <span class="el_source">Transaction.java</span></div><h1>Transaction.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.entity;
+
+import com.openclassrooms.paymybuddy.dto.TransactionDto;
+import jakarta.persistence.*;
+
+import java.sql.Timestamp;
+
+@Entity
+@Table
+public class Transaction {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false)
+    private Double amount;
+
+    @Column(nullable = false)
+    private Double commission;
+
+<span class="fc" id="L22">    @Column(name = &quot;currency_id&quot;, nullable = false)</span>
+    private int currencyId = 1;
+
+    @Column
+    private String description;
+
+    @Column(length = 34)
+    private String iban;
+
+    @Column(name = &quot;receiver_id&quot;)
+    private int receiverId;
+
+    @Column(name = &quot;sender_id&quot;, nullable = false)
+    private int senderId;
+
+    @Column(nullable = false)
+    private Timestamp timestamp;
+
+    @Column(name = &quot;to_iban&quot;)
+    private boolean toIban;
+
+<span class="fc" id="L43">    public Transaction() {</span>
+<span class="fc" id="L44">    }</span>
+
+<span class="fc" id="L46">    public Transaction(int id, Double amount, Double commission, int currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {</span>
+<span class="fc" id="L47">        this.id = id;</span>
+<span class="fc" id="L48">        this.amount = amount;</span>
+<span class="fc" id="L49">        this.commission = commission;</span>
+<span class="fc" id="L50">        this.currencyId = currencyId;</span>
+<span class="fc" id="L51">        this.description = description;</span>
+<span class="fc" id="L52">        this.iban = iban;</span>
+<span class="fc" id="L53">        this.receiverId = receiverId;</span>
+<span class="fc" id="L54">        this.senderId = senderId;</span>
+<span class="fc" id="L55">        this.timestamp = timestamp;</span>
+<span class="fc" id="L56">        this.toIban = toIban;</span>
+<span class="fc" id="L57">    }</span>
+    
+<span class="fc" id="L59">    public Transaction(TransactionDto transactionDto) {</span>
+<span class="fc" id="L60">        this.id = transactionDto.getId();</span>
+<span class="fc" id="L61">        this.amount = transactionDto.getAmount();</span>
+<span class="fc" id="L62">        this.commission = transactionDto.getCommission();</span>
+<span class="fc" id="L63">        this.currencyId = transactionDto.getCurrencyId();</span>
+<span class="fc" id="L64">        this.description = transactionDto.getDescription();</span>
+<span class="fc" id="L65">        this.iban = transactionDto.getIban();</span>
+<span class="fc" id="L66">        this.receiverId = transactionDto.getReceiverId();</span>
+<span class="fc" id="L67">        this.senderId = transactionDto.getSenderId();</span>
+<span class="fc" id="L68">        this.timestamp = transactionDto.getTimestamp();</span>
+<span class="fc" id="L69">        this.toIban = transactionDto.isToIban();</span>
+<span class="fc" id="L70">    }</span>
+
+    public int getId() {
+<span class="fc" id="L73">        return id;</span>
+    }
+
+    public void setId(int id) {
+<span class="nc" id="L77">        this.id = id;</span>
+<span class="nc" id="L78">    }</span>
+
+    public Double getAmount() {
+<span class="fc" id="L81">        return amount;</span>
+    }
+
+    public void setAmount(Double amount) {
+<span class="nc" id="L85">        this.amount = amount;</span>
+<span class="nc" id="L86">    }</span>
+
+    public Double getCommission() {
+<span class="fc" id="L89">        return commission;</span>
+    }
+
+    public void setCommission(Double commission) {
+<span class="nc" id="L93">        this.commission = commission;</span>
+<span class="nc" id="L94">    }</span>
+
+    public int getCurrencyId() {
+<span class="fc" id="L97">        return currencyId;</span>
+    }
+
+    public void setCurrencyId(int currencyId) {
+<span class="nc" id="L101">        this.currencyId = currencyId;</span>
+<span class="nc" id="L102">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L105">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L109">        this.description = description;</span>
+<span class="nc" id="L110">    }</span>
+
+    public String getIban() {
+<span class="fc" id="L113">        return iban;</span>
+    }
+
+    public void setIban(String iban) {
+<span class="nc" id="L117">        this.iban = iban;</span>
+<span class="nc" id="L118">    }</span>
+
+    public int getReceiverId() {
+<span class="fc" id="L121">        return receiverId;</span>
+    }
+
+    public void setReceiverId(int receiverId) {
+<span class="nc" id="L125">        this.receiverId = receiverId;</span>
+<span class="nc" id="L126">    }</span>
+
+    public int getSenderId() {
+<span class="fc" id="L129">        return senderId;</span>
+    }
+
+    public void setSenderId(int senderId) {
+<span class="nc" id="L133">        this.senderId = senderId;</span>
+<span class="nc" id="L134">    }</span>
+
+    public Timestamp getTimestamp() {
+<span class="fc" id="L137">        return timestamp;</span>
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+<span class="nc" id="L141">        this.timestamp = timestamp;</span>
+<span class="nc" id="L142">    }</span>
+
+    public boolean isToIban() {
+<span class="fc" id="L145">        return toIban;</span>
+    }
+
+    public void setToIban(boolean toIban) {
+<span class="nc" id="L149">        this.toIban = toIban;</span>
+<span class="nc" id="L150">    }</span>
+
+    public boolean isEmpty() {
+<span class="pc bpc" id="L153" title="2 of 6 branches missed.">        return(this.amount==null || this.senderId==0 || this.receiverId==0);</span>
+    }
+
+    public void calculateCommission() {
+<span class="nc" id="L157">        commission = 0.05*amount;</span>
+<span class="nc" id="L158">    }</span>
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (this.isEmpty())</span>
+<span class="fc" id="L164">                return true;</span>
+<span class="fc" id="L165">            return false;</span>
+        }
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
+<span class="fc" id="L168">            return false;</span>
+        }
+<span class="fc" id="L170">        Transaction objTransaction = (Transaction) obj;</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (objTransaction.getId() == this.getId()</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getAmount() == this.getAmount()</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCommission() == this.getCommission()</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCurrencyId() == this.getCurrencyId()</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getDescription() == this.getDescription()</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getIban() == this.getIban()</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getReceiverId() == this.getReceiverId()</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getSenderId() == this.getSenderId()</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getTimestamp() == this.getTimestamp()</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.isToIban() == this.isToIban()) {</span>
+<span class="fc" id="L181">            return true;</span>
+        }
+<span class="fc" id="L183">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

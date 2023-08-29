@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.security</a> &gt; <span class="el_source">SecurityConfig.java</span></div><h1>SecurityConfig.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.security;
+
+import com.openclassrooms.paymybuddy.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+@Configuration
+@EnableWebSecurity
+<span class="fc" id="L21">public class SecurityConfig {</span>
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+<span class="fc" id="L28">        return new CustomUserDetailsService();</span>
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+<span class="fc" id="L33">        return new BCryptPasswordEncoder();</span>
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+<span class="fc" id="L38">        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();</span>
+<span class="fc" id="L39">        authProvider.setUserDetailsService(userDetailsService());</span>
+<span class="fc" id="L40">        authProvider.setPasswordEncoder(passwordEncoder());</span>
+<span class="fc" id="L41">        return authProvider;</span>
+    }
+
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+<span class="fc" id="L46">        auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder())</span>
+<span class="fc" id="L47">                .dataSource(dataSource)</span>
+<span class="fc" id="L48">                .usersByUsernameQuery(&quot;select username, password, enabled from user where username=?&quot;)</span>
+<span class="fc" id="L49">                .authoritiesByUsernameQuery(&quot;select username, name from user join role on user.role_id=role.id where username=?&quot;)</span>
+//                .authoritiesByUsernameQuery(&quot;select username, role from users where username=?&quot;)
+        ;
+<span class="fc" id="L52">    }</span>
+
+    @Bean
+    SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+<span class="fc" id="L56">        return http</span>
+<span class="fc" id="L57">                .authorizeHttpRequests( auth -&gt; {</span>
+<span class="fc" id="L58">                    auth.requestMatchers(&quot;/&quot;,&quot;register&quot;,&quot;/process_register&quot;).permitAll();</span>
+<span class="fc" id="L59">                    auth.requestMatchers(&quot;/users&quot;).authenticated();</span>
+<span class="fc" id="L60">                    auth.anyRequest().authenticated();</span>
+<span class="fc" id="L61">                })</span>
+<span class="fc" id="L62">                .formLogin(withDefaults())</span>
+<span class="fc" id="L63">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

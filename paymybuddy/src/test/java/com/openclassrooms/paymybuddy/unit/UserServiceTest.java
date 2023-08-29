@@ -29,7 +29,9 @@ public class UserServiceTest {
     UserRepository userRepository;
 
     final User user = new User(1, 100.00,1,"email","iban","password",1,"username",new ArrayList<>());
+    final User userOther = new User(2, 200.0,1,"emailOther","ibanOther","passwordOther",1,"usernameOther",new ArrayList<>());
     final UserDto userDto = new UserDto(user);
+    final UserDto userDtoOther = new UserDto(userOther);
     UserDto userDtoTest = new UserDto(userDto);
     final Double amount = 10.0;
 
@@ -71,6 +73,47 @@ public class UserServiceTest {
             when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());
             assertThrows(IllegalArgumentException.class, () -> userService.addUser(userDto));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
+        }
+    }
+
+    @Nested
+    class addConnectionToUserTests {
+
+        @Test
+        public void addConnectionToUserTest() {
+            assertEquals(userDtoTest, userService.addConnectionToUser(userDto, userDtoOther));
+            verify(userRepository, Mockito.times(1)).save(any(User.class));
+        }
+
+        @Test
+        public void addConnectionToUserTestIfConnectionEmpty() {
+            assertThrows(IllegalArgumentException.class, () -> userService.addConnectionToUser(userDto, new UserDto()));
+            verify(userRepository, Mockito.times(0)).save(any(User.class));
+        }
+
+        @Test
+        public void addConnectionToUserTestIfConnectionNull() {
+            assertThrows(IllegalArgumentException.class, () -> userService.addConnectionToUser(userDto,null));
+            verify(userRepository, Mockito.times(0)).save(any(User.class));
+        }
+
+        @Test
+        public void addConnectionToUserTestIfUserNull() {
+            assertThrows(IllegalArgumentException.class, () -> userService.addConnectionToUser(null,userDto));
+            verify(userRepository, Mockito.times(0)).save(any(User.class));
+        }
+
+        @Test
+        public void addConnectionToUserTestIfErrorOnSave() {
+            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());
+            assertThrows(IllegalArgumentException.class, () -> userService.addConnectionToUser(userDto, userDtoOther));
+            verify(userRepository, Mockito.times(1)).save(any(User.class));
+        }
+
+        @Test
+        public void addConnectionToUserTestIfSame() {
+            assertEquals(null, userService.addConnectionToUser(userDto, userDto));
+            verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
     }
 

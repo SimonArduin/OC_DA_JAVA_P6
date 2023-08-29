@@ -57,7 +57,7 @@ public class HomeController {
     public String processAddConnection(UserDto connection, Model model, Principal principal) {
         UserDto connectedUser = userService.findByUsername(principal.getName());
         connection = userService.findById((connection.getId()));
-        if(userService.addConnectionToUser(connection, connectedUser)!=null) {
+        if(userService.addConnectionToUser(connectedUser, connection)!=null) {
             model.addAttribute("connectedUser", connectedUser);
             return "profile";
         }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionDtoTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.unit</a> &gt; <span class="el_source">TransactionDtoTest.java</span></div><h1>TransactionDtoTest.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.unit;
+
+import com.openclassrooms.paymybuddy.dto.TransactionDto;
+import com.openclassrooms.paymybuddy.entity.Transaction;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@SpringBootTest(classes = TransactionDto.class)
+<span class="fc" id="L19">public class TransactionDtoTest {</span>
+    @Autowired
+    TransactionDto transactionDto;
+    @Autowired
+    TransactionDto transactionDtoOther;
+    @BeforeEach
+    private void setUp() {
+<span class="fc" id="L26">        transactionDto = new TransactionDto(1, 10.0, 0.05*10.0, 1, &quot;description&quot;, &quot;iban&quot;, 1, 2, new Timestamp(0), false);</span>
+<span class="fc" id="L27">        transactionDtoOther = new TransactionDto(2, 20.0, 0.05*10.0, 2, &quot;descriptionOther&quot;, &quot;ibanOther&quot;, 3, 4, new Timestamp(0), true);</span>
+<span class="fc" id="L28">    }</span>
+    @Nested
+<span class="fc" id="L30">    class equalsTests {</span>
+
+        @Nested
+<span class="fc" id="L33">        class thisNotEmpty {</span>
+            @Test
+            public void equalsTest() {
+<span class="fc" id="L36">                assertTrue(transactionDto.equals(transactionDto));</span>
+<span class="fc" id="L37">            }</span>
+
+            @Test
+            public void equalsTestIfEmpty() {
+<span class="fc" id="L41">                assertFalse(transactionDto.equals(new TransactionDto()));</span>
+<span class="fc" id="L42">            }</span>
+
+            @Test
+            public void equalsTestIfNull() {
+<span class="fc" id="L46">                assertFalse(transactionDto.equals(null));</span>
+<span class="fc" id="L47">            }</span>
+
+            @Test
+            public void equalsTestIfNotTransactionDto() {
+<span class="fc" id="L51">                assertFalse(transactionDto.equals(&quot;notTransactionDto&quot;));</span>
+<span class="fc" id="L52">            }</span>
+
+            @Test
+            public void equalsTestIfDifferentTransactionDto() {
+<span class="fc" id="L56">                assertFalse(transactionDto.equals(transactionDtoOther));</span>
+<span class="fc" id="L57">            }</span>
+        }
+
+        @Nested
+<span class="fc" id="L61">        class thisEmpty {</span>
+
+            @Test
+            public void equalsTestIfEmpty() {
+<span class="fc" id="L65">                assertTrue(new TransactionDto().equals(new TransactionDto()));</span>
+<span class="fc" id="L66">            }</span>
+
+            @Test
+            public void equalsTestIfNull() {
+<span class="fc" id="L70">                assertTrue(new TransactionDto().equals(null));</span>
+<span class="fc" id="L71">            }</span>
+
+            @Test
+            public void equalsTestIfNotTransactionDto() {
+<span class="fc" id="L75">                assertFalse(new TransactionDto().equals(&quot;notTransactionDto&quot;));</span>
+<span class="fc" id="L76">            }</span>
+
+            @Test
+            public void equalsTestIfDifferentTransactionDto() {
+<span class="fc" id="L80">                assertFalse(new TransactionDto().equals(transactionDtoOther));</span>
+<span class="fc" id="L81">            }</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
