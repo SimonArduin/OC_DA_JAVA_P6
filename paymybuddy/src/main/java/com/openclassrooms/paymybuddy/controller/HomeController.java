@@ -47,6 +47,15 @@ public class HomeController {
         return "profile";
     }
 
+    @GetMapping("/contact")
+    public String contact(Model model, Principal principal) {
+        UserDto connectedUser = userService.findByUsername(principal.getName());
+        if(connectedUser==null || connectedUser.isEmpty())
+            return "error";
+        model.addAttribute("connectedUser", connectedUser);
+        return "contact";
+    }
+
     @GetMapping("/add_connection")
     public String showAddConnectionForm(Model model) {
         UserDto connection = new UserDto();
