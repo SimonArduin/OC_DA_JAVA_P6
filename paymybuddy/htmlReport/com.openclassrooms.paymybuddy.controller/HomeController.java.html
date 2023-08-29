@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HomeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.controller</a> &gt; <span class="el_source">HomeController.java</span></div><h1>HomeController.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.controller;
 
+import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import com.openclassrooms.paymybuddy.dto.TransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.service.TransactionService;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
-<span class="fc" id="L16">public class HomeController {</span>
+<span class="fc" id="L19">public class HomeController {</span>
 
     @Autowired
     private UserService userService;
@@ -23,65 +26,82 @@ import java.security.Principal;
 
     @GetMapping(&quot;/&quot;)
     public String viewHomePage() {
-<span class="nc" id="L26">        return &quot;index&quot;;</span>
+<span class="nc" id="L29">        return &quot;index&quot;;</span>
     }
 
     @GetMapping(&quot;register&quot;)
     public String showRegistrationForm(Model model) {
-<span class="nc" id="L31">        model.addAttribute(&quot;user&quot;, new UserDto());</span>
-<span class="nc" id="L32">        return &quot;signup_form&quot;;</span>
+<span class="nc" id="L34">        model.addAttribute(&quot;user&quot;, new UserDto());</span>
+<span class="nc" id="L35">        return &quot;signup_form&quot;;</span>
     }
 
     @PostMapping(&quot;/process_register&quot;)
     public String processRegister(UserDto user) {
-<span class="nc" id="L37">        userService.addUser(user);</span>
-<span class="nc" id="L38">        return &quot;register_success&quot;;</span>
+<span class="nc" id="L40">        userService.addUser(user);</span>
+<span class="nc" id="L41">        return &quot;register_success&quot;;</span>
     }
 
     @GetMapping(&quot;/profile&quot;)
     public String profile(Model model, Principal principal) {
-<span class="nc" id="L43">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L44" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L45">            return &quot;error&quot;;</span>
-<span class="nc" id="L46">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L47">        return &quot;profile&quot;;</span>
+<span class="nc" id="L46">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="nc bnc" id="L47" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="nc" id="L48">            return &quot;error&quot;;</span>
+<span class="nc" id="L49">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="nc" id="L50">        return &quot;profile&quot;;</span>
+    }
+
+    @GetMapping(&quot;/contact&quot;)
+    public String contact(Model model, Principal principal) {
+<span class="nc" id="L55">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="nc bnc" id="L56" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="nc" id="L57">            return &quot;error&quot;;</span>
+<span class="nc" id="L58">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="nc" id="L59">        return &quot;contact&quot;;</span>
     }
 
     @GetMapping(&quot;/add_connection&quot;)
     public String showAddConnectionForm(Model model) {
-<span class="nc" id="L52">        UserDto connection = new UserDto();</span>
-<span class="nc" id="L53">        model.addAttribute(&quot;connection&quot;, connection);</span>
-<span class="nc" id="L54">        return &quot;add_connection_form&quot;;</span>
+<span class="nc" id="L64">        UserDto connection = new UserDto();</span>
+<span class="nc" id="L65">        model.addAttribute(&quot;connection&quot;, connection);</span>
+<span class="nc" id="L66">        return &quot;add_connection_form&quot;;</span>
     }
     @PostMapping(&quot;/process_add_connection&quot;)
     public String processAddConnection(UserDto connection, Model model, Principal principal) {
-<span class="nc" id="L58">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc" id="L59">        connection = userService.findById((connection.getId()));</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</span>
-<span class="nc" id="L61">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L62">            return &quot;profile&quot;;</span>
+<span class="nc" id="L70">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="nc" id="L71">        connection = userService.findById((connection.getId()));</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</span>
+<span class="nc" id="L73">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="nc" id="L74">            return &quot;transfer&quot;;</span>
         }
-<span class="nc" id="L64">        return &quot;error&quot;;</span>
+<span class="nc" id="L76">        return &quot;error&quot;;</span>
     }
 
     @GetMapping(&quot;/transfer&quot;)
     public String showAddTransactionForm(Model model, Principal principal) {
-<span class="nc" id="L69">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L70" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L71">            return &quot;error&quot;;</span>
-<span class="nc" id="L72">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L73">        TransactionDto transaction = new TransactionDto();</span>
-<span class="nc" id="L74">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
-<span class="nc" id="L75">        return &quot;add_transaction_form&quot;;</span>
+<span class="nc" id="L81">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="nc bnc" id="L82" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="nc" id="L83">            return &quot;error&quot;;</span>
+<span class="nc" id="L84">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="nc" id="L85">        TransactionDto transaction = new TransactionDto();</span>
+<span class="nc" id="L86">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
+<span class="nc" id="L87">        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="nc" id="L88">        model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="nc" id="L89">        return &quot;transfer&quot;;</span>
     }
     @PostMapping(&quot;/process_add_transaction&quot;)
     public String processAddTransaction(TransactionDto transaction, Model model, Principal principal) {
-<span class="nc" id="L79">        transaction.setSenderId(userService.findByUsername(principal.getName()).getId());</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (transactionService.addTransaction(transaction) != null) {</span>
-<span class="nc" id="L81">            model.addAttribute(&quot;connectedUser&quot;, userService.findByUsername(principal.getName()));</span>
-<span class="nc" id="L82">            return &quot;profile&quot;;</span>
+<span class="nc" id="L93">        transaction.setSenderId(userService.findByUsername(principal.getName()).getId());</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (transactionService.addTransaction(transaction) != null) {</span>
+<span class="nc" id="L95">            UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="nc bnc" id="L96" title="All 4 branches missed.">            if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="nc" id="L97">                return &quot;error&quot;;</span>
+<span class="nc" id="L98">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="nc" id="L99">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
+<span class="nc" id="L100">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="nc" id="L101">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="nc" id="L102">            return &quot;transfer&quot;;</span>
         }
-<span class="nc" id="L84">        return &quot;error&quot;;</span>
+<span class="nc" id="L104">        return &quot;error&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

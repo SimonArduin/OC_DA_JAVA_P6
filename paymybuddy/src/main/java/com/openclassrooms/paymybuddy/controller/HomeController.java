@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.controller;
 
+import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import com.openclassrooms.paymybuddy.dto.TransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.service.TransactionService;
@@ -83,7 +84,7 @@ public class HomeController {
         model.addAttribute("connectedUser", connectedUser);
         TransactionDto transaction = new TransactionDto();
         model.addAttribute("transaction", transaction);
-        List<TransactionDto> transactionList = transactionService.findBySenderId(connectedUser.getId());
+        List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
         model.addAttribute("transactionList", transactionList);
         return "transfer";
     }
@@ -91,8 +92,14 @@ public class HomeController {
     public String processAddTransaction(TransactionDto transaction, Model model, Principal principal) {
         transaction.setSenderId(userService.findByUsername(principal.getName()).getId());
         if (transactionService.addTransaction(transaction) != null) {
-            model.addAttribute("connectedUser", userService.findByUsername(principal.getName()));
-            return "profile";
+            UserDto connectedUser = userService.findByUsername(principal.getName());
+            if(connectedUser==null || connectedUser.isEmpty())
+                return "error";
+            model.addAttribute("connectedUser", connectedUser);
+            model.addAttribute("transaction", new TransactionDto());
+            List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
+            model.addAttribute("transactionList", transactionList);
+            return "transfer";
         }
         return "error";
     }

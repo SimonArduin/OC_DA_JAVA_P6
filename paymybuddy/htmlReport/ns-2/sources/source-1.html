@@ -1,0 +1,209 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > HomeController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.paymybuddy.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: HomeController (com.openclassrooms.paymybuddy.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HomeController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (1/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2,2%
+  </span>
+  <span class="absValue">
+    (1/45)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.controller;
+&nbsp;
+&nbsp;import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
+&nbsp;import com.openclassrooms.paymybuddy.dto.TransactionDto;
+&nbsp;import com.openclassrooms.paymybuddy.dto.UserDto;
+&nbsp;import com.openclassrooms.paymybuddy.service.TransactionService;
+&nbsp;import com.openclassrooms.paymybuddy.service.UserService;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Controller;
+&nbsp;import org.springframework.ui.Model;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;
+&nbsp;import java.security.Principal;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Controller
+<b class="fc">&nbsp;public class HomeController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private UserService userService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private TransactionService transactionService;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/&quot;)
+&nbsp;    public String viewHomePage() {
+<b class="nc">&nbsp;        return &quot;index&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;register&quot;)
+&nbsp;    public String showRegistrationForm(Model model) {
+<b class="nc">&nbsp;        model.addAttribute(&quot;user&quot;, new UserDto());</b>
+<b class="nc">&nbsp;        return &quot;signup_form&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/process_register&quot;)
+&nbsp;    public String processRegister(UserDto user) {
+<b class="nc">&nbsp;        userService.addUser(user);</b>
+<b class="nc">&nbsp;        return &quot;register_success&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/profile&quot;)
+&nbsp;    public String profile(Model model, Principal principal) {
+<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="nc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="nc">&nbsp;            return &quot;error&quot;;</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="nc">&nbsp;        return &quot;profile&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/contact&quot;)
+&nbsp;    public String contact(Model model, Principal principal) {
+<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="nc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="nc">&nbsp;            return &quot;error&quot;;</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="nc">&nbsp;        return &quot;contact&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/add_connection&quot;)
+&nbsp;    public String showAddConnectionForm(Model model) {
+<b class="nc">&nbsp;        UserDto connection = new UserDto();</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;connection&quot;, connection);</b>
+<b class="nc">&nbsp;        return &quot;add_connection_form&quot;;</b>
+&nbsp;    }
+&nbsp;    @PostMapping(&quot;/process_add_connection&quot;)
+&nbsp;    public String processAddConnection(UserDto connection, Model model, Principal principal) {
+<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="nc">&nbsp;        connection = userService.findById((connection.getId()));</b>
+<b class="nc">&nbsp;        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</b>
+<b class="nc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="nc">&nbsp;            return &quot;transfer&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return &quot;error&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/transfer&quot;)
+&nbsp;    public String showAddTransactionForm(Model model, Principal principal) {
+<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="nc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="nc">&nbsp;            return &quot;error&quot;;</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="nc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
+<b class="nc">&nbsp;        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="nc">&nbsp;        model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
+<b class="nc">&nbsp;        return &quot;transfer&quot;;</b>
+&nbsp;    }
+&nbsp;    @PostMapping(&quot;/process_add_transaction&quot;)
+&nbsp;    public String processAddTransaction(TransactionDto transaction, Model model, Principal principal) {
+<b class="nc">&nbsp;        transaction.setSenderId(userService.findByUsername(principal.getName()).getId());</b>
+<b class="nc">&nbsp;        if (transactionService.addTransaction(transaction) != null) {</b>
+<b class="nc">&nbsp;            UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="nc">&nbsp;            if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="nc">&nbsp;                return &quot;error&quot;;</b>
+<b class="nc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="nc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
+<b class="nc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="nc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
+<b class="nc">&nbsp;            return &quot;transfer&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return &quot;error&quot;;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-29 16:54</div>
+</div>
+</body>
+</html>

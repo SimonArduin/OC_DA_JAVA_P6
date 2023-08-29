@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.service;
 
+import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import com.openclassrooms.paymybuddy.dto.TransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.Transaction;
@@ -10,10 +11,14 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class TransactionService {
+
+    @Autowired
+    CurrencyService currencyService;
 
     @Autowired
     TransactionRepository transactionRepository;
@@ -68,6 +73,32 @@ public class TransactionService {
             for (Transaction transaction : transactions)
                 result.add(new TransactionDto(transaction));
         }
+        return result;
+    }
+
+    public List<PastTransactionDto> getPastTransactions(UserDto userDto) {
+        if(userDto==null || userDto.isEmpty())
+            throw new IllegalArgumentException("Invalid user");
+        List<PastTransactionDto> result = new ArrayList<>();
+        for (TransactionDto transactionDto : findBySenderId(userDto.getId())) {
+            if(transactionDto!=null && !transactionDto.isEmpty()) {
+                result.add(new PastTransactionDto(transactionDto.getId(),
+                        userService.findById(transactionDto.getReceiverId()).getUsername(),
+                        transactionDto.getDescription(),
+                        -transactionDto.getAmount(),
+                        currencyService.findById(transactionDto.getCurrencyId()).getName()));
+            }
+        }
+        for (TransactionDto transactionDto : findByReceiverId(userDto.getId())) {
+            if(transactionDto!=null && !transactionDto.isEmpty()) {
+                result.add(new PastTransactionDto(transactionDto.getId(),
+                        userService.findById(transactionDto.getSenderId()).getUsername(),
+                        transactionDto.getDescription(),
+                        transactionDto.getAmount(),
+                        currencyService.findById(transactionDto.getCurrencyId()).getName()));
+            }
+        }
+        result.sort(Comparator.comparing(PastTransactionDto::getId).reversed());
         return result;
     }
 }
