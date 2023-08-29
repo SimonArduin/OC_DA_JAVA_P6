@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,14 +39,17 @@ public class TransactionServiceTest {
     final Transaction transaction = new Transaction(1, 10.0, 0.05*10.0, 1, "description", "iban", 1, 2, new Timestamp(0), false);
 
     final TransactionDto transactionDto = new TransactionDto(transaction);
+
+    final List<Transaction> transactionList = new ArrayList<>(Arrays.asList(transaction));
+    final List<TransactionDto> transactionDtoList = new ArrayList<>(Arrays.asList(transactionDto));
     TransactionDto transactionDtoTest = new TransactionDto(transactionDto);
     @BeforeEach
     private void setUp() {
         transactionDtoTest = new TransactionDto(transactionDto);
 
         when(transactionRepository.findById(any(Integer.class))).thenReturn(transaction);
-        when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(transaction);
-        when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(transaction);
+        when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(transactionList);
+        when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(transactionList);
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
         when(userService.findById(any(Integer.class))).thenReturn(userDto);
@@ -146,14 +151,14 @@ public class TransactionServiceTest {
 
         @Test
         public void findBySenderTest() {
-            assertEquals(transactionDtoTest, transactionService.findBySenderId(transaction.getId()));
+            assertEquals(transactionDtoList, transactionService.findBySenderId(transaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));
         }
 
         @Test
         public void findBySenderTestIfNotInDB() {
             when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);
-            assertEquals(null, transactionService.findBySenderId(transaction.getId()));
+            assertEquals(new ArrayList<>(), transactionService.findBySenderId(transaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));
         }
 
@@ -169,14 +174,14 @@ public class TransactionServiceTest {
 
         @Test
         public void findByReceiverTest() {
-            assertEquals(transactionDtoTest, transactionService.findByReceiverId(transaction.getId()));
+            assertEquals(transactionDtoList, transactionService.findByReceiverId(transaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));
         }
 
         @Test
         public void findByReceiverTestIfNotInDB() {
             when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);
-            assertEquals(null, transactionService.findByReceiverId(transaction.getId()));
+            assertEquals(new ArrayList<>(), transactionService.findByReceiverId(transaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));
         }
 

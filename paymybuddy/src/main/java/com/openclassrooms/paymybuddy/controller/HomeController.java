@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -68,7 +70,7 @@ public class HomeController {
         connection = userService.findById((connection.getId()));
         if(userService.addConnectionToUser(connectedUser, connection)!=null) {
             model.addAttribute("connectedUser", connectedUser);
-            return "profile";
+            return "transfer";
         }
         return "error";
     }
@@ -81,7 +83,9 @@ public class HomeController {
         model.addAttribute("connectedUser", connectedUser);
         TransactionDto transaction = new TransactionDto();
         model.addAttribute("transaction", transaction);
-        return "add_transaction_form";
+        List<TransactionDto> transactionList = transactionService.findBySenderId(connectedUser.getId());
+        model.addAttribute("transactionList", transactionList);
+        return "transfer";
     }
     @PostMapping("/process_add_transaction")
     public String processAddTransaction(TransactionDto transaction, Model model, Principal principal) {

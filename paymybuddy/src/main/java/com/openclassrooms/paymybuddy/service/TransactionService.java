@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -45,21 +47,27 @@ public class TransactionService {
         return null;
     }
 
-    public TransactionDto findBySenderId(Integer id) {
+    public List<TransactionDto> findBySenderId(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        Transaction transaction = transactionRepository.findBySenderId(id);
-        if(transaction!=null && !transaction.isEmpty())
-            return new TransactionDto(transaction);
-        return null;
+        List<TransactionDto> result = new ArrayList<TransactionDto>();
+        List<Transaction> transactions = transactionRepository.findBySenderId(id);
+        if(transactions!=null && !transactions.isEmpty()) {
+            for (Transaction transaction : transactions)
+                result.add(new TransactionDto(transaction));
+        }
+        return result;
     }
 
-    public TransactionDto findByReceiverId(Integer id) {
+    public List<TransactionDto> findByReceiverId(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        Transaction transaction = transactionRepository.findByReceiverId(id);
-        if(transaction!=null && !transaction.isEmpty())
-            return new TransactionDto(transaction);
-        return null;
+        List<TransactionDto> result = new ArrayList<TransactionDto>();
+        List<Transaction> transactions = transactionRepository.findByReceiverId(id);
+        if(transactions!=null && !transactions.isEmpty()) {
+            for (Transaction transaction : transactions)
+                result.add(new TransactionDto(transaction));
+        }
+        return result;
     }
 }
