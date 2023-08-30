@@ -29,12 +29,13 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb p-3 bg-body-tertiary rounded-3">
     <li class="breadcrumb-item"><a href="/home">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Transfer</li>
+    <li class="breadcrumb-item"><a href="/transfer">Transfer</a></li>
+    <li class="breadcrumb-item active" aria-current="page">To Bank Account</li>
   </ol>
 </nav>
 
 <div class="container text-center">
-  <form th:action="@{/process_transfer}" th:object="${transaction}"
+  <form th:action="@{/process_add_transaction_to_bank_account}" th:object="${transaction}"
         method="post" style="max-width: 600px; margin: 0 auto;">
     <div class="m-3">
       <div class="form-group row">
@@ -44,16 +45,9 @@
         </div>
       </div>
       <div class="form-group row">
-        <label class="col-4 col-form-label">Receiver : </label>
-        <select class="col-8" name="receiverId" id="receiverId">
-          <option disabled selected>Choose a connection</option>
-          <option th:each="connection: ${connectedUser.connections}" th:value="${connection.id}" th:text="${connection.username}"}>Username</option>
-        </select>
-      </div>
-      <div class="form-group row">
-        <label class="col-4 col-form-label">Description : </label>
+        <label class="col-4 col-form-label">IBAN : </label>
         <div class="col-8">
-          <input type="text" th:field="*{description}" class="form-control"/>
+          <td th:text="${connectedUser.iban}" class="form-control">IBAN</td>
         </div>
       </div>
       <div>
@@ -61,25 +55,6 @@
       </div>
     </div>
   </form>
-
-  <div>
-    <table class="table table-striped table-bordered">
-      <thead class="thead-dark">
-      <tr>
-        <th>Connections</th>
-        <th>Description</th>
-        <th>Amount</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="transaction: ${transactionList}">
-        <td th:text="${transaction.username}">Username</td>
-        <td th:text="${transaction.description}">Description</td>
-        <td th:text="${transaction.amount}+${transaction.currency}">Amount</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
 </div>
 </body>
 </html>

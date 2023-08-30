@@ -26,7 +26,7 @@ public class TransactionService {
     @Autowired
     UserService userService;
 
-    public TransactionDto addTransaction(TransactionDto transactionDto) {
+    public TransactionDto addInternalTransaction(TransactionDto transactionDto) {
         if(transactionDto == null || transactionDto.isEmpty())
             throw new IllegalArgumentException();
         UserDto sender = userService.findById(transactionDto.getSenderId());
@@ -38,6 +38,31 @@ public class TransactionService {
             Transaction transaction = new Transaction(transactionDto);
             userService.removeFromAccountBalance(sender, fullTransactionAmount);
             userService.addToAccountBalance(receiver, transaction.getAmount());
+            return new TransactionDto(transactionRepository.save(transaction));
+        }
+        return null;
+    }
+
+    public TransactionDto addExternalTransaction(TransactionDto transactionDto) {
+        if(transactionDto == null
+                || transactionDto.getSenderId()==0
+                || transactionDto.getIban() == null
+                || transactionDto.getAmount() == null
+                || transactionDto.getAmount() < 0)
+            throw new IllegalArgumentException();
+        UserDto sender = userService.findById(transactionDto.getSenderId());
+        if (sender == null || sender.isEmpty())
+            return null;
+        transactionDto.calculateCommission();
+        Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommission();
+        transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
+        Transaction transaction = new Transaction(transactionDto);
+        if(transactionDto.isToIban() && sender.getAccountBalance()>=(fullTransactionAmount)) {
+            userService.removeFromAccountBalance(sender, fullTransactionAmount);
+            return new TransactionDto(transactionRepository.save(transaction));
+        }
+        if(!transactionDto.isToIban()) {
+            userService.addToAccountBalance(sender, transaction.getAmount());
             return new TransactionDto(transactionRepository.save(transaction));
         }
         return null;
