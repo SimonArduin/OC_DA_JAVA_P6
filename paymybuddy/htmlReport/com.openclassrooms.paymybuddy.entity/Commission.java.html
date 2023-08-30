@@ -4,13 +4,37 @@ import jakarta.persistence.*;
 
 @Entity
 @Table
-<span class="fc" id="L7">public class Commission {</span>
+public class Commission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
-    private float rate;
+    private double rate;
+
+    public int getId() {
+<span class="fc" id="L17">        return id;</span>
+    }
+
+    public void setId(int id) {
+<span class="nc" id="L21">        this.id = id;</span>
+<span class="nc" id="L22">    }</span>
+
+    public double getRate() {
+<span class="nc" id="L25">        return rate;</span>
+    }
+
+    public void setRate(double rate) {
+<span class="nc" id="L29">        this.rate = rate;</span>
+<span class="nc" id="L30">    }</span>
+
+<span class="fc" id="L32">    public Commission(int id, double rate) {</span>
+<span class="fc" id="L33">        this.id = id;</span>
+<span class="fc" id="L34">        this.rate = rate;</span>
+<span class="fc" id="L35">    }</span>
+
+<span class="fc" id="L37">    public Commission() {</span>
+<span class="fc" id="L38">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
