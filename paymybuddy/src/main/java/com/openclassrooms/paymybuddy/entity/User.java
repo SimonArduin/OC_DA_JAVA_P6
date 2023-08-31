@@ -12,13 +12,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private Double accountBalance = 0.0;
 
     @Column(name = "currency_id", nullable = false)
-    private int currencyId = 1;
+    private Integer currencyId = 1;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
@@ -30,7 +30,7 @@ public class User {
     private String password;
 
     @Column(name = "role_id", nullable = false)
-    private int roleId = 1;
+    private Integer roleId = 1;
 
     @Column(nullable = false, unique = true, length = 100)
     private String username;
@@ -46,7 +46,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, Double accountBalance, int currencyId, String email, String iban, String password, int roleId, String username, List<User> connections) {
+    public User(Integer id, Double accountBalance, Integer currencyId, String email, String iban, String password, Integer roleId, String username, List<User> connections) {
         this.id = id;
         this.accountBalance = accountBalance;
         this.currencyId = currencyId;
@@ -73,11 +73,11 @@ public class User {
                 this.connections.add(new User(connection));
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -89,11 +89,11 @@ public class User {
         this.accountBalance = accountBalance;
     }
 
-    public int getCurrencyId() {
+    public Integer getCurrencyId() {
         return currencyId;
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Integer currencyId) {
         this.currencyId = currencyId;
     }
 
@@ -121,11 +121,11 @@ public class User {
         this.password = password;
     }
 
-    public int getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 

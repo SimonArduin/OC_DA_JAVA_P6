@@ -1,17 +1,14 @@
 package com.openclassrooms.paymybuddy.dto;
 
-import com.openclassrooms.paymybuddy.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class PastTransactionDto {
 
-    private int id;
+    private Integer id;
     private String username;
     private String description;
     private Double amount;
     private String currency;
 
-    public PastTransactionDto(int id, String username, String description, Double amount, String currency) {
+    public PastTransactionDto(Integer id, String username, String description, Double amount, String currency) {
         this.id = id;
         this.username = username;
         this.description = description;
@@ -22,11 +19,11 @@ public class PastTransactionDto {
     public PastTransactionDto() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

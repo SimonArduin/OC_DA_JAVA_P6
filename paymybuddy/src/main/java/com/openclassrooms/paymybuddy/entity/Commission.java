@@ -8,16 +8,16 @@ public class Commission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private double rate;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -29,7 +29,7 @@ public class Commission {
         this.rate = rate;
     }
 
-    public Commission(int id, double rate) {
+    public Commission(Integer id, double rate) {
         this.id = id;
         this.rate = rate;
     }

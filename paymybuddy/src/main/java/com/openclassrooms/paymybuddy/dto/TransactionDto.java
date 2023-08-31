@@ -1,27 +1,26 @@
 package com.openclassrooms.paymybuddy.dto;
 
 import com.openclassrooms.paymybuddy.entity.Transaction;
-import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 
 public class TransactionDto {
 
-    private int id;
+    private Integer id;
 
     private Double amount;
 
     private Double commission;
 
-    private int currencyId = 1;
+    private Integer currencyId = 1;
 
     private String description;
 
     private String iban;
 
-    private int receiverId;
+    private Integer receiverId;
 
-    private int senderId;
+    private Integer senderId;
 
     private Timestamp timestamp;
 
@@ -30,7 +29,7 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
-    public TransactionDto(int id, Double amount, Double commission, int currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
+    public TransactionDto(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
         this.id = id;
         this.amount = amount;
         this.commission = commission;
@@ -77,11 +76,11 @@ public class TransactionDto {
         }
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -101,11 +100,11 @@ public class TransactionDto {
         this.commission = commission;
     }
 
-    public int getCurrencyId() {
+    public Integer getCurrencyId() {
         return currencyId;
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Integer currencyId) {
         this.currencyId = currencyId;
     }
 
@@ -125,19 +124,19 @@ public class TransactionDto {
         this.iban = iban;
     }
 
-    public int getReceiverId() {
+    public Integer getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(int receiverId) {
+    public void setReceiverId(Integer receiverId) {
         this.receiverId = receiverId;
     }
 
-    public int getSenderId() {
+    public Integer getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(int senderId) {
+    public void setSenderId(Integer senderId) {
         this.senderId = senderId;
     }
 

@@ -11,7 +11,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private Double amount;
@@ -20,7 +20,7 @@ public class Transaction {
     private Double commission;
 
 <span class="fc" id="L22">    @Column(name = &quot;currency_id&quot;, nullable = false)</span>
-    private int currencyId = 1;
+<span class="fc" id="L23">    private Integer currencyId = 1;</span>
 
     @Column
     private String description;
@@ -29,10 +29,10 @@ public class Transaction {
     private String iban;
 
     @Column(name = &quot;receiver_id&quot;)
-    private int receiverId;
+    private Integer receiverId;
 
     @Column(name = &quot;sender_id&quot;, nullable = false)
-    private int senderId;
+    private Integer senderId;
 
     @Column(nullable = false)
     private Timestamp timestamp;
@@ -43,7 +43,7 @@ public class Transaction {
 <span class="fc" id="L43">    public Transaction() {</span>
 <span class="fc" id="L44">    }</span>
 
-<span class="fc" id="L46">    public Transaction(int id, Double amount, Double commission, int currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {</span>
+<span class="fc" id="L46">    public Transaction(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {</span>
 <span class="fc" id="L47">        this.id = id;</span>
 <span class="fc" id="L48">        this.amount = amount;</span>
 <span class="fc" id="L49">        this.commission = commission;</span>
@@ -69,11 +69,11 @@ public class Transaction {
 <span class="fc" id="L69">        this.toIban = transactionDto.isToIban();</span>
 <span class="fc" id="L70">    }</span>
 
-    public int getId() {
+    public Integer getId() {
 <span class="fc" id="L73">        return id;</span>
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
 <span class="nc" id="L77">        this.id = id;</span>
 <span class="nc" id="L78">    }</span>
 
@@ -93,11 +93,11 @@ public class Transaction {
 <span class="nc" id="L93">        this.commission = commission;</span>
 <span class="nc" id="L94">    }</span>
 
-    public int getCurrencyId() {
+    public Integer getCurrencyId() {
 <span class="fc" id="L97">        return currencyId;</span>
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Integer currencyId) {
 <span class="nc" id="L101">        this.currencyId = currencyId;</span>
 <span class="nc" id="L102">    }</span>
 
@@ -117,19 +117,19 @@ public class Transaction {
 <span class="nc" id="L117">        this.iban = iban;</span>
 <span class="nc" id="L118">    }</span>
 
-    public int getReceiverId() {
+    public Integer getReceiverId() {
 <span class="fc" id="L121">        return receiverId;</span>
     }
 
-    public void setReceiverId(int receiverId) {
+    public void setReceiverId(Integer receiverId) {
 <span class="nc" id="L125">        this.receiverId = receiverId;</span>
 <span class="nc" id="L126">    }</span>
 
-    public int getSenderId() {
+    public Integer getSenderId() {
 <span class="fc" id="L129">        return senderId;</span>
     }
 
-    public void setSenderId(int senderId) {
+    public void setSenderId(Integer senderId) {
 <span class="nc" id="L133">        this.senderId = senderId;</span>
 <span class="nc" id="L134">    }</span>
 

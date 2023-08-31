@@ -45,7 +45,7 @@ public class TransactionService {
 
     public TransactionDto addExternalTransaction(TransactionDto transactionDto) {
         if(transactionDto == null
-                || transactionDto.getSenderId()==0
+                || transactionDto.getSenderId() == null
                 || transactionDto.getIban() == null
                 || transactionDto.getAmount() == null
                 || transactionDto.getAmount() < 0)

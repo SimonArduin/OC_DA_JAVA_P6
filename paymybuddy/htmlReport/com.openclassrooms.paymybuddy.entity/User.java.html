@@ -12,13 +12,13 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
 <span class="fc" id="L17">    @Column(nullable = false)</span>
 <span class="fc" id="L18">    private Double accountBalance = 0.0;</span>
 
 <span class="fc" id="L20">    @Column(name = &quot;currency_id&quot;, nullable = false)</span>
-    private int currencyId = 1;
+<span class="fc" id="L21">    private Integer currencyId = 1;</span>
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
@@ -30,7 +30,7 @@ public class User {
     private String password;
 
 <span class="fc" id="L32">    @Column(name = &quot;role_id&quot;, nullable = false)</span>
-    private int roleId = 1;
+<span class="fc" id="L33">    private Integer roleId = 1;</span>
 
     @Column(nullable = false, unique = true, length = 100)
     private String username;
@@ -46,7 +46,7 @@ public class User {
 <span class="fc" id="L46">    public User() {</span>
 <span class="fc" id="L47">    }</span>
 
-<span class="fc" id="L49">    public User(int id, Double accountBalance, int currencyId, String email, String iban, String password, int roleId, String username, List&lt;User&gt; connections) {</span>
+<span class="fc" id="L49">    public User(Integer id, Double accountBalance, Integer currencyId, String email, String iban, String password, Integer roleId, String username, List&lt;User&gt; connections) {</span>
 <span class="fc" id="L50">        this.id = id;</span>
 <span class="fc" id="L51">        this.accountBalance = accountBalance;</span>
 <span class="fc" id="L52">        this.currencyId = currencyId;</span>
@@ -73,11 +73,11 @@ public class User {
 <span class="fc" id="L73">                this.connections.add(new User(connection));</span>
 <span class="fc" id="L74">    }</span>
 
-    public int getId() {
+    public Integer getId() {
 <span class="fc" id="L77">        return id;</span>
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
 <span class="nc" id="L81">        this.id = id;</span>
 <span class="nc" id="L82">    }</span>
 
@@ -89,11 +89,11 @@ public class User {
 <span class="nc" id="L89">        this.accountBalance = accountBalance;</span>
 <span class="nc" id="L90">    }</span>
 
-    public int getCurrencyId() {
+    public Integer getCurrencyId() {
 <span class="fc" id="L93">        return currencyId;</span>
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Integer currencyId) {
 <span class="nc" id="L97">        this.currencyId = currencyId;</span>
 <span class="nc" id="L98">    }</span>
 
@@ -121,11 +121,11 @@ public class User {
 <span class="nc" id="L121">        this.password = password;</span>
 <span class="nc" id="L122">    }</span>
 
-    public int getRoleId() {
+    public Integer getRoleId() {
 <span class="fc" id="L125">        return roleId;</span>
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Integer roleId) {
 <span class="nc" id="L129">        this.roleId = roleId;</span>
 <span class="nc" id="L130">    }</span>
 

@@ -45,7 +45,7 @@ import java.util.List;
 
     public TransactionDto addExternalTransaction(TransactionDto transactionDto) {
 <span class="fc bfc" id="L47" title="All 2 branches covered.">        if(transactionDto == null</span>
-<span class="fc bfc" id="L48" title="All 2 branches covered.">                || transactionDto.getSenderId()==0</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">                || transactionDto.getSenderId() == null</span>
 <span class="pc bpc" id="L49" title="1 of 2 branches missed.">                || transactionDto.getIban() == null</span>
 <span class="pc bpc" id="L50" title="1 of 2 branches missed.">                || transactionDto.getAmount() == null</span>
 <span class="pc bpc" id="L51" title="1 of 2 branches missed.">                || transactionDto.getAmount() &lt; 0)</span>

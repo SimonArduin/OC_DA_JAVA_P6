@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto {
-    private int id;
+    private Integer id;
 
 <span class="fc" id="L11">    private Double accountBalance = 0.0;</span>
 
-<span class="fc" id="L13">    private int currencyId = 1;</span>
+<span class="fc" id="L13">    private Integer currencyId = 1;</span>
 
     private String email;
 
@@ -18,7 +18,7 @@ public class UserDto {
 
     private String password;
 
-<span class="fc" id="L21">    private int roleId = 1;</span>
+<span class="fc" id="L21">    private Integer roleId = 1;</span>
 
     private String username;
 
@@ -27,7 +27,7 @@ public class UserDto {
 <span class="fc" id="L27">    public UserDto() {</span>
 <span class="fc" id="L28">    }</span>
 
-<span class="fc" id="L30">    public UserDto(int id, Double accountBalance, int currencyId, String email, String iban, String password, int roleId, String username, List&lt;UserDto&gt; connections) {</span>
+<span class="fc" id="L30">    public UserDto(Integer id, Double accountBalance, Integer currencyId, String email, String iban, String password, Integer roleId, String username, List&lt;UserDto&gt; connections) {</span>
 <span class="fc" id="L31">        this.id = id;</span>
 <span class="fc" id="L32">        this.accountBalance = accountBalance;</span>
 <span class="fc" id="L33">        this.currencyId = currencyId;</span>
@@ -77,11 +77,11 @@ public class UserDto {
         }
 <span class="fc" id="L78">    }</span>
 
-    public int getId() {
+    public Integer getId() {
 <span class="fc" id="L81">        return id;</span>
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
 <span class="nc" id="L85">        this.id = id;</span>
 <span class="nc" id="L86">    }</span>
 
@@ -93,11 +93,11 @@ public class UserDto {
 <span class="fc" id="L93">        this.accountBalance = accountBalance;</span>
 <span class="fc" id="L94">    }</span>
 
-    public int getCurrencyId() {
+    public Integer getCurrencyId() {
 <span class="fc" id="L97">        return currencyId;</span>
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Integer currencyId) {
 <span class="nc" id="L101">        this.currencyId = currencyId;</span>
 <span class="nc" id="L102">    }</span>
 
@@ -125,11 +125,11 @@ public class UserDto {
 <span class="fc" id="L125">        this.password = password;</span>
 <span class="fc" id="L126">    }</span>
 
-    public int getRoleId() {
+    public Integer getRoleId() {
 <span class="fc" id="L129">        return roleId;</span>
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Integer roleId) {
 <span class="nc" id="L133">        this.roleId = roleId;</span>
 <span class="nc" id="L134">    }</span>
 

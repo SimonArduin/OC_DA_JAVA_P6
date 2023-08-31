@@ -151,20 +151,19 @@ import java.util.List;
 <span class="nc bnc" id="L151" title="All 4 branches missed.">        if (userDto == null || userDto.isEmpty())</span>
 <span class="nc" id="L152">            return &quot;error&quot;;</span>
 <span class="nc" id="L153">        transaction.setSenderId(userDto.getId());</span>
-<span class="nc" id="L154">        transaction.setReceiverId(userDto.getId());</span>
-<span class="nc" id="L155">        transaction.setIban(userDto.getIban());</span>
-<span class="nc" id="L156">        transaction.setToIban(true);</span>
-<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (transactionService.addExternalTransaction(transaction) != null) {</span>
-<span class="nc" id="L158">            UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L159" title="All 4 branches missed.">            if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L160">                return &quot;error&quot;;</span>
-<span class="nc" id="L161">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L162">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
-<span class="nc" id="L163">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
-<span class="nc" id="L164">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
-<span class="nc" id="L165">            return &quot;profile&quot;;</span>
+<span class="nc" id="L154">        transaction.setIban(userDto.getIban());</span>
+<span class="nc" id="L155">        transaction.setToIban(true);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (transactionService.addExternalTransaction(transaction) != null) {</span>
+<span class="nc" id="L157">            UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">            if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="nc" id="L159">                return &quot;error&quot;;</span>
+<span class="nc" id="L160">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="nc" id="L161">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
+<span class="nc" id="L162">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="nc" id="L163">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="nc" id="L164">            return &quot;profile&quot;;</span>
         }
-<span class="nc" id="L167">        return &quot;error&quot;;</span>
+<span class="nc" id="L166">        return &quot;error&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

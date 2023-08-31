@@ -11,7 +11,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private Double amount;
@@ -20,7 +20,7 @@ public class Transaction {
     private Double commission;
 
     @Column(name = "currency_id", nullable = false)
-    private int currencyId = 1;
+    private Integer currencyId = 1;
 
     @Column
     private String description;
@@ -29,10 +29,10 @@ public class Transaction {
     private String iban;
 
     @Column(name = "receiver_id")
-    private int receiverId;
+    private Integer receiverId;
 
     @Column(name = "sender_id", nullable = false)
-    private int senderId;
+    private Integer senderId;
 
     @Column(nullable = false)
     private Timestamp timestamp;
@@ -43,7 +43,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(int id, Double amount, Double commission, int currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
+    public Transaction(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
         this.id = id;
         this.amount = amount;
         this.commission = commission;
@@ -69,11 +69,11 @@ public class Transaction {
         this.toIban = transactionDto.isToIban();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,11 +93,11 @@ public class Transaction {
         this.commission = commission;
     }
 
-    public int getCurrencyId() {
+    public Integer getCurrencyId() {
         return currencyId;
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Integer currencyId) {
         this.currencyId = currencyId;
     }
 
@@ -117,19 +117,19 @@ public class Transaction {
         this.iban = iban;
     }
 
-    public int getReceiverId() {
+    public Integer getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(int receiverId) {
+    public void setReceiverId(Integer receiverId) {
         this.receiverId = receiverId;
     }
 
-    public int getSenderId() {
+    public Integer getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(int senderId) {
+    public void setSenderId(Integer senderId) {
         this.senderId = senderId;
     }
 

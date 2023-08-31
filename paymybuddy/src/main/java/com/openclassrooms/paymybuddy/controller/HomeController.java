@@ -151,7 +151,6 @@ public class HomeController {
         if (userDto == null || userDto.isEmpty())
             return "error";
         transaction.setSenderId(userDto.getId());
-        transaction.setReceiverId(userDto.getId());
         transaction.setIban(userDto.getIban());
         transaction.setToIban(true);
         if (transactionService.addExternalTransaction(transaction) != null) {

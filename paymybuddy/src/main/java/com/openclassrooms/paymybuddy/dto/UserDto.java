@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto {
-    private int id;
+    private Integer id;
 
     private Double accountBalance = 0.0;
 
-    private int currencyId = 1;
+    private Integer currencyId = 1;
 
     private String email;
 
@@ -18,7 +18,7 @@ public class UserDto {
 
     private String password;
 
-    private int roleId = 1;
+    private Integer roleId = 1;
 
     private String username;
 
@@ -27,7 +27,7 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(int id, Double accountBalance, int currencyId, String email, String iban, String password, int roleId, String username, List<UserDto> connections) {
+    public UserDto(Integer id, Double accountBalance, Integer currencyId, String email, String iban, String password, Integer roleId, String username, List<UserDto> connections) {
         this.id = id;
         this.accountBalance = accountBalance;
         this.currencyId = currencyId;
@@ -77,11 +77,11 @@ public class UserDto {
         }
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,11 +93,11 @@ public class UserDto {
         this.accountBalance = accountBalance;
     }
 
-    public int getCurrencyId() {
+    public Integer getCurrencyId() {
         return currencyId;
     }
 
-    public void setCurrencyId(int currencyId) {
+    public void setCurrencyId(Integer currencyId) {
         this.currencyId = currencyId;
     }
 
@@ -125,11 +125,11 @@ public class UserDto {
         this.password = password;
     }
 
-    public int getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 
