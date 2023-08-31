@@ -105,5 +105,35 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 <span class="fc" id="L105">            }</span>
         }
     }
+    @Nested
+<span class="fc" id="L109">    class isEmptyTests {</span>
+        @Test
+        public void isEmptyTest() {
+<span class="fc" id="L112">            assertFalse(userDto.isEmpty());</span>
+<span class="fc" id="L113">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoAmount() {
+<span class="fc" id="L117">            userDto.setUsername(null);</span>
+<span class="fc" id="L118">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L119">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoSenderId() {
+<span class="fc" id="L123">            userDto.setPassword(null);</span>
+<span class="fc" id="L124">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L125">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoReceiverId() {
+<span class="fc" id="L129">            userDto.setEmail(null);</span>
+<span class="fc" id="L130">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L131">        }</span>
+
+        @Test
+        public void isEmptyTestIfEmpty() {
+<span class="fc" id="L135">            assertTrue(new UserDto().isEmpty());</span>
+<span class="fc" id="L136">        }</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -105,4 +105,34 @@ public class UserTest {
             }
         }
     }
+    @Nested
+    class isEmptyTests {
+        @Test
+        public void isEmptyTest() {
+            assertFalse(user.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoAmount() {
+            user.setUsername(null);
+            assertTrue(user.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoSenderId() {
+            user.setPassword(null);
+            assertTrue(user.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoReceiverId() {
+            user.setEmail(null);
+            assertTrue(user.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfEmpty() {
+            assertTrue(new User().isEmpty());
+        }
+    }
 }

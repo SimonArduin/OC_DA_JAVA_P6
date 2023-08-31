@@ -45,7 +45,7 @@ public class TransactionServiceTest {
 
     final Transaction transaction = new Transaction(1, 10.0, 0.05*10.0, currency.getId(), "description", "iban", 1, 2, new Timestamp(0), false);
 
-    final TransactionDto transactionDto = new TransactionDto(transaction);
+    private TransactionDto transactionDto = new TransactionDto(transaction);
 
     final List<Transaction> transactionList = new ArrayList<>(Arrays.asList(transaction));
     final List<TransactionDto> transactionDtoList = new ArrayList<>(Arrays.asList(transactionDto));

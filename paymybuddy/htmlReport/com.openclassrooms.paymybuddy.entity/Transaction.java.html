@@ -82,8 +82,8 @@ public class Transaction {
     }
 
     public void setAmount(Double amount) {
-<span class="nc" id="L85">        this.amount = amount;</span>
-<span class="nc" id="L86">    }</span>
+<span class="fc" id="L85">        this.amount = amount;</span>
+<span class="fc" id="L86">    }</span>
 
     public Double getCommission() {
 <span class="fc" id="L89">        return commission;</span>
@@ -122,16 +122,16 @@ public class Transaction {
     }
 
     public void setReceiverId(Integer receiverId) {
-<span class="nc" id="L125">        this.receiverId = receiverId;</span>
-<span class="nc" id="L126">    }</span>
+<span class="fc" id="L125">        this.receiverId = receiverId;</span>
+<span class="fc" id="L126">    }</span>
 
     public Integer getSenderId() {
 <span class="fc" id="L129">        return senderId;</span>
     }
 
     public void setSenderId(Integer senderId) {
-<span class="nc" id="L133">        this.senderId = senderId;</span>
-<span class="nc" id="L134">    }</span>
+<span class="fc" id="L133">        this.senderId = senderId;</span>
+<span class="fc" id="L134">    }</span>
 
     public Timestamp getTimestamp() {
 <span class="fc" id="L137">        return timestamp;</span>
@@ -150,37 +150,39 @@ public class Transaction {
 <span class="nc" id="L150">    }</span>
 
     public boolean isEmpty() {
-<span class="pc bpc" id="L153" title="2 of 6 branches missed.">        return(this.amount==null || this.senderId==0 || this.receiverId==0);</span>
+<span class="fc bfc" id="L153" title="All 6 branches covered.">        return(this.amount == null</span>
+                || this.senderId == null
+                || this.receiverId == null);
     }
 
     public void calculateCommission() {
-<span class="nc" id="L157">        commission = 0.05*amount;</span>
-<span class="nc" id="L158">    }</span>
+<span class="nc" id="L159">        commission = 0.05*amount;</span>
+<span class="nc" id="L160">    }</span>
 
     @Override
     public boolean equals(Object obj) {
-<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (this.isEmpty())</span>
-<span class="fc" id="L164">                return true;</span>
-<span class="fc" id="L165">            return false;</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">            if (this.isEmpty())</span>
+<span class="fc" id="L166">                return true;</span>
+<span class="fc" id="L167">            return false;</span>
         }
-<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
-<span class="fc" id="L168">            return false;</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
+<span class="fc" id="L170">            return false;</span>
         }
-<span class="fc" id="L170">        Transaction objTransaction = (Transaction) obj;</span>
-<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (objTransaction.getId() == this.getId()</span>
-<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getAmount() == this.getAmount()</span>
-<span class="pc bpc" id="L173" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCommission() == this.getCommission()</span>
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCurrencyId() == this.getCurrencyId()</span>
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getDescription() == this.getDescription()</span>
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getIban() == this.getIban()</span>
-<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getReceiverId() == this.getReceiverId()</span>
-<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getSenderId() == this.getSenderId()</span>
-<span class="pc bpc" id="L179" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getTimestamp() == this.getTimestamp()</span>
-<span class="pc bpc" id="L180" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.isToIban() == this.isToIban()) {</span>
-<span class="fc" id="L181">            return true;</span>
+<span class="fc" id="L172">        Transaction objTransaction = (Transaction) obj;</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (objTransaction.getId() == this.getId()</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getAmount() == this.getAmount()</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCommission() == this.getCommission()</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCurrencyId() == this.getCurrencyId()</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getDescription() == this.getDescription()</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getIban() == this.getIban()</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getReceiverId() == this.getReceiverId()</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getSenderId() == this.getSenderId()</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getTimestamp() == this.getTimestamp()</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.isToIban() == this.isToIban()) {</span>
+<span class="fc" id="L183">            return true;</span>
         }
-<span class="fc" id="L183">        return false;</span>
+<span class="fc" id="L185">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

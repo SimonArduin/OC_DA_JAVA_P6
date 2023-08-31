@@ -30,140 +30,154 @@ import java.util.List;
 
     @GetMapping(&quot;register&quot;)
     public String showRegistrationForm(Model model) {
-<span class="nc" id="L33">        model.addAttribute(&quot;user&quot;, new UserDto());</span>
-<span class="nc" id="L34">        return &quot;signup_form&quot;;</span>
+<span class="fc" id="L33">        model.addAttribute(&quot;user&quot;, new UserDto());</span>
+<span class="fc" id="L34">        return &quot;signup_form&quot;;</span>
     }
 
     @PostMapping(&quot;/process_register&quot;)
     public String processRegister(UserDto user) {
-<span class="nc" id="L39">        userService.addUser(user);</span>
-<span class="nc" id="L40">        return &quot;register_success&quot;;</span>
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        if (user == null || user.isEmpty())</span>
+<span class="fc" id="L40">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
+<span class="fc" id="L41">        userService.addUser(user);</span>
+<span class="fc" id="L42">        return &quot;register_success&quot;;</span>
     }
 
     @GetMapping(&quot;/profile&quot;)
     public String profile(Model model, Principal principal) {
-<span class="nc" id="L45">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L46" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L47">            return &quot;error&quot;;</span>
-<span class="nc" id="L48">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L49">        return &quot;profile&quot;;</span>
+<span class="fc" id="L47">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L48" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L49">            return &quot;error&quot;;</span>
+<span class="fc" id="L50">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L51">        return &quot;profile&quot;;</span>
     }
 
     @GetMapping(&quot;/contact&quot;)
     public String contact(Model model, Principal principal) {
-<span class="nc" id="L54">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L55" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L56">            return &quot;error&quot;;</span>
-<span class="nc" id="L57">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L58">        return &quot;contact&quot;;</span>
+<span class="fc" id="L56">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L57" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L58">            return &quot;error&quot;;</span>
+<span class="fc" id="L59">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L60">        return &quot;contact&quot;;</span>
     }
 
     @GetMapping(&quot;/add_connection&quot;)
     public String showAddConnectionForm(Model model) {
-<span class="nc" id="L63">        UserDto connection = new UserDto();</span>
-<span class="nc" id="L64">        model.addAttribute(&quot;connection&quot;, connection);</span>
-<span class="nc" id="L65">        return &quot;add_connection_form&quot;;</span>
+<span class="fc" id="L65">        UserDto connection = new UserDto();</span>
+<span class="fc" id="L66">        model.addAttribute(&quot;connection&quot;, connection);</span>
+<span class="fc" id="L67">        return &quot;add_connection_form&quot;;</span>
     }
     @PostMapping(&quot;/process_add_connection&quot;)
     public String processAddConnection(UserDto connection, Model model, Principal principal) {
-<span class="nc" id="L69">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc" id="L70">        connection = userService.findById((connection.getId()));</span>
-<span class="nc bnc" id="L71" title="All 2 branches missed.">        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</span>
-<span class="nc" id="L72">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L73">            return &quot;transfer&quot;;</span>
+<span class="pc bpc" id="L71" title="1 of 4 branches missed.">        if (connection == null || connection.isEmpty())</span>
+<span class="fc" id="L72">            throw new IllegalArgumentException(&quot;Invalid connection to add&quot;);</span>
+<span class="fc" id="L73">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
+<span class="fc" id="L75">            return &quot;error&quot;;</span>
+<span class="fc" id="L76">        connection = userService.findById((connection.getId()));</span>
+<span class="pc bpc" id="L77" title="2 of 4 branches missed.">        if (connection == null || connection.isEmpty())</span>
+<span class="nc" id="L78">            return &quot;error&quot;;</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</span>
+<span class="fc" id="L80">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L81">            return &quot;transfer&quot;;</span>
         }
-<span class="nc" id="L75">        return &quot;error&quot;;</span>
+<span class="nc" id="L83">        return &quot;error&quot;;</span>
     }
 
     @GetMapping(&quot;/transfer&quot;)
     public String showAddTransactionForm(Model model, Principal principal) {
-<span class="nc" id="L80">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L81" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L82">            return &quot;error&quot;;</span>
-<span class="nc" id="L83">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L84">        TransactionDto transaction = new TransactionDto();</span>
-<span class="nc" id="L85">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
-<span class="nc" id="L86">        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
-<span class="nc" id="L87">        model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
-<span class="nc" id="L88">        return &quot;transfer&quot;;</span>
+<span class="fc" id="L88">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L89" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L90">            return &quot;error&quot;;</span>
+<span class="fc" id="L91">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L92">        TransactionDto transaction = new TransactionDto();</span>
+<span class="fc" id="L93">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
+<span class="fc" id="L94">        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="fc" id="L95">        model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="fc" id="L96">        return &quot;transfer&quot;;</span>
     }
     @PostMapping(&quot;/process_transfer&quot;)
     public String processTransfer(TransactionDto transaction, Model model, Principal principal) {
-<span class="nc" id="L92">        transaction.setSenderId(userService.findByUsername(principal.getName()).getId());</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (transactionService.addInternalTransaction(transaction) != null) {</span>
-<span class="nc" id="L94">            UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L95" title="All 4 branches missed.">            if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L96">                return &quot;error&quot;;</span>
-<span class="nc" id="L97">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L98">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
-<span class="nc" id="L99">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
-<span class="nc" id="L100">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
-<span class="nc" id="L101">            return &quot;transfer&quot;;</span>
+<span class="pc bpc" id="L100" title="1 of 4 branches missed.">        if (transaction == null || transaction.isEmpty())</span>
+<span class="fc" id="L101">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc" id="L102">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L103" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L104">            return &quot;error&quot;;</span>
+<span class="fc" id="L105">        transaction.setSenderId(connectedUser.getId());</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (transactionService.addInternalTransaction(transaction) != null) {</span>
+<span class="fc" id="L107">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L108">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
+<span class="fc" id="L109">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="fc" id="L110">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="fc" id="L111">            return &quot;transfer&quot;;</span>
         }
-<span class="nc" id="L103">        return &quot;error&quot;;</span>
+<span class="nc" id="L113">        return &quot;error&quot;;</span>
     }
 
     @GetMapping(&quot;/add_transaction_from_bank_account&quot;)
     public String showAddTransactionFromBankAccountForm(Model model, Principal principal) {
-<span class="nc" id="L108">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L109" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L110">            return &quot;error&quot;;</span>
-<span class="nc" id="L111">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L112">        TransactionDto transaction = new TransactionDto();</span>
-<span class="nc" id="L113">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
-<span class="nc" id="L114">        return &quot;add_transaction_from_bank_account&quot;;</span>
+<span class="fc" id="L118">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L119" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L120">            return &quot;error&quot;;</span>
+<span class="fc" id="L121">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L122">        TransactionDto transaction = new TransactionDto();</span>
+<span class="fc" id="L123">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
+<span class="fc" id="L124">        return &quot;add_transaction_from_bank_account&quot;;</span>
     }
     @PostMapping(&quot;/process_add_transaction_from_bank_account&quot;)
     public String processAddTransactionFromBankAccountForm(TransactionDto transaction, Model model, Principal principal) {
-<span class="nc" id="L118">        UserDto userDto = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L119" title="All 4 branches missed.">        if (userDto == null || userDto.isEmpty())</span>
-<span class="nc" id="L120">            return &quot;error&quot;;</span>
-<span class="nc" id="L121">        transaction.setSenderId(userDto.getId());</span>
-<span class="nc" id="L122">        transaction.setReceiverId(userDto.getId());</span>
-<span class="nc" id="L123">        transaction.setIban(userDto.getIban());</span>
-<span class="nc" id="L124">        transaction.setToIban(false);</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (transactionService.addExternalTransaction(transaction) != null) {</span>
-<span class="nc" id="L126">            UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L127" title="All 4 branches missed.">            if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L128">                return &quot;error&quot;;</span>
-<span class="nc" id="L129">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L130">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
-<span class="nc" id="L131">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
-<span class="nc" id="L132">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
-<span class="nc" id="L133">            return &quot;profile&quot;;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (transaction == null</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                || transaction.getAmount() == null</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">                || transaction.getIban() == null</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">                || transaction.getSenderId() == null)</span>
+<span class="fc" id="L132">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L133">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
+<span class="fc" id="L135">            return &quot;error&quot;;</span>
+<span class="fc" id="L136">        transaction.setSenderId(connectedUser.getId());</span>
+<span class="fc" id="L137">        transaction.setReceiverId(connectedUser.getId());</span>
+<span class="fc" id="L138">        transaction.setIban(connectedUser.getIban());</span>
+<span class="fc" id="L139">        transaction.setToIban(false);</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (transactionService.addExternalTransaction(transaction) != null) {</span>
+<span class="fc" id="L141">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L142">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
+<span class="fc" id="L143">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="fc" id="L144">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="fc" id="L145">            return &quot;profile&quot;;</span>
         }
-<span class="nc" id="L135">        return &quot;error&quot;;</span>
+<span class="nc" id="L147">        return &quot;error&quot;;</span>
     }
 
     @GetMapping(&quot;/add_transaction_to_bank_account&quot;)
     public String showAddTransactionToBankAccountForm(Model model, Principal principal) {
-<span class="nc" id="L140">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L141" title="All 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L142">            return &quot;error&quot;;</span>
-<span class="nc" id="L143">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L144">        TransactionDto transaction = new TransactionDto();</span>
-<span class="nc" id="L145">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
-<span class="nc" id="L146">        return &quot;add_transaction_to_bank_account&quot;;</span>
+<span class="fc" id="L152">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L153" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L154">            return &quot;error&quot;;</span>
+<span class="fc" id="L155">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L156">        TransactionDto transaction = new TransactionDto();</span>
+<span class="fc" id="L157">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
+<span class="fc" id="L158">        return &quot;add_transaction_to_bank_account&quot;;</span>
     }
     @PostMapping(&quot;/process_add_transaction_to_bank_account&quot;)
     public String processAddTransactionToBankAccountForm(TransactionDto transaction, Model model, Principal principal) {
-<span class="nc" id="L150">        UserDto userDto = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L151" title="All 4 branches missed.">        if (userDto == null || userDto.isEmpty())</span>
-<span class="nc" id="L152">            return &quot;error&quot;;</span>
-<span class="nc" id="L153">        transaction.setSenderId(userDto.getId());</span>
-<span class="nc" id="L154">        transaction.setIban(userDto.getIban());</span>
-<span class="nc" id="L155">        transaction.setToIban(true);</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (transactionService.addExternalTransaction(transaction) != null) {</span>
-<span class="nc" id="L157">            UserDto connectedUser = userService.findByUsername(principal.getName());</span>
-<span class="nc bnc" id="L158" title="All 4 branches missed.">            if(connectedUser==null || connectedUser.isEmpty())</span>
-<span class="nc" id="L159">                return &quot;error&quot;;</span>
-<span class="nc" id="L160">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
-<span class="nc" id="L161">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
-<span class="nc" id="L162">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
-<span class="nc" id="L163">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
-<span class="nc" id="L164">            return &quot;profile&quot;;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (transaction == null</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">                || transaction.getAmount() == null</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">                || transaction.getIban() == null</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">                || transaction.getSenderId() == null)</span>
+<span class="fc" id="L166">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L167">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L168" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
+<span class="fc" id="L169">            return &quot;error&quot;;</span>
+<span class="fc" id="L170">        transaction.setSenderId(connectedUser.getId());</span>
+<span class="fc" id="L171">        transaction.setIban(connectedUser.getIban());</span>
+<span class="fc" id="L172">        transaction.setToIban(true);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (transactionService.addExternalTransaction(transaction) != null) {</span>
+<span class="fc" id="L174">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L175">            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</span>
+<span class="fc" id="L176">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="fc" id="L177">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="fc" id="L178">            return &quot;profile&quot;;</span>
         }
-<span class="nc" id="L166">        return &quot;error&quot;;</span>
+<span class="nc" id="L180">        return &quot;error&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

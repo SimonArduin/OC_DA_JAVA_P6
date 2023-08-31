@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    64,3%
+    92,9%
   </span>
   <span class="absValue">
-    (9/14)
+    (13/14)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    86,1%
+    97,1%
   </span>
   <span class="absValue">
-    (31/36)
+    (33/34)
   </span>
 </td>
 </tr>
@@ -76,18 +76,15 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.dto;
 &nbsp;
-&nbsp;import com.openclassrooms.paymybuddy.service.UserService;
-&nbsp;import org.springframework.beans.factory.annotation.Autowired;
-&nbsp;
 &nbsp;public class PastTransactionDto {
 &nbsp;
-&nbsp;    private int id;
+&nbsp;    private Integer id;
 &nbsp;    private String username;
 &nbsp;    private String description;
 &nbsp;    private Double amount;
 &nbsp;    private String currency;
 &nbsp;
-<b class="fc">&nbsp;    public PastTransactionDto(int id, String username, String description, Double amount, String currency) {</b>
+<b class="fc">&nbsp;    public PastTransactionDto(Integer id, String username, String description, Double amount, String currency) {</b>
 <b class="fc">&nbsp;        this.id = id;</b>
 <b class="fc">&nbsp;        this.username = username;</b>
 <b class="fc">&nbsp;        this.description = description;</b>
@@ -98,11 +95,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;    public PastTransactionDto() {</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public int getId() {
+&nbsp;    public Integer getId() {
 <b class="fc">&nbsp;        return id;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public void setId(int id) {
+&nbsp;    public void setId(Integer id) {
 <b class="nc">&nbsp;        this.id = id;</b>
 &nbsp;    }
 &nbsp;
@@ -111,7 +108,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void setUsername(String username) {
-<b class="nc">&nbsp;        this.username = username;</b>
+<b class="fc">&nbsp;        this.username = username;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public String getDescription() {
@@ -119,7 +116,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void setDescription(String description) {
-<b class="nc">&nbsp;        this.description = description;</b>
+<b class="fc">&nbsp;        this.description = description;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public Double getAmount() {
@@ -127,7 +124,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void setAmount(Double amount) {
-<b class="nc">&nbsp;        this.amount = amount;</b>
+<b class="fc">&nbsp;        this.amount = amount;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public String getCurrency() {
@@ -135,17 +132,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void setCurrency(String currency) {
-<b class="nc">&nbsp;        this.currency = currency;</b>
+<b class="fc">&nbsp;        this.currency = currency;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public boolean isEmpty() {
-<b class="fc">&nbsp;        if (this.username!=null</b>
-&nbsp;        || this.amount!=null
-&nbsp;        || this.description!=null
-&nbsp;        || this.currency!=null) {
-<b class="fc">&nbsp;            return false;</b>
-&nbsp;        }
-<b class="fc">&nbsp;        return true;</b>
+<b class="fc">&nbsp;        return (this.username == null</b>
+&nbsp;        || this.amount == null
+&nbsp;        || this.description == null
+&nbsp;        || this.currency == null);
 &nbsp;    }
 &nbsp;
 &nbsp;    @Override
@@ -193,7 +187,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-08-29 16:54</div>
+    <div style="float:right;">generated on 2023-08-31 15:57</div>
 </div>
 </body>
 </html>

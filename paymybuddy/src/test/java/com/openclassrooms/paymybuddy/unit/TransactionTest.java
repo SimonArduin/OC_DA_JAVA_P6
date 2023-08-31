@@ -78,4 +78,34 @@ public class TransactionTest {
             }
         }
     }
+    @Nested
+    class isEmptyTests {
+        @Test
+        public void isEmptyTest() {
+            assertFalse(transaction.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoAmount() {
+            transaction.setAmount(null);
+            assertTrue(transaction.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoSenderId() {
+            transaction.setSenderId(null);
+            assertTrue(transaction.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoReceiverId() {
+            transaction.setReceiverId(null);
+            assertTrue(transaction.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfEmpty() {
+            assertTrue(new Transaction().isEmpty());
+        }
+    }
 }

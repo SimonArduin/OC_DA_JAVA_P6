@@ -157,7 +157,9 @@ public class TransactionDto {
     }
 
     public boolean isEmpty() {
-        return(this.amount==null || this.senderId==0 || this.receiverId==0);
+        return(this.amount == null
+                || this.senderId == null
+                || this.receiverId == null);
     }
 
     public void calculateCommission() {

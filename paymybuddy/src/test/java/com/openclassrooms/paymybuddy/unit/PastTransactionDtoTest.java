@@ -79,4 +79,42 @@ public class PastTransactionDtoTest {
             }
         }
     }
+
+
+    @Nested
+    class isEmptyTests {
+        @Test
+        public void isEmptyTest() {
+            assertFalse(pastTransactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoUsername() {
+            pastTransactionDto.setUsername(null);
+            assertTrue(pastTransactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoAmount() {
+            pastTransactionDto.setAmount(null);
+            assertTrue(pastTransactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoDescription() {
+            pastTransactionDto.setDescription(null);
+            assertTrue(pastTransactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoCurrency() {
+            pastTransactionDto.setCurrency(null);
+            assertTrue(pastTransactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfEmpty() {
+            assertTrue(new PastTransactionDto().isEmpty());
+        }
+    }
 }

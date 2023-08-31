@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > TransactionRepository</title>
+  <title>Coverage Report > CommissionRepository</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">com.openclassrooms.paymybuddy.repository</a>
 </div>
 
-<h1>Coverage Summary for Class: TransactionRepository (com.openclassrooms.paymybuddy.repository)</h1>
+<h1>Coverage Summary for Class: CommissionRepository (com.openclassrooms.paymybuddy.repository)</h1>
 
 <table class="coverageStats">
 
@@ -29,13 +29,13 @@ Current scope:     <a href="../../index.html">all classes</a>
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">TransactionRepository$MockitoMock$ToDDxCLc</td>
+    <td class="name">CommissionRepository$MockitoMock$IiMh2D4W</td>
   </tr>
   <tr>
-    <td class="name">TransactionRepository$MockitoMock$ToDDxCLc$auxiliary$QzTJiOD2</td>
+    <td class="name">CommissionRepository$MockitoMock$IiMh2D4W$auxiliary$iVqMkXh9</td>
   </tr>
   <tr>
-    <td class="name">TransactionRepository$MockitoMock$ToDDxCLc$auxiliary$Rf004K7F</td>
+    <td class="name">CommissionRepository$MockitoMock$IiMh2D4W$auxiliary$q0WbTusO</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -49,17 +49,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.repository;
 &nbsp;
-&nbsp;import com.openclassrooms.paymybuddy.entity.Transaction;
+&nbsp;import com.openclassrooms.paymybuddy.entity.Commission;
 &nbsp;import org.springframework.data.jpa.repository.JpaRepository;
 &nbsp;
-&nbsp;import java.util.List;
+&nbsp;public interface CommissionRepository extends JpaRepository&lt;Commission, Long&gt; {
+&nbsp;    public Commission findById(int id);
 &nbsp;
-&nbsp;public interface TransactionRepository extends JpaRepository&lt;Transaction, Long&gt; {
-&nbsp;    public Transaction findById(int id);
-&nbsp;
-&nbsp;    public List&lt;Transaction&gt; findBySenderId(int id);
-&nbsp;
-&nbsp;    public List&lt;Transaction&gt; findByReceiverId(int id);
 &nbsp;}
 </code>
 </pre>
@@ -84,7 +79,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-08-29 16:54</div>
+    <div style="float:right;">generated on 2023-08-31 15:57</div>
 </div>
 </body>
 </html>

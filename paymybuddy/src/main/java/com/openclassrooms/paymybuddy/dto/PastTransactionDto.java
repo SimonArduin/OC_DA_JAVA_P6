@@ -60,13 +60,10 @@ public class PastTransactionDto {
     }
 
     public boolean isEmpty() {
-        if (this.username!=null
-        || this.amount!=null
-        || this.description!=null
-        || this.currency!=null) {
-            return false;
-        }
-        return true;
+        return (this.username == null
+        || this.amount == null
+        || this.description == null
+        || this.currency == null);
     }
 
     @Override

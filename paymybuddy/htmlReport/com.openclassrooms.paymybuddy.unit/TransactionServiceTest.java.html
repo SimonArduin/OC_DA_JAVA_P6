@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 
 <span class="fc" id="L46">    final Transaction transaction = new Transaction(1, 10.0, 0.05*10.0, currency.getId(), &quot;description&quot;, &quot;iban&quot;, 1, 2, new Timestamp(0), false);</span>
 
-<span class="fc" id="L48">    final TransactionDto transactionDto = new TransactionDto(transaction);</span>
+<span class="fc" id="L48">    private TransactionDto transactionDto = new TransactionDto(transaction);</span>
 
 <span class="fc" id="L50">    final List&lt;Transaction&gt; transactionList = new ArrayList&lt;&gt;(Arrays.asList(transaction));</span>
 <span class="fc" id="L51">    final List&lt;TransactionDto&gt; transactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(transactionDto));</span>

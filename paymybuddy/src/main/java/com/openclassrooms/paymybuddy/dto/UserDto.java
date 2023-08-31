@@ -158,7 +158,9 @@ public class UserDto {
     }
 
     public boolean isEmpty() {
-        return (this.getUsername() == null || this.getPassword() == null || this.getEmail() == null);
+        return (this.getUsername() == null
+                || this.getPassword() == null
+                || this.getEmail() == null);
     }
 
     @Override

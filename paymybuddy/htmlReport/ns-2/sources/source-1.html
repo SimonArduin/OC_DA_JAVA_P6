@@ -51,18 +51,18 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    10%
+    92,9%
   </span>
   <span class="absValue">
-    (1/10)
+    (13/14)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    2,2%
+    94,3%
   </span>
   <span class="absValue">
-    (1/45)
+    (100/106)
   </span>
 </td>
 </tr>
@@ -88,7 +88,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import org.springframework.web.bind.annotation.PostMapping;
 &nbsp;
 &nbsp;import java.security.Principal;
-&nbsp;import java.util.ArrayList;
 &nbsp;import java.util.List;
 &nbsp;
 &nbsp;@Controller
@@ -107,75 +106,152 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    @GetMapping(&quot;register&quot;)
 &nbsp;    public String showRegistrationForm(Model model) {
-<b class="nc">&nbsp;        model.addAttribute(&quot;user&quot;, new UserDto());</b>
-<b class="nc">&nbsp;        return &quot;signup_form&quot;;</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;user&quot;, new UserDto());</b>
+<b class="fc">&nbsp;        return &quot;signup_form&quot;;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @PostMapping(&quot;/process_register&quot;)
 &nbsp;    public String processRegister(UserDto user) {
-<b class="nc">&nbsp;        userService.addUser(user);</b>
-<b class="nc">&nbsp;        return &quot;register_success&quot;;</b>
+<b class="fc">&nbsp;        if (user == null || user.isEmpty())</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user&quot;);</b>
+<b class="fc">&nbsp;        userService.addUser(user);</b>
+<b class="fc">&nbsp;        return &quot;register_success&quot;;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/profile&quot;)
 &nbsp;    public String profile(Model model, Principal principal) {
-<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
-<b class="nc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
-<b class="nc">&nbsp;            return &quot;error&quot;;</b>
-<b class="nc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="nc">&nbsp;        return &quot;profile&quot;;</b>
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;        return &quot;profile&quot;;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/contact&quot;)
 &nbsp;    public String contact(Model model, Principal principal) {
-<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
-<b class="nc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
-<b class="nc">&nbsp;            return &quot;error&quot;;</b>
-<b class="nc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="nc">&nbsp;        return &quot;contact&quot;;</b>
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;        return &quot;contact&quot;;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/add_connection&quot;)
 &nbsp;    public String showAddConnectionForm(Model model) {
-<b class="nc">&nbsp;        UserDto connection = new UserDto();</b>
-<b class="nc">&nbsp;        model.addAttribute(&quot;connection&quot;, connection);</b>
-<b class="nc">&nbsp;        return &quot;add_connection_form&quot;;</b>
+<b class="fc">&nbsp;        UserDto connection = new UserDto();</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;connection&quot;, connection);</b>
+<b class="fc">&nbsp;        return &quot;add_connection_form&quot;;</b>
 &nbsp;    }
 &nbsp;    @PostMapping(&quot;/process_add_connection&quot;)
 &nbsp;    public String processAddConnection(UserDto connection, Model model, Principal principal) {
-<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
-<b class="nc">&nbsp;        connection = userService.findById((connection.getId()));</b>
-<b class="nc">&nbsp;        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</b>
-<b class="nc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="nc">&nbsp;            return &quot;transfer&quot;;</b>
+<b class="fc">&nbsp;        if (connection == null || connection.isEmpty())</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid connection to add&quot;);</b>
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if (connectedUser == null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        connection = userService.findById((connection.getId()));</b>
+<b class="fc">&nbsp;        if (connection == null || connection.isEmpty())</b>
+<b class="nc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;            return &quot;transfer&quot;;</b>
 &nbsp;        }
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/transfer&quot;)
 &nbsp;    public String showAddTransactionForm(Model model, Principal principal) {
-<b class="nc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
-<b class="nc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
-<b class="nc">&nbsp;            return &quot;error&quot;;</b>
-<b class="nc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="nc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
-<b class="nc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
-<b class="nc">&nbsp;        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
-<b class="nc">&nbsp;        model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
-<b class="nc">&nbsp;        return &quot;transfer&quot;;</b>
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
+<b class="fc">&nbsp;        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
+<b class="fc">&nbsp;        return &quot;transfer&quot;;</b>
 &nbsp;    }
-&nbsp;    @PostMapping(&quot;/process_add_transaction&quot;)
-&nbsp;    public String processAddTransaction(TransactionDto transaction, Model model, Principal principal) {
-<b class="nc">&nbsp;        transaction.setSenderId(userService.findByUsername(principal.getName()).getId());</b>
-<b class="nc">&nbsp;        if (transactionService.addTransaction(transaction) != null) {</b>
-<b class="nc">&nbsp;            UserDto connectedUser = userService.findByUsername(principal.getName());</b>
-<b class="nc">&nbsp;            if(connectedUser==null || connectedUser.isEmpty())</b>
-<b class="nc">&nbsp;                return &quot;error&quot;;</b>
-<b class="nc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="nc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
-<b class="nc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
-<b class="nc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
-<b class="nc">&nbsp;            return &quot;transfer&quot;;</b>
+&nbsp;    @PostMapping(&quot;/process_transfer&quot;)
+&nbsp;    public String processTransfer(TransactionDto transaction, Model model, Principal principal) {
+<b class="fc">&nbsp;        if (transaction == null || transaction.isEmpty())</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        transaction.setSenderId(connectedUser.getId());</b>
+<b class="fc">&nbsp;        if (transactionService.addInternalTransaction(transaction) != null) {</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
+<b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
+<b class="fc">&nbsp;            return &quot;transfer&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return &quot;error&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/add_transaction_from_bank_account&quot;)
+&nbsp;    public String showAddTransactionFromBankAccountForm(Model model, Principal principal) {
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
+<b class="fc">&nbsp;        return &quot;add_transaction_from_bank_account&quot;;</b>
+&nbsp;    }
+&nbsp;    @PostMapping(&quot;/process_add_transaction_from_bank_account&quot;)
+&nbsp;    public String processAddTransactionFromBankAccountForm(TransactionDto transaction, Model model, Principal principal) {
+<b class="fc">&nbsp;        if (transaction == null</b>
+<b class="fc">&nbsp;                || transaction.getAmount() == null</b>
+<b class="fc">&nbsp;                || transaction.getIban() == null</b>
+<b class="fc">&nbsp;                || transaction.getSenderId() == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if (connectedUser == null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        transaction.setSenderId(connectedUser.getId());</b>
+<b class="fc">&nbsp;        transaction.setReceiverId(connectedUser.getId());</b>
+<b class="fc">&nbsp;        transaction.setIban(connectedUser.getIban());</b>
+<b class="fc">&nbsp;        transaction.setToIban(false);</b>
+<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(transaction) != null) {</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
+<b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
+<b class="fc">&nbsp;            return &quot;profile&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        return &quot;error&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping(&quot;/add_transaction_to_bank_account&quot;)
+&nbsp;    public String showAddTransactionToBankAccountForm(Model model, Principal principal) {
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
+<b class="fc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
+<b class="fc">&nbsp;        return &quot;add_transaction_to_bank_account&quot;;</b>
+&nbsp;    }
+&nbsp;    @PostMapping(&quot;/process_add_transaction_to_bank_account&quot;)
+&nbsp;    public String processAddTransactionToBankAccountForm(TransactionDto transaction, Model model, Principal principal) {
+<b class="fc">&nbsp;        if (transaction == null</b>
+<b class="fc">&nbsp;                || transaction.getAmount() == null</b>
+<b class="fc">&nbsp;                || transaction.getIban() == null</b>
+<b class="fc">&nbsp;                || transaction.getSenderId() == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
+<b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
+<b class="fc">&nbsp;        if (connectedUser == null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        transaction.setSenderId(connectedUser.getId());</b>
+<b class="fc">&nbsp;        transaction.setIban(connectedUser.getIban());</b>
+<b class="fc">&nbsp;        transaction.setToIban(true);</b>
+<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(transaction) != null) {</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
+<b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
+<b class="fc">&nbsp;            return &quot;profile&quot;;</b>
 &nbsp;        }
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
@@ -203,7 +279,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-08-29 16:54</div>
+    <div style="float:right;">generated on 2023-08-31 15:57</div>
 </div>
 </body>
 </html>

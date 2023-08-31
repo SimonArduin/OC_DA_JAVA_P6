@@ -40,43 +40,43 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">Transaction</td>
 <td class="coverageStat">
   <span class="percent">
-    57,7%
+    69,2%
   </span>
   <span class="absValue">
-    (15/26)
+    (18/26)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    83,1%
+    87,9%
   </span>
   <span class="absValue">
-    (54/65)
+    (58/66)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">Transaction$HibernateInstantiator$w6CnNsmp</td>
+    <td class="name">Transaction$HibernateInstantiator$XYcGj9hJ</td>
   </tr>
   <tr>
-    <td class="name">Transaction$HibernateProxy$o4JXnXJc</td>
+    <td class="name">Transaction$HibernateProxy$jxIRery2</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    57,7%
+    69,2%
   </span>
   <span class="absValue">
-    (15/26)
+    (18/26)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    83,1%
+    87,9%
   </span>
   <span class="absValue">
-    (54/65)
+    (58/66)
   </span>
 </td>
 </tr>
@@ -100,7 +100,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;    @Id
 &nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
-&nbsp;    private int id;
+&nbsp;    private Integer id;
 &nbsp;
 &nbsp;    @Column(nullable = false)
 &nbsp;    private Double amount;
@@ -109,7 +109,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private Double commission;
 &nbsp;
 <b class="fc">&nbsp;    @Column(name = &quot;currency_id&quot;, nullable = false)</b>
-&nbsp;    private int currencyId = 1;
+<b class="fc">&nbsp;    private Integer currencyId = 1;</b>
 &nbsp;
 &nbsp;    @Column
 &nbsp;    private String description;
@@ -118,10 +118,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    private String iban;
 &nbsp;
 &nbsp;    @Column(name = &quot;receiver_id&quot;)
-&nbsp;    private int receiverId;
+&nbsp;    private Integer receiverId;
 &nbsp;
 &nbsp;    @Column(name = &quot;sender_id&quot;, nullable = false)
-&nbsp;    private int senderId;
+&nbsp;    private Integer senderId;
 &nbsp;
 &nbsp;    @Column(nullable = false)
 &nbsp;    private Timestamp timestamp;
@@ -132,7 +132,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;    public Transaction() {</b>
 &nbsp;    }
 &nbsp;
-<b class="fc">&nbsp;    public Transaction(int id, Double amount, Double commission, int currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {</b>
+<b class="fc">&nbsp;    public Transaction(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {</b>
 <b class="fc">&nbsp;        this.id = id;</b>
 <b class="fc">&nbsp;        this.amount = amount;</b>
 <b class="fc">&nbsp;        this.commission = commission;</b>
@@ -158,11 +158,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        this.toIban = transactionDto.isToIban();</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public int getId() {
+&nbsp;    public Integer getId() {
 <b class="fc">&nbsp;        return id;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public void setId(int id) {
+&nbsp;    public void setId(Integer id) {
 <b class="nc">&nbsp;        this.id = id;</b>
 &nbsp;    }
 &nbsp;
@@ -171,7 +171,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    public void setAmount(Double amount) {
-<b class="nc">&nbsp;        this.amount = amount;</b>
+<b class="fc">&nbsp;        this.amount = amount;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public Double getCommission() {
@@ -182,11 +182,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;        this.commission = commission;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public int getCurrencyId() {
+&nbsp;    public Integer getCurrencyId() {
 <b class="fc">&nbsp;        return currencyId;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public void setCurrencyId(int currencyId) {
+&nbsp;    public void setCurrencyId(Integer currencyId) {
 <b class="nc">&nbsp;        this.currencyId = currencyId;</b>
 &nbsp;    }
 &nbsp;
@@ -206,20 +206,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;        this.iban = iban;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public int getReceiverId() {
+&nbsp;    public Integer getReceiverId() {
 <b class="fc">&nbsp;        return receiverId;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public void setReceiverId(int receiverId) {
-<b class="nc">&nbsp;        this.receiverId = receiverId;</b>
+&nbsp;    public void setReceiverId(Integer receiverId) {
+<b class="fc">&nbsp;        this.receiverId = receiverId;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public int getSenderId() {
+&nbsp;    public Integer getSenderId() {
 <b class="fc">&nbsp;        return senderId;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public void setSenderId(int senderId) {
-<b class="nc">&nbsp;        this.senderId = senderId;</b>
+&nbsp;    public void setSenderId(Integer senderId) {
+<b class="fc">&nbsp;        this.senderId = senderId;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    public Timestamp getTimestamp() {
@@ -239,7 +239,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    public boolean isEmpty() {
-<b class="fc">&nbsp;        return(this.amount==null || this.senderId==0 || this.receiverId==0);</b>
+<b class="fc">&nbsp;        return(this.amount == null</b>
+&nbsp;                || this.senderId == null
+&nbsp;                || this.receiverId == null);
 &nbsp;    }
 &nbsp;
 &nbsp;    public void calculateCommission() {
@@ -295,7 +297,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-08-29 16:54</div>
+    <div style="float:right;">generated on 2023-08-31 15:57</div>
 </div>
 </body>
 </html>

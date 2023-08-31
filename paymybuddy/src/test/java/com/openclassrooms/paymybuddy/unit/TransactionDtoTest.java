@@ -1,7 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.dto.TransactionDto;
-import com.openclassrooms.paymybuddy.entity.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -79,6 +76,37 @@ public class TransactionDtoTest {
             public void equalsTestIfDifferentTransactionDto() {
                 assertFalse(new TransactionDto().equals(transactionDtoOther));
             }
+        }
+    }
+
+    @Nested
+    class isEmptyTests {
+        @Test
+        public void isEmptyTest() {
+            assertFalse(transactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoAmount() {
+            transactionDto.setAmount(null);
+            assertTrue(transactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoSenderId() {
+            transactionDto.setSenderId(null);
+            assertTrue(transactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoReceiverId() {
+            transactionDto.setReceiverId(null);
+            assertTrue(transactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfEmpty() {
+            assertTrue(new TransactionDto().isEmpty());
         }
     }
 }

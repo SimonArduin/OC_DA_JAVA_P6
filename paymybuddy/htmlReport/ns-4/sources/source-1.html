@@ -40,43 +40,43 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">Commission</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    50%
   </span>
   <span class="absValue">
-    (1/1)
+    (3/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    62,5%
   </span>
   <span class="absValue">
-    (1/1)
+    (5/8)
   </span>
 </td>
 </tr>
   <tr>
-    <td class="name">Commission$HibernateInstantiator$yW5A0gbJ</td>
+    <td class="name">Commission$HibernateInstantiator$dsNN0eLS</td>
   </tr>
   <tr>
-    <td class="name">Commission$HibernateProxy$gcy4EkDo</td>
+    <td class="name">Commission$HibernateProxy$BS1jkqSu</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    50%
   </span>
   <span class="absValue">
-    (1/1)
+    (3/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    62,5%
   </span>
   <span class="absValue">
-    (1/1)
+    (5/8)
   </span>
 </td>
 </tr>
@@ -93,14 +93,38 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;
 &nbsp;@Entity
 &nbsp;@Table
-<b class="fc">&nbsp;public class Commission {</b>
+&nbsp;public class Commission {
 &nbsp;
 &nbsp;    @Id
 &nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
-&nbsp;    private int id;
+&nbsp;    private Integer id;
 &nbsp;
 &nbsp;    @Column(nullable = false)
-&nbsp;    private float rate;
+&nbsp;    private double rate;
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getRate() {
+<b class="nc">&nbsp;        return rate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setRate(double rate) {
+<b class="nc">&nbsp;        this.rate = rate;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Commission(Integer id, double rate) {</b>
+<b class="fc">&nbsp;        this.id = id;</b>
+<b class="fc">&nbsp;        this.rate = rate;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Commission() {</b>
+&nbsp;    }
 &nbsp;}
 </code>
 </pre>
@@ -125,7 +149,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-08-29 16:54</div>
+    <div style="float:right;">generated on 2023-08-31 15:57</div>
 </div>
 </body>
 </html>
