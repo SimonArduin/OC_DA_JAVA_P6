@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = TransactionService.class)
-public class TransactionServiceTest {
+public class TransactionServiceTest extends TestVariables {
     @Autowired
     TransactionService transactionService;
 
@@ -38,28 +38,9 @@ public class TransactionServiceTest {
     @MockBean
     CurrencyService currencyService;
 
-    final Currency currency = new Currency(1, "currency");
-    final UserDto userDto = new UserDto(1, 100.00, currency.getId(), "email","iban","password",1,"username",new ArrayList<>());
-
-    final Transaction transaction = new Transaction(1, 10.0, 0.05*10.0, currency.getId(), "description", "iban", 1, 2, new Timestamp(0), false);
-
-    private InternalTransactionDto internalTransactionDto = new InternalTransactionDto(transaction);
-    private ExternalTransactionDto externalTransactionDto = new ExternalTransactionDto(transaction);
-    private DatabaseTransactionDto databaseTransactionDto = new DatabaseTransactionDto(transaction);
-
-    final List<Transaction> transactionList = new ArrayList<>(Arrays.asList(transaction));
-    final List<DatabaseTransactionDto> databaseTransactionDtoList = new ArrayList<>(Arrays.asList(databaseTransactionDto));
-    final PastTransactionDto pastTransactionDto = new PastTransactionDto(internalTransactionDto.getId(), userDto.getUsername(), internalTransactionDto.getDescription(), internalTransactionDto.getAmount(), currency.getName());
-    final List<PastTransactionDto> pastTransactionDtoList = new ArrayList<>(Arrays.asList(new PastTransactionDto(pastTransactionDto.getId(), pastTransactionDto.getUsername(), pastTransactionDto.getDescription(), -pastTransactionDto.getAmount(), pastTransactionDto.getCurrency()), pastTransactionDto));
-
-    InternalTransactionDto internalTransactionDtoTest = new InternalTransactionDto(internalTransactionDto);
-    ExternalTransactionDto externalTransactionDtoTest = new ExternalTransactionDto(externalTransactionDto);
-    DatabaseTransactionDto databaseTransactionDtoTest = new DatabaseTransactionDto(databaseTransactionDto);
     @BeforeEach
     private void setUp() {
-        internalTransactionDtoTest = new InternalTransactionDto(internalTransactionDto);
-        externalTransactionDtoTest = new ExternalTransactionDto(externalTransactionDto);
-        databaseTransactionDtoTest = new DatabaseTransactionDto(databaseTransactionDto);
+        initializeVariables();
 
         when(transactionRepository.findById(any(Integer.class))).thenReturn(transaction);
         when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(transactionList);
@@ -79,7 +60,7 @@ public class TransactionServiceTest {
 
         @Test
         public void addInternalTransactionTest() {
-            assertEquals(internalTransactionDtoTest, transactionService.addInternalTransaction(internalTransactionDto));
+            assertEquals(new InternalTransactionDto(transaction), transactionService.addInternalTransaction(internalTransactionDto));
             verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));
             verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));
             verify(userService, Mockito.times(1)).removeFromAccountBalance(any(UserDto.class), any(Double.class));
@@ -143,8 +124,8 @@ public class TransactionServiceTest {
     class addExternalTransactionTests {
         @Test
         public void addExternalTransactionTestIfToIban() {
-            externalTransactionDtoTest.setToIban(true);
-            assertEquals(externalTransactionDto, transactionService.addExternalTransaction(externalTransactionDtoTest));
+            externalTransactionDto.setToIban(true);
+            assertEquals(new ExternalTransactionDto(transaction), transactionService.addExternalTransaction(externalTransactionDto));
             verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));
             verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));
             verify(userService, Mockito.times(1)).removeFromAccountBalance(any(UserDto.class), any(Double.class));
@@ -152,7 +133,7 @@ public class TransactionServiceTest {
 
         @Test
         public void addExternalTransactionTestIfNotToIban() {
-            assertEquals(externalTransactionDtoTest, transactionService.addExternalTransaction(externalTransactionDto));
+            assertEquals(new ExternalTransactionDto(transaction), transactionService.addExternalTransaction(externalTransactionDto));
             verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));
             verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));
             verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));
@@ -193,11 +174,11 @@ public class TransactionServiceTest {
 
         @Test
         public void addExternalTransactionTestIfToIbanAndNotEnoughOnAccount() {
-            externalTransactionDtoTest.setToIban(true);
+            externalTransactionDto.setToIban(true);
             UserDto userTest = userDto;
             userTest.setAccountBalance(0.00);
             when(userService.findById(any(Integer.class))).thenReturn(userTest);
-            assertEquals(null, transactionService.addExternalTransaction(externalTransactionDtoTest));
+            assertEquals(null, transactionService.addExternalTransaction(externalTransactionDto));
             verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));
             verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));
             verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));
@@ -209,7 +190,7 @@ public class TransactionServiceTest {
 
         @Test
         public void findByIdTest() {
-            assertEquals(databaseTransactionDtoTest, transactionService.findById(transaction.getId()));
+            assertEquals(databaseTransactionDto, transactionService.findById(transaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 
@@ -276,11 +257,23 @@ public class TransactionServiceTest {
     @Nested
     class getPastTransactionsTests {
 
+        @BeforeEach
+        public void getPastTransactionsTestsSetUp() {
+            pastTransactionDtoList = new ArrayList<>(Arrays.asList(
+                    new PastTransactionDto(pastTransactionDtoOther.getId(),
+                            pastTransactionDto.getUsername(),
+                            pastTransactionDtoOther.getDescription(),
+                            -pastTransactionDtoOther.getAmount(),
+                            pastTransactionDtoOther.getCurrency()),
+                    pastTransactionDto
+            ));
+        }
+
         @Test
         public void getPastTransactionsTest() {
             assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));
-            verify(userService, Mockito.times(2)).findById(any(Integer.class));
-            verify(currencyService, Mockito.times(2)).findById(any(Integer.class));
+            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
         }
 
         @Test

@@ -18,17 +18,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = CommissionService.class)
-public class CommissionServiceTest {
+public class CommissionServiceTest extends TestVariables {
     @Autowired
     CommissionService commissionService;
 
     @MockBean
     CommissionRepository commissionRepository;
 
-    final Commission commission = new Commission(1, 0.1);
-
     @BeforeEach
     private void setUp() {
+        initializeVariables();
+
         when(commissionRepository.findById(any(Integer.class))).thenReturn(commission);
     }
 

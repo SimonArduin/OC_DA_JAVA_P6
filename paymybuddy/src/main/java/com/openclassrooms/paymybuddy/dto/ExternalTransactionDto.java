@@ -90,16 +90,20 @@ public class ExternalTransactionDto extends TransactionDto {
             return false;
         }
         ExternalTransactionDto objTransactionDto = (ExternalTransactionDto) obj;
-        if (objTransactionDto.getId() == this.getId()
-                && objTransactionDto.getAmount() == this.getAmount()
-                && objTransactionDto.getCommission() == this.getCommission()
-                && objTransactionDto.getCurrencyId() == this.getCurrencyId()
-                && objTransactionDto.getDescription() == this.getDescription()
-                && objTransactionDto.getIban() == this.getIban()
-                && objTransactionDto.getSenderId() == this.getSenderId()
-                && objTransactionDto.getTimestamp() == this.getTimestamp()
-                && objTransactionDto.isToIban() == this.isToIban()) {
+        if (this.isEmpty()) {
+            if (objTransactionDto.isEmpty())
                 return true;
+            return false;
+        } else if (this.getId().equals(objTransactionDto.getId())
+                && this.getAmount().equals(objTransactionDto.getAmount())
+                && this.getCommission().equals(objTransactionDto.getCommission())
+                && this.getCurrencyId().equals(objTransactionDto.getCurrencyId())
+                && this.getDescription().equals(objTransactionDto.getDescription())
+                && this.getIban().equals(objTransactionDto.getIban())
+                && this.getSenderId().equals(objTransactionDto.getSenderId())
+                && this.getTimestamp().equals(objTransactionDto.getTimestamp())
+                && this.isToIban() == (objTransactionDto.isToIban())) {
+            return true;
         }
         return false;
     }

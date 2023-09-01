@@ -77,15 +77,16 @@ public class PastTransactionDto {
 <span class="fc" id="L77">            return false;</span>
         }
 <span class="fc" id="L79">        PastTransactionDto objPastTransactionDto = (PastTransactionDto) obj;</span>
-<span class="fc bfc" id="L80" title="All 4 branches covered.">        if (this.isEmpty() &amp;&amp; objPastTransactionDto.isEmpty())</span>
-<span class="fc" id="L81">            return true;</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (objPastTransactionDto.getId() == this.getId()</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">                &amp;&amp; objPastTransactionDto.getAmount().equals(this.getAmount())</span>
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">                &amp;&amp; objPastTransactionDto.getDescription() == this.getDescription()</span>
-<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                &amp;&amp; objPastTransactionDto.getCurrency() == this.getCurrency()</span>
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                &amp;&amp; objPastTransactionDto.getUsername() == this.getUsername())</span>
-<span class="fc" id="L87">            return true;</span>
-<span class="fc" id="L88">        return false;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (objPastTransactionDto.isEmpty())</span>
+<span class="fc" id="L82">                return true;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        } else if (this.getId().equals(objPastTransactionDto.getId())</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">                &amp;&amp; this.getAmount().equals(objPastTransactionDto.getAmount())</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                &amp;&amp; this.getDescription().equals(objPastTransactionDto.getDescription())</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                &amp;&amp; this.getCurrency().equals(objPastTransactionDto.getCurrency())</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">                &amp;&amp; this.getUsername().equals(objPastTransactionDto.getUsername()))</span>
+<span class="fc" id="L88">            return true;</span>
+<span class="fc" id="L89">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

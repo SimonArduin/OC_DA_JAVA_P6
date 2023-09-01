@@ -15,8 +15,6 @@ import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
-import java.sql.Timestamp;
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = HomeController.class)
-class HomeControllerTest {
+class HomeControllerTest extends TestVariables {
 	
 	@Autowired
 	HomeController homeController;
@@ -44,16 +42,10 @@ class HomeControllerTest {
 	@MockBean
 	private TransactionService transactionService;
 
-	final UserDto userDto = new UserDto(1, 0.00,1,"email","iban","password",1,"username",new ArrayList<>());
-	InternalTransactionDto internalTransactionDto = new InternalTransactionDto(1, 10.0, 0.05*10.0, userDto.getCurrencyId(), "description", userDto.getId(), 2, new Timestamp(0));
-	ExternalTransactionDto externalTransactionDto = new ExternalTransactionDto(1, 10.0, 0.05*10.0, userDto.getCurrencyId(), "description", userDto.getIban(), userDto.getId(), new Timestamp(0), false);
-	DatabaseTransactionDto databaseTransactionDto = new DatabaseTransactionDto(1, 10.0, 0.05*10.0, userDto.getCurrencyId(), "description", userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);
-
-	final PastTransactionDto pastTransactionDto = new PastTransactionDto(internalTransactionDto.getId(), userDto.getUsername(), internalTransactionDto.getDescription(), internalTransactionDto.getAmount(), "currency name");
-	final List<PastTransactionDto> pastTransactionDtoList = new ArrayList<>(Arrays.asList(new PastTransactionDto(pastTransactionDto.getId(), pastTransactionDto.getUsername(), pastTransactionDto.getDescription(), -pastTransactionDto.getAmount(), pastTransactionDto.getCurrency()), pastTransactionDto));
-
 	@BeforeEach
 	public void SetUp() {
+		initializeVariables();
+
 		when(userService.findById(any(Integer.class))).thenReturn(userDto);
 		when(userService.findByUsername(any(String.class))).thenReturn(userDto);
 		when(userService.addUser(any(UserDto.class))).thenReturn(userDto);

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TestVariables.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.unit</a> &gt; <span class="el_source">TestVariables.java</span></div><h1>TestVariables.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.unit;
+
+import com.openclassrooms.paymybuddy.dto.*;
+import com.openclassrooms.paymybuddy.entity.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+<span class="fc" id="L13">abstract class TestVariables {</span>
+
+    Role role;
+    protected Currency currency;
+    protected Commission commission;
+    protected User user;
+    protected User userOther;
+    protected UserDto userDto;
+    protected UserDto userDtoOther;
+    protected Transaction transaction;
+    protected Transaction transactionOther;
+    protected List&lt;Transaction&gt; transactionList;
+    protected DatabaseTransactionDto databaseTransactionDto;
+    protected DatabaseTransactionDto databaseTransactionDtoOther;
+    protected List&lt;DatabaseTransactionDto&gt; databaseTransactionDtoList;
+    protected InternalTransactionDto internalTransactionDto;
+    protected InternalTransactionDto internalTransactionDtoOther;
+    protected ExternalTransactionDto externalTransactionDto;
+    protected ExternalTransactionDto externalTransactionDtoOther;
+    protected PastTransactionDto pastTransactionDto;
+    protected PastTransactionDto pastTransactionDtoOther;
+    protected List&lt;PastTransactionDto&gt; pastTransactionDtoList;
+
+    public void initializeVariables() {
+
+
+<span class="fc" id="L39">        role = new Role(1, &quot;role&quot;);</span>
+
+<span class="fc" id="L41">        currency = new Currency(1, &quot;currency&quot;);</span>
+
+<span class="fc" id="L43">        commission = new Commission(1, 0.1);</span>
+
+<span class="fc" id="L45">        user = new User(1, 100.00,1,&quot;email&quot;,&quot;iban&quot;,&quot;password&quot;,1,&quot;username&quot;,new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L46">        userOther = new User(2, 200.00,1,&quot;emailOtherOther&quot;,&quot;ibanOther&quot;,&quot;passwordOther&quot;,1,&quot;usernameOther&quot;,new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L47">        userDto = new UserDto(user);</span>
+<span class="fc" id="L48">        userDtoOther = new UserDto(userOther);</span>
+<span class="fc" id="L49">        transaction = new Transaction(1, 10.0, commission.getRate()*10.0, currency.getId(), &quot;description&quot;, userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);</span>
+<span class="fc" id="L50">        transactionOther = new Transaction(2, 20.0, commission.getRate()*20.0, 2, &quot;descriptionOther&quot;, userDtoOther.getIban(), userDtoOther.getId(), 4, new Timestamp(0), true);</span>
+<span class="fc" id="L51">        transactionList = new ArrayList&lt;&gt;(Arrays.asList(transaction, transactionOther));</span>
+<span class="fc" id="L52">        databaseTransactionDto = new DatabaseTransactionDto(transaction);</span>
+<span class="fc" id="L53">        databaseTransactionDtoOther = new DatabaseTransactionDto(transactionOther);</span>
+<span class="fc" id="L54">        databaseTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(databaseTransactionDto, databaseTransactionDtoOther));</span>
+<span class="fc" id="L55">        internalTransactionDto = new InternalTransactionDto(transaction);</span>
+<span class="fc" id="L56">        internalTransactionDtoOther = new InternalTransactionDto(transactionOther);</span>
+<span class="fc" id="L57">        externalTransactionDto = new ExternalTransactionDto(transaction);</span>
+<span class="fc" id="L58">        externalTransactionDtoOther = new ExternalTransactionDto(transactionOther);</span>
+<span class="fc" id="L59">        pastTransactionDto = new PastTransactionDto(databaseTransactionDto.getId(), userDto.getUsername(), databaseTransactionDto.getDescription(), databaseTransactionDto.getAmount(), currency.getName());</span>
+<span class="fc" id="L60">        pastTransactionDtoOther = new PastTransactionDto(databaseTransactionDtoOther.getId(), userDtoOther.getUsername(), databaseTransactionDtoOther.getDescription(), databaseTransactionDtoOther.getAmount(), currency.getName());</span>
+<span class="fc" id="L61">        pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(pastTransactionDto, pastTransactionDtoOther));</span>
+<span class="fc" id="L62">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

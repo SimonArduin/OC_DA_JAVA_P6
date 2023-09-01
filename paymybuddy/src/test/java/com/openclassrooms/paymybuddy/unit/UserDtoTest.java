@@ -4,7 +4,6 @@ import com.openclassrooms.paymybuddy.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -14,15 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = UserDto.class)
-public class UserDtoTest {
-    @Autowired
-    UserDto userDto;
-    @Autowired
-    UserDto userDtoOther;
+public class UserDtoTest extends TestVariables {
     @BeforeEach
     private void setUp() {
-        userDto = new UserDto(1, 0.00,1,"email","iban","password",1,"username",new ArrayList<>());
-        userDtoOther = new UserDto(2, 0.00,1,"emailOtherOther","ibanOther","passwordOther",1,"usernameOther",new ArrayList<>());
+        initializeVariables();
     }
     
     @Nested

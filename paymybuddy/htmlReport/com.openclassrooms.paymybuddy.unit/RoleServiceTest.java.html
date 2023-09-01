@@ -18,17 +18,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = RoleService.class)
-<span class="fc" id="L21">public class RoleServiceTest {</span>
+<span class="fc" id="L21">public class RoleServiceTest extends TestVariables {</span>
     @Autowired
     RoleService roleService;
 
     @MockBean
     RoleRepository roleRepository;
 
-<span class="fc" id="L28">    final Role role = new Role(1, &quot;role&quot;);</span>
-
     @BeforeEach
     private void setUp() {
+<span class="fc" id="L30">        initializeVariables();</span>
+
 <span class="fc" id="L32">        when(roleRepository.findById(any(Integer.class))).thenReturn(role);</span>
 <span class="fc" id="L33">    }</span>
 

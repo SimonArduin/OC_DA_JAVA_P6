@@ -4,24 +4,19 @@ import com.openclassrooms.paymybuddy.dto.DatabaseTransactionDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.sql.Timestamp;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = DatabaseTransactionDto.class)
-public class DatabaseTransactionDtoTest {
-    @Autowired
-    DatabaseTransactionDto databaseTransactionDto;
-    @Autowired
-    DatabaseTransactionDto databaseTransactionDtoOther;
+public class DatabaseTransactionDtoTest extends TestVariables {
     @BeforeEach
     private void setUp() {
-        databaseTransactionDto = new DatabaseTransactionDto(1, 10.0, 0.05*10.0, 1, "description", "iban", 1, 2, new Timestamp(0), false);
-        databaseTransactionDtoOther = new DatabaseTransactionDto(2, 20.0, 0.05*10.0, 2, "descriptionOther", "ibanOther", 3, 4, new Timestamp(0), true);
+        initializeVariables();
+
+        databaseTransactionDto = new DatabaseTransactionDto(transaction);
+        databaseTransactionDtoOther = new DatabaseTransactionDto(transactionOther);
     }
     @Nested
     class equalsTests {

@@ -18,44 +18,43 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = CurrencyService.class)
-<span class="fc" id="L21">public class CurrencyServiceTest {</span>
+<span class="fc" id="L21">public class CurrencyServiceTest extends TestVariables {</span>
     @Autowired
     CurrencyService currencyService;
 
     @MockBean
     CurrencyRepository currencyRepository;
 
-<span class="fc" id="L28">    final Currency currency = new Currency(1, &quot;currency&quot;);</span>
-
     @BeforeEach
     private void setUp() {
-<span class="fc" id="L32">        when(currencyRepository.findById(any(Integer.class))).thenReturn(currency);</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L30">        initializeVariables();</span>
+<span class="fc" id="L31">        when(currencyRepository.findById(any(Integer.class))).thenReturn(currency);</span>
+<span class="fc" id="L32">    }</span>
 
     @Test
-<span class="fc" id="L36">    void contextLoads() {}</span>
+<span class="fc" id="L35">    void contextLoads() {}</span>
 
     @Nested
-<span class="fc" id="L39">    class findByIdTests {</span>
+<span class="fc" id="L38">    class findByIdTests {</span>
 
         @Test
         public void findByIdTest() {
-<span class="fc" id="L43">            assertEquals(currency, currencyService.findById(currency.getId()));</span>
-<span class="fc" id="L44">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L45">        }</span>
+<span class="fc" id="L42">            assertEquals(currency, currencyService.findById(currency.getId()));</span>
+<span class="fc" id="L43">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L44">        }</span>
 
         @Test
         public void findByIdTestIfNotInDB() {
-<span class="fc" id="L49">            when(currencyRepository.findById(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L50">            assertEquals(null, currencyService.findById(currency.getId()));</span>
-<span class="fc" id="L51">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L52">        }</span>
+<span class="fc" id="L48">            when(currencyRepository.findById(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L49">            assertEquals(null, currencyService.findById(currency.getId()));</span>
+<span class="fc" id="L50">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L51">        }</span>
 
         @Test
         public void findByIdTestIfNull() {
-<span class="pc" id="L56">            assertThrows(IllegalArgumentException.class, () -&gt; currencyService.findById(null));</span>
-<span class="fc" id="L57">            verify(currencyRepository, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L58">        }</span>
+<span class="pc" id="L55">            assertThrows(IllegalArgumentException.class, () -&gt; currencyService.findById(null));</span>
+<span class="fc" id="L56">            verify(currencyRepository, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L57">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

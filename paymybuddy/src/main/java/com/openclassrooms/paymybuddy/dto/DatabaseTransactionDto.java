@@ -177,16 +177,20 @@ public class DatabaseTransactionDto {
             return false;
         }
         DatabaseTransactionDto objDatabaseTransactionDto = (DatabaseTransactionDto) obj;
-        if (objDatabaseTransactionDto.getId() == this.getId()
-                && objDatabaseTransactionDto.getAmount() == this.getAmount()
-                && objDatabaseTransactionDto.getCommission() == this.getCommission()
-                && objDatabaseTransactionDto.getCurrencyId() == this.getCurrencyId()
-                && objDatabaseTransactionDto.getDescription() == this.getDescription()
-                && objDatabaseTransactionDto.getIban() == this.getIban()
-                && objDatabaseTransactionDto.getReceiverId() == this.getReceiverId()
-                && objDatabaseTransactionDto.getSenderId() == this.getSenderId()
-                && objDatabaseTransactionDto.getTimestamp() == this.getTimestamp()
-                && objDatabaseTransactionDto.isToIban() == this.isToIban()) {
+        if (this.isEmpty()) {
+            if (objDatabaseTransactionDto.isEmpty())
+                return true;
+            return false;
+        } else if (this.getId().equals(objDatabaseTransactionDto.getId())
+                && this.getAmount().equals(objDatabaseTransactionDto.getAmount())
+                && this.getCommission().equals(objDatabaseTransactionDto.getCommission())
+                && this.getCurrencyId().equals(objDatabaseTransactionDto.getCurrencyId())
+                && this.getDescription().equals(objDatabaseTransactionDto.getDescription())
+                && this.getIban().equals(objDatabaseTransactionDto.getIban())
+                && this.getReceiverId().equals(objDatabaseTransactionDto.getReceiverId())
+                && this.getSenderId().equals(objDatabaseTransactionDto.getSenderId())
+                && this.getTimestamp().equals(objDatabaseTransactionDto.getTimestamp())
+                && this.isToIban() == objDatabaseTransactionDto.isToIban()) {
             return true;
         }
         return false;

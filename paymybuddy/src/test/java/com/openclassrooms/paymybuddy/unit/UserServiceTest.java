@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,23 +19,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = UserService.class)
-public class UserServiceTest {
+public class UserServiceTest extends TestVariables {
     @Autowired
     UserService userService;
 
     @MockBean
     UserRepository userRepository;
 
-    final User user = new User(1, 100.00,1,"email","iban","password",1,"username",new ArrayList<>());
-    final User userOther = new User(2, 200.0,1,"emailOther","ibanOther","passwordOther",1,"usernameOther",new ArrayList<>());
-    final UserDto userDto = new UserDto(user);
-    final UserDto userDtoOther = new UserDto(userOther);
-    UserDto userDtoTest = new UserDto(userDto);
-    final Double amount = 10.0;
+    Double amount;
 
     @BeforeEach
     private void setUp() {
-        userDtoTest = new UserDto(userDto);
+        initializeVariables();
+        amount = transaction.getAmount();
 
         when(userRepository.findById(any(Integer.class))).thenReturn(user);
         when(userRepository.findByUsername(any(String.class))).thenReturn(user);
@@ -52,7 +46,7 @@ public class UserServiceTest {
 
         @Test
         public void addUserTest() {
-            assertEquals(userDtoTest, userService.addUser(userDto));
+            assertEquals(new UserDto(user), userService.addUser(userDto));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
 
@@ -81,7 +75,7 @@ public class UserServiceTest {
 
         @Test
         public void addConnectionToUserTest() {
-            assertEquals(userDtoTest, userService.addConnectionToUser(userDto, userDtoOther));
+            assertEquals(new UserDto(user), userService.addConnectionToUser(userDto, userDtoOther));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
 
@@ -168,7 +162,7 @@ public class UserServiceTest {
 
         @Test
         public void removeFromAccountBalanceTest() {
-            assertEquals(userDtoTest, userService.removeFromAccountBalance(userDto, amount));
+            assertEquals(new UserDto(user), userService.removeFromAccountBalance(userDto, amount));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
 
@@ -218,7 +212,7 @@ public class UserServiceTest {
 
         @Test
         public void addToAccountBalanceTest() {
-            assertEquals(userDtoTest, userService.addToAccountBalance(userDto, amount));
+            assertEquals(new UserDto(user), userService.addToAccountBalance(userDto, amount));
             verify(userRepository, Mockito.times(1)).save(any(User.class));
         }
 

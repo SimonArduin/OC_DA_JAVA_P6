@@ -13,101 +13,96 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = ExternalTransactionDto.class)
-<span class="fc" id="L16">public class ExternalTransactionDtoTest {</span>
-    @Autowired
-    ExternalTransactionDto externalTransactionDto;
-    @Autowired
-    ExternalTransactionDto externalTransactionDtoOther;
+<span class="fc" id="L16">public class ExternalTransactionDtoTest extends TestVariables {</span>
     @BeforeEach
     private void setUp() {
-<span class="fc" id="L23">        externalTransactionDto = new ExternalTransactionDto(1, 10.0, 0.05*10.0, 1, &quot;description&quot;, &quot;iban&quot;, 1, new Timestamp(0), false);</span>
-<span class="fc" id="L24">        externalTransactionDtoOther = new ExternalTransactionDto(2, 20.0, 0.05*10.0, 2, &quot;descriptionOther&quot;, &quot;ibanOther&quot;, 3, new Timestamp(0), true);</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L19">        initializeVariables();</span>
+<span class="fc" id="L20">    }</span>
     @Nested
-<span class="fc" id="L27">    class equalsTests {</span>
+<span class="fc" id="L22">    class equalsTests {</span>
 
         @Nested
-<span class="fc" id="L30">        class thisNotEmpty {</span>
+<span class="fc" id="L25">        class thisNotEmpty {</span>
             @Test
             public void equalsTest() {
-<span class="fc" id="L33">                assertTrue(externalTransactionDto.equals(externalTransactionDto));</span>
+<span class="fc" id="L28">                assertTrue(externalTransactionDto.equals(externalTransactionDto));</span>
+<span class="fc" id="L29">            }</span>
+
+            @Test
+            public void equalsTestIfEmpty() {
+<span class="fc" id="L33">                assertFalse(externalTransactionDto.equals(new ExternalTransactionDto()));</span>
 <span class="fc" id="L34">            }</span>
 
             @Test
-            public void equalsTestIfEmpty() {
-<span class="fc" id="L38">                assertFalse(externalTransactionDto.equals(new ExternalTransactionDto()));</span>
+            public void equalsTestIfNull() {
+<span class="fc" id="L38">                assertFalse(externalTransactionDto.equals(null));</span>
 <span class="fc" id="L39">            }</span>
 
             @Test
-            public void equalsTestIfNull() {
-<span class="fc" id="L43">                assertFalse(externalTransactionDto.equals(null));</span>
+            public void equalsTestIfNotExternalTransactionDto() {
+<span class="fc" id="L43">                assertFalse(externalTransactionDto.equals(&quot;notExternalTransactionDto&quot;));</span>
 <span class="fc" id="L44">            }</span>
 
             @Test
-            public void equalsTestIfNotExternalTransactionDto() {
-<span class="fc" id="L48">                assertFalse(externalTransactionDto.equals(&quot;notExternalTransactionDto&quot;));</span>
-<span class="fc" id="L49">            }</span>
-
-            @Test
             public void equalsTestIfDifferentExternalTransactionDto() {
-<span class="fc" id="L53">                assertFalse(externalTransactionDto.equals(externalTransactionDtoOther));</span>
-<span class="fc" id="L54">            }</span>
+<span class="fc" id="L48">                assertFalse(externalTransactionDto.equals(externalTransactionDtoOther));</span>
+<span class="fc" id="L49">            }</span>
         }
 
         @Nested
-<span class="fc" id="L58">        class thisEmpty {</span>
+<span class="fc" id="L53">        class thisEmpty {</span>
 
             @Test
             public void equalsTestIfEmpty() {
-<span class="fc" id="L62">                assertTrue(new ExternalTransactionDto().equals(new ExternalTransactionDto()));</span>
-<span class="fc" id="L63">            }</span>
+<span class="fc" id="L57">                assertTrue(new ExternalTransactionDto().equals(new ExternalTransactionDto()));</span>
+<span class="fc" id="L58">            }</span>
 
             @Test
             public void equalsTestIfNull() {
-<span class="fc" id="L67">                assertTrue(new ExternalTransactionDto().equals(null));</span>
-<span class="fc" id="L68">            }</span>
+<span class="fc" id="L62">                assertTrue(new ExternalTransactionDto().equals(null));</span>
+<span class="fc" id="L63">            }</span>
 
             @Test
             public void equalsTestIfNotExternalTransactionDto() {
-<span class="fc" id="L72">                assertFalse(new ExternalTransactionDto().equals(&quot;notExternalTransactionDto&quot;));</span>
-<span class="fc" id="L73">            }</span>
+<span class="fc" id="L67">                assertFalse(new ExternalTransactionDto().equals(&quot;notExternalTransactionDto&quot;));</span>
+<span class="fc" id="L68">            }</span>
 
             @Test
             public void equalsTestIfDifferentExternalTransactionDto() {
-<span class="fc" id="L77">                assertFalse(new ExternalTransactionDto().equals(externalTransactionDtoOther));</span>
-<span class="fc" id="L78">            }</span>
+<span class="fc" id="L72">                assertFalse(new ExternalTransactionDto().equals(externalTransactionDtoOther));</span>
+<span class="fc" id="L73">            }</span>
         }
     }
 
     @Nested
-<span class="fc" id="L83">    class isEmptyTests {</span>
+<span class="fc" id="L78">    class isEmptyTests {</span>
         @Test
         public void isEmptyTest() {
-<span class="fc" id="L86">            assertFalse(externalTransactionDto.isEmpty());</span>
-<span class="fc" id="L87">        }</span>
+<span class="fc" id="L81">            assertFalse(externalTransactionDto.isEmpty());</span>
+<span class="fc" id="L82">        }</span>
 
         @Test
         public void isEmptyTestIfNoAmount() {
-<span class="fc" id="L91">            externalTransactionDto.setAmount(null);</span>
-<span class="fc" id="L92">            assertTrue(externalTransactionDto.isEmpty());</span>
-<span class="fc" id="L93">        }</span>
+<span class="fc" id="L86">            externalTransactionDto.setAmount(null);</span>
+<span class="fc" id="L87">            assertTrue(externalTransactionDto.isEmpty());</span>
+<span class="fc" id="L88">        }</span>
 
         @Test
         public void isEmptyTestIfNoSenderId() {
-<span class="fc" id="L97">            externalTransactionDto.setSenderId(null);</span>
-<span class="fc" id="L98">            assertTrue(externalTransactionDto.isEmpty());</span>
-<span class="fc" id="L99">        }</span>
+<span class="fc" id="L92">            externalTransactionDto.setSenderId(null);</span>
+<span class="fc" id="L93">            assertTrue(externalTransactionDto.isEmpty());</span>
+<span class="fc" id="L94">        }</span>
 
         @Test
         public void isEmptyTestIfNoIban() {
-<span class="fc" id="L103">            externalTransactionDto.setIban(null);</span>
-<span class="fc" id="L104">            assertTrue(externalTransactionDto.isEmpty());</span>
-<span class="fc" id="L105">        }</span>
+<span class="fc" id="L98">            externalTransactionDto.setIban(null);</span>
+<span class="fc" id="L99">            assertTrue(externalTransactionDto.isEmpty());</span>
+<span class="fc" id="L100">        }</span>
 
         @Test
         public void isEmptyTestIfEmpty() {
-<span class="fc" id="L109">            assertTrue(new ExternalTransactionDto().isEmpty());</span>
-<span class="fc" id="L110">        }</span>
+<span class="fc" id="L104">            assertTrue(new ExternalTransactionDto().isEmpty());</span>
+<span class="fc" id="L105">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -174,21 +174,23 @@ public class UserDto {
             return false;
         }
         UserDto objUserDto = (UserDto) obj;
-        if (objUserDto.isEmpty() && this.isEmpty())
-            return true;
-        if (objUserDto.getId() == this.getId()
-                && objUserDto.getAccountBalance() == this.getAccountBalance()
-                && objUserDto.getCurrencyId() == this.getCurrencyId()
-                && objUserDto.getEmail() == this.getEmail()
-                && objUserDto.getIban() == this.getIban()
-                && objUserDto.getPassword() == this.getPassword()
-                && objUserDto.getRoleId() == this.getRoleId()
-                && objUserDto.getUsername() == this.getUsername()) {
-            if (objUserDto.getConnections() == null && this.getConnections() == null)
+        if (this.isEmpty()) {
+            if (objUserDto.isEmpty())
                 return true;
-            if (!(objUserDto.getConnections() != null && this.getConnections() != null))
+            return false;
+        } else if (this.getId().equals(objUserDto.getId())
+                && this.getAccountBalance().equals(objUserDto.getAccountBalance())
+                && this.getCurrencyId().equals(objUserDto.getCurrencyId())
+                && this.getEmail().equals(objUserDto.getEmail())
+                && this.getIban().equals(objUserDto.getIban())
+                && this.getPassword().equals(objUserDto.getPassword())
+                && this.getRoleId().equals(objUserDto.getRoleId())
+                && this.getUsername().equals(objUserDto.getUsername())) {
+            if (this.getConnections() == null && objUserDto.getConnections() == null)
+                return true;
+            if (!(this.getConnections() != null && objUserDto.getConnections() != null))
                 return false;
-            if (objUserDto.getConnections().equals(this.getConnections()))
+            if (this.getConnections().equals(objUserDto.getConnections()))
                 return true;
         }
             return false;

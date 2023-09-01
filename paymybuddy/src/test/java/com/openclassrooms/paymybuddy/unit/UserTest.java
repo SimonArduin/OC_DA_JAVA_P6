@@ -14,15 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = User.class)
-public class UserTest {
-    @Autowired
-    User user;
-    @Autowired
-    User userOther;
+public class UserTest extends TestVariables {
     @BeforeEach
     private void setUp() {
-        user = new User(1, 0.00,1,"email","iban","password",1,"username",new ArrayList<>());
-        userOther = new User(2, 0.00,1,"emailOtherOther","ibanOther","passwordOther",1,"usernameOther",new ArrayList<>());
+        initializeVariables();
     }
     
     @Nested

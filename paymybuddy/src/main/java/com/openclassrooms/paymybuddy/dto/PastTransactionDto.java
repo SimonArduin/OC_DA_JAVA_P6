@@ -77,13 +77,14 @@ public class PastTransactionDto {
             return false;
         }
         PastTransactionDto objPastTransactionDto = (PastTransactionDto) obj;
-        if (this.isEmpty() && objPastTransactionDto.isEmpty())
-            return true;
-        if (objPastTransactionDto.getId() == this.getId()
-                && objPastTransactionDto.getAmount().equals(this.getAmount())
-                && objPastTransactionDto.getDescription() == this.getDescription()
-                && objPastTransactionDto.getCurrency() == this.getCurrency()
-                && objPastTransactionDto.getUsername() == this.getUsername())
+        if (this.isEmpty()) {
+            if (objPastTransactionDto.isEmpty())
+                return true;
+        } else if (this.getId().equals(objPastTransactionDto.getId())
+                && this.getAmount().equals(objPastTransactionDto.getAmount())
+                && this.getDescription().equals(objPastTransactionDto.getDescription())
+                && this.getCurrency().equals(objPastTransactionDto.getCurrency())
+                && this.getUsername().equals(objPastTransactionDto.getUsername()))
             return true;
         return false;
     }

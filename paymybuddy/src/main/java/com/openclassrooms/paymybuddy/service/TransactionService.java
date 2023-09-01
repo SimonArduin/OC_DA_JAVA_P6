@@ -41,25 +41,22 @@ public class TransactionService {
         return null;
     }
 
-    public ExternalTransactionDto addExternalTransaction(ExternalTransactionDto transactionDto) {
-        if(transactionDto == null
-                || transactionDto.getSenderId() == null
-                || transactionDto.getIban() == null
-                || transactionDto.getAmount() == null
-                || transactionDto.getAmount() < 0)
+    public ExternalTransactionDto addExternalTransaction(ExternalTransactionDto externalTransactionDto) {
+        if(externalTransactionDto == null
+                || externalTransactionDto.isEmpty())
             throw new IllegalArgumentException();
-        UserDto sender = userService.findById(transactionDto.getSenderId());
+        UserDto sender = userService.findById(externalTransactionDto.getSenderId());
         if (sender == null || sender.isEmpty())
             return null;
-        transactionDto.calculateCommission();
-        Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommission();
-        transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
-        Transaction transaction = new Transaction(transactionDto);
-        if(transactionDto.isToIban() && sender.getAccountBalance()>=(fullTransactionAmount)) {
+        externalTransactionDto.calculateCommission();
+        Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommission();
+        externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
+        Transaction transaction = new Transaction(externalTransactionDto);
+        if(externalTransactionDto.isToIban() && sender.getAccountBalance()>=(fullTransactionAmount)) {
             userService.removeFromAccountBalance(sender, fullTransactionAmount);
             return new ExternalTransactionDto(transactionRepository.save(transaction));
         }
-        if(!transactionDto.isToIban()) {
+        if(!externalTransactionDto.isToIban()) {
             userService.addToAccountBalance(sender, transaction.getAmount());
             return new ExternalTransactionDto(transactionRepository.save(transaction));
         }
@@ -103,22 +100,21 @@ public class TransactionService {
         if(userDto==null || userDto.isEmpty())
             throw new IllegalArgumentException("Invalid user");
         List<PastTransactionDto> result = new ArrayList<>();
-        for (DatabaseTransactionDto transactionDto : findBySenderId(userDto.getId())) {
-            if(transactionDto!=null && !transactionDto.isEmpty()) {
-                result.add(new PastTransactionDto(transactionDto.getId(),
-                        userService.findById(transactionDto.getReceiverId()).getUsername(),
-                        transactionDto.getDescription(),
-                        -transactionDto.getAmount(),
-                        currencyService.findById(transactionDto.getCurrencyId()).getName()));
-            }
-        }
-        for (DatabaseTransactionDto transactionDto : findByReceiverId(userDto.getId())) {
-            if(transactionDto!=null && !transactionDto.isEmpty()) {
-                result.add(new PastTransactionDto(transactionDto.getId(),
-                        userService.findById(transactionDto.getSenderId()).getUsername(),
-                        transactionDto.getDescription(),
-                        transactionDto.getAmount(),
-                        currencyService.findById(transactionDto.getCurrencyId()).getName()));
+        for (DatabaseTransactionDto databaseTransactionDto : findBySenderId(userDto.getId())) {
+            if(databaseTransactionDto!=null && !databaseTransactionDto.isEmpty()) {
+                if (databaseTransactionDto.isToIban()) {
+                    result.add(new PastTransactionDto(databaseTransactionDto.getId(),
+                            userService.findById(databaseTransactionDto.getReceiverId()).getUsername(),
+                            databaseTransactionDto.getDescription(),
+                            -databaseTransactionDto.getAmount(),
+                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));
+                } else {
+                    result.add(new PastTransactionDto(databaseTransactionDto.getId(),
+                            userService.findById(databaseTransactionDto.getSenderId()).getUsername(),
+                            databaseTransactionDto.getDescription(),
+                            databaseTransactionDto.getAmount(),
+                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));
+                }
             }
         }
         result.sort(Comparator.comparing(PastTransactionDto::getId).reversed());

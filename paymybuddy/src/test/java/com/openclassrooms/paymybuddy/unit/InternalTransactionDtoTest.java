@@ -13,15 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = InternalTransactionDto.class)
-public class InternalTransactionDtoTest {
-    @Autowired
-    InternalTransactionDto internalTransactionDto;
-    @Autowired
-    InternalTransactionDto internalTransactionDtoOther;
+public class InternalTransactionDtoTest extends TestVariables {
     @BeforeEach
     private void setUp() {
-        internalTransactionDto = new InternalTransactionDto(1, 10.0, 0.05*10.0, 1, "description", 1, 2, new Timestamp(0));
-        internalTransactionDtoOther = new InternalTransactionDto(2, 20.0, 0.05*10.0, 2, "descriptionOther", 3, 4, new Timestamp(0));
+        initializeVariables();
     }
     @Nested
     class equalsTests {

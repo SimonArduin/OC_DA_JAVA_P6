@@ -18,17 +18,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = CurrencyService.class)
-public class CurrencyServiceTest {
+public class CurrencyServiceTest extends TestVariables {
     @Autowired
     CurrencyService currencyService;
 
     @MockBean
     CurrencyRepository currencyRepository;
 
-    final Currency currency = new Currency(1, "currency");
-
     @BeforeEach
     private void setUp() {
+        initializeVariables();
         when(currencyRepository.findById(any(Integer.class))).thenReturn(currency);
     }
 

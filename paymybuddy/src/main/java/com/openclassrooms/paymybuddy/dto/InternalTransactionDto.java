@@ -75,14 +75,18 @@ public class InternalTransactionDto extends TransactionDto {
             return false;
         }
         InternalTransactionDto objTransactionDto = (InternalTransactionDto) obj;
-        if (objTransactionDto.getId() == this.getId()
-                && objTransactionDto.getAmount() == this.getAmount()
-                && objTransactionDto.getCommission() == this.getCommission()
-                && objTransactionDto.getCurrencyId() == this.getCurrencyId()
-                && objTransactionDto.getDescription() == this.getDescription()
-                && objTransactionDto.getReceiverId() == this.getReceiverId()
-                && objTransactionDto.getSenderId() == this.getSenderId()
-                && objTransactionDto.getTimestamp() == this.getTimestamp()) {
+        if (this.isEmpty()) {
+            if (objTransactionDto.isEmpty())
+                return true;
+            return false;
+        } else if (this.getId().equals(objTransactionDto.getId())
+                && this.getAmount().equals(objTransactionDto.getAmount())
+                && this.getCommission().equals(objTransactionDto.getCommission())
+                && this.getCurrencyId().equals(objTransactionDto.getCurrencyId())
+                && this.getDescription().equals(objTransactionDto.getDescription())
+                && this.getReceiverId().equals(objTransactionDto.getReceiverId())
+                && this.getSenderId().equals(objTransactionDto.getSenderId())
+                && this.getTimestamp().equals(objTransactionDto.getTimestamp())) {
                 return true;
         }
         return false;

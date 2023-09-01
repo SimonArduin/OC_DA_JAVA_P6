@@ -13,15 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = ExternalTransactionDto.class)
-public class ExternalTransactionDtoTest {
-    @Autowired
-    ExternalTransactionDto externalTransactionDto;
-    @Autowired
-    ExternalTransactionDto externalTransactionDtoOther;
+public class ExternalTransactionDtoTest extends TestVariables {
     @BeforeEach
     private void setUp() {
-        externalTransactionDto = new ExternalTransactionDto(1, 10.0, 0.05*10.0, 1, "description", "iban", 1, new Timestamp(0), false);
-        externalTransactionDtoOther = new ExternalTransactionDto(2, 20.0, 0.05*10.0, 2, "descriptionOther", "ibanOther", 3, new Timestamp(0), true);
+        initializeVariables();
     }
     @Nested
     class equalsTests {
