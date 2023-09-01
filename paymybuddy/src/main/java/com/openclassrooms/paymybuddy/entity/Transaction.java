@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.entity;
 
-import com.openclassrooms.paymybuddy.dto.TransactionDto;
+import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
+import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -56,17 +57,27 @@ public class Transaction {
         this.toIban = toIban;
     }
     
-    public Transaction(TransactionDto transactionDto) {
-        this.id = transactionDto.getId();
-        this.amount = transactionDto.getAmount();
-        this.commission = transactionDto.getCommission();
-        this.currencyId = transactionDto.getCurrencyId();
-        this.description = transactionDto.getDescription();
-        this.iban = transactionDto.getIban();
-        this.receiverId = transactionDto.getReceiverId();
-        this.senderId = transactionDto.getSenderId();
-        this.timestamp = transactionDto.getTimestamp();
-        this.toIban = transactionDto.isToIban();
+    public Transaction(InternalTransactionDto internalTransactionDto) {
+        this.id = internalTransactionDto.getId();
+        this.amount = internalTransactionDto.getAmount();
+        this.commission = internalTransactionDto.getCommission();
+        this.currencyId = internalTransactionDto.getCurrencyId();
+        this.description = internalTransactionDto.getDescription();
+        this.receiverId = internalTransactionDto.getReceiverId();
+        this.senderId = internalTransactionDto.getSenderId();
+        this.timestamp = internalTransactionDto.getTimestamp();
+    }
+
+    public Transaction(ExternalTransactionDto externalTransactionDto) {
+        this.id = externalTransactionDto.getId();
+        this.amount = externalTransactionDto.getAmount();
+        this.commission = externalTransactionDto.getCommission();
+        this.currencyId = externalTransactionDto.getCurrencyId();
+        this.description = externalTransactionDto.getDescription();
+        this.iban = externalTransactionDto.getIban();
+        this.senderId = externalTransactionDto.getSenderId();
+        this.timestamp = externalTransactionDto.getTimestamp();
+        this.toIban = externalTransactionDto.isToIban();
     }
 
     public Integer getId() {

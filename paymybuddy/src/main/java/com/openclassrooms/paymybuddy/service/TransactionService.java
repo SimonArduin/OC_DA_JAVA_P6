@@ -1,8 +1,6 @@
 package com.openclassrooms.paymybuddy.service;
 
-import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
-import com.openclassrooms.paymybuddy.dto.TransactionDto;
-import com.openclassrooms.paymybuddy.dto.UserDto;
+import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class TransactionService {
     @Autowired
     UserService userService;
 
-    public TransactionDto addInternalTransaction(TransactionDto transactionDto) {
+    public InternalTransactionDto addInternalTransaction(InternalTransactionDto transactionDto) {
         if(transactionDto == null || transactionDto.isEmpty())
             throw new IllegalArgumentException();
         UserDto sender = userService.findById(transactionDto.getSenderId());
@@ -38,12 +36,12 @@ public class TransactionService {
             Transaction transaction = new Transaction(transactionDto);
             userService.removeFromAccountBalance(sender, fullTransactionAmount);
             userService.addToAccountBalance(receiver, transaction.getAmount());
-            return new TransactionDto(transactionRepository.save(transaction));
+            return new InternalTransactionDto(transactionRepository.save(transaction));
         }
         return null;
     }
 
-    public TransactionDto addExternalTransaction(TransactionDto transactionDto) {
+    public ExternalTransactionDto addExternalTransaction(ExternalTransactionDto transactionDto) {
         if(transactionDto == null
                 || transactionDto.getSenderId() == null
                 || transactionDto.getIban() == null
@@ -59,44 +57,44 @@ public class TransactionService {
         Transaction transaction = new Transaction(transactionDto);
         if(transactionDto.isToIban() && sender.getAccountBalance()>=(fullTransactionAmount)) {
             userService.removeFromAccountBalance(sender, fullTransactionAmount);
-            return new TransactionDto(transactionRepository.save(transaction));
+            return new ExternalTransactionDto(transactionRepository.save(transaction));
         }
         if(!transactionDto.isToIban()) {
             userService.addToAccountBalance(sender, transaction.getAmount());
-            return new TransactionDto(transactionRepository.save(transaction));
+            return new ExternalTransactionDto(transactionRepository.save(transaction));
         }
         return null;
     }
 
-    public TransactionDto findById(Integer id) {
+    public DatabaseTransactionDto findById(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
         Transaction transaction = transactionRepository.findById(id);
         if(transaction!=null && !transaction.isEmpty())
-            return new TransactionDto(transaction);
+            return new DatabaseTransactionDto(transaction);
         return null;
     }
 
-    public List<TransactionDto> findBySenderId(Integer id) {
+    public List<DatabaseTransactionDto> findBySenderId(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        List<TransactionDto> result = new ArrayList<TransactionDto>();
+        List<DatabaseTransactionDto> result = new ArrayList<DatabaseTransactionDto>();
         List<Transaction> transactions = transactionRepository.findBySenderId(id);
         if(transactions!=null && !transactions.isEmpty()) {
             for (Transaction transaction : transactions)
-                result.add(new TransactionDto(transaction));
+                result.add(new DatabaseTransactionDto(transaction));
         }
         return result;
     }
 
-    public List<TransactionDto> findByReceiverId(Integer id) {
+    public List<DatabaseTransactionDto> findByReceiverId(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        List<TransactionDto> result = new ArrayList<TransactionDto>();
+        List<DatabaseTransactionDto> result = new ArrayList<DatabaseTransactionDto>();
         List<Transaction> transactions = transactionRepository.findByReceiverId(id);
         if(transactions!=null && !transactions.isEmpty()) {
             for (Transaction transaction : transactions)
-                result.add(new TransactionDto(transaction));
+                result.add(new DatabaseTransactionDto(transaction));
         }
         return result;
     }
@@ -105,7 +103,7 @@ public class TransactionService {
         if(userDto==null || userDto.isEmpty())
             throw new IllegalArgumentException("Invalid user");
         List<PastTransactionDto> result = new ArrayList<>();
-        for (TransactionDto transactionDto : findBySenderId(userDto.getId())) {
+        for (DatabaseTransactionDto transactionDto : findBySenderId(userDto.getId())) {
             if(transactionDto!=null && !transactionDto.isEmpty()) {
                 result.add(new PastTransactionDto(transactionDto.getId(),
                         userService.findById(transactionDto.getReceiverId()).getUsername(),
@@ -114,7 +112,7 @@ public class TransactionService {
                         currencyService.findById(transactionDto.getCurrencyId()).getName()));
             }
         }
-        for (TransactionDto transactionDto : findByReceiverId(userDto.getId())) {
+        for (DatabaseTransactionDto transactionDto : findByReceiverId(userDto.getId())) {
             if(transactionDto!=null && !transactionDto.isEmpty()) {
                 result.add(new PastTransactionDto(transactionDto.getId(),
                         userService.findById(transactionDto.getSenderId()).getUsername(),
