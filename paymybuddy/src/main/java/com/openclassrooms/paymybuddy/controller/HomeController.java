@@ -71,12 +71,12 @@ public class HomeController {
     public String processAddConnection(UserDto connection, Model model, Principal principal) {
         if (model == null || principal == null)
             return "error";
-        if (connection == null || connection.isEmpty())
+        if (connection == null || connection.getUsername() == null)
             throw new IllegalArgumentException("Invalid connection to add");
         UserDto connectedUser = userService.findByUsername(principal.getName());
         if (connectedUser == null || connectedUser.isEmpty())
             return "error";
-        connection = userService.findById((connection.getId()));
+        connection = userService.findByUsername((connection.getUsername()));
         if (connection == null || connection.isEmpty())
             return "error";
         if(userService.addConnectionToUser(connectedUser, connection)!=null) {

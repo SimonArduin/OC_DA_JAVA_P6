@@ -71,12 +71,12 @@ import java.util.List;
     public String processAddConnection(UserDto connection, Model model, Principal principal) {
 <span class="fc bfc" id="L72" title="All 4 branches covered.">        if (model == null || principal == null)</span>
 <span class="fc" id="L73">            return &quot;error&quot;;</span>
-<span class="pc bpc" id="L74" title="1 of 4 branches missed.">        if (connection == null || connection.isEmpty())</span>
+<span class="fc bfc" id="L74" title="All 4 branches covered.">        if (connection == null || connection.getUsername() == null)</span>
 <span class="fc" id="L75">            throw new IllegalArgumentException(&quot;Invalid connection to add&quot;);</span>
 <span class="fc" id="L76">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
 <span class="pc bpc" id="L77" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
 <span class="fc" id="L78">            return &quot;error&quot;;</span>
-<span class="fc" id="L79">        connection = userService.findById((connection.getId()));</span>
+<span class="fc" id="L79">        connection = userService.findByUsername((connection.getUsername()));</span>
 <span class="pc bpc" id="L80" title="2 of 4 branches missed.">        if (connection == null || connection.isEmpty())</span>
 <span class="nc" id="L81">            return &quot;error&quot;;</span>
 <span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</span>
@@ -108,8 +108,8 @@ import java.util.List;
 <span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
 <span class="fc" id="L109">            return &quot;error&quot;;</span>
 <span class="fc" id="L110">        internalTransactionDto.setSenderId(connectedUser.getId());</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        if (internalTransactionDto.isEmpty())</span>
-<span class="nc" id="L112">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (internalTransactionDto.isEmpty())</span>
+<span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
 <span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (transactionService.addInternalTransaction(internalTransactionDto) != null) {</span>
 <span class="fc" id="L114">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
 <span class="fc" id="L115">            model.addAttribute(&quot;transaction&quot;, new InternalTransactionDto());</span>
@@ -142,8 +142,8 @@ import java.util.List;
 <span class="fc" id="L142">        externalTransactionDto.setSenderId(connectedUser.getId());</span>
 <span class="fc" id="L143">        externalTransactionDto.setIban(connectedUser.getIban());</span>
 <span class="fc" id="L144">        externalTransactionDto.setToIban(false);</span>
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (externalTransactionDto.isEmpty())</span>
-<span class="nc" id="L146">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (externalTransactionDto.isEmpty())</span>
+<span class="fc" id="L146">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
 <span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</span>
 <span class="fc" id="L148">            return profile(model, principal);</span>
 <span class="nc" id="L149">        return &quot;error&quot;;</span>
@@ -171,8 +171,8 @@ import java.util.List;
 <span class="fc" id="L171">        externalTransactionDto.setSenderId(connectedUser.getId());</span>
 <span class="fc" id="L172">        externalTransactionDto.setIban(connectedUser.getIban());</span>
 <span class="fc" id="L173">        externalTransactionDto.setToIban(true);</span>
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (externalTransactionDto.isEmpty())</span>
-<span class="nc" id="L175">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (externalTransactionDto.isEmpty())</span>
+<span class="fc" id="L175">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
 <span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</span>
 <span class="fc" id="L177">            return profile(model, principal);</span>
 <span class="nc" id="L178">        return &quot;error&quot;;</span>
