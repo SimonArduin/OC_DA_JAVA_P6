@@ -24,7 +24,7 @@ public class DatabaseTransactionDto {
 
     private Timestamp timestamp;
 
-    private boolean toIban;
+    private Boolean toIban;
 
     public DatabaseTransactionDto() {
     }
@@ -45,16 +45,18 @@ public class DatabaseTransactionDto {
     public DatabaseTransactionDto(Transaction transaction) {
         if (transaction == null || transaction.isEmpty())
             throw new IllegalArgumentException();
-        else {
-            this.id = transaction.getId();
-            this.amount = transaction.getAmount();
-            this.commission = transaction.getCommission();
-            this.currencyId = transaction.getCurrencyId();
-            this.description = transaction.getDescription();
-            this.iban = transaction.getIban();
+        this.id = transaction.getId();
+        this.amount = transaction.getAmount();
+        this.commission = transaction.getCommission();
+        this.currencyId = transaction.getCurrencyId();
+        this.description = transaction.getDescription();
+        this.senderId = transaction.getSenderId();
+        this.timestamp = transaction.getTimestamp();
+        if (transaction.isInternalTransaction()) {
             this.receiverId = transaction.getReceiverId();
-            this.senderId = transaction.getSenderId();
-            this.timestamp = transaction.getTimestamp();
+        }
+        if (transaction.isExternalTransaction()) {
+            this.iban = transaction.getIban();
             this.toIban = transaction.isToIban();
         }
     }
@@ -148,18 +150,28 @@ public class DatabaseTransactionDto {
         this.timestamp = timestamp;
     }
 
-    public boolean isToIban() {
+    public Boolean isToIban() {
         return toIban;
     }
 
-    public void setToIban(boolean toIban) {
+    public void setToIban(Boolean toIban) {
         this.toIban = toIban;
     }
 
     public boolean isEmpty() {
         return(this.amount == null
                 || this.senderId == null
-                || this.receiverId == null);
+                || this.currencyId == null
+                || this.timestamp == null);
+    }
+
+    public Boolean isExternalTransaction() {
+        return!(this.iban == null
+                || this.toIban == null);
+    }
+
+    public Boolean isInternalTransaction() {
+        return!(this.receiverId == null);
     }
 
     public void calculateCommission() {

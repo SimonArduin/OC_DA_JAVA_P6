@@ -26,7 +26,9 @@ public class ExternalTransactionDto extends TransactionDto {
     }
 
     public ExternalTransactionDto(Transaction transaction) {
-        if (transaction == null || transaction.isEmpty())
+        if (transaction == null
+                || transaction.isEmpty()
+                || !transaction.isExternalTransaction())
             throw new IllegalArgumentException();
         else {
             this.id = transaction.getId();

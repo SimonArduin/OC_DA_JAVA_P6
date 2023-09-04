@@ -59,10 +59,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    94,3%
+    91,4%
   </span>
   <span class="absValue">
-    (100/106)
+    (96/105)
   </span>
 </td>
 </tr>
@@ -77,7 +77,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.controller;
 &nbsp;
 &nbsp;import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
-&nbsp;import com.openclassrooms.paymybuddy.dto.TransactionDto;
+&nbsp;import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
+&nbsp;import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 &nbsp;import com.openclassrooms.paymybuddy.dto.UserDto;
 &nbsp;import com.openclassrooms.paymybuddy.service.TransactionService;
 &nbsp;import com.openclassrooms.paymybuddy.service.UserService;
@@ -144,6 +145,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;    @PostMapping(&quot;/process_add_connection&quot;)
 &nbsp;    public String processAddConnection(UserDto connection, Model model, Principal principal) {
+<b class="fc">&nbsp;        if (model == null || principal == null)</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        if (connection == null || connection.isEmpty())</b>
 <b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid connection to add&quot;);</b>
 <b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
@@ -154,7 +157,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</b>
 <b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="fc">&nbsp;            return &quot;transfer&quot;;</b>
+<b class="fc">&nbsp;            return contact(model, principal);</b>
 &nbsp;        }
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
@@ -165,26 +168,30 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="fc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
+<b class="fc">&nbsp;        InternalTransactionDto transaction = new InternalTransactionDto();</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
 <b class="fc">&nbsp;        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
 <b class="fc">&nbsp;        return &quot;transfer&quot;;</b>
 &nbsp;    }
 &nbsp;    @PostMapping(&quot;/process_transfer&quot;)
-&nbsp;    public String processTransfer(TransactionDto transaction, Model model, Principal principal) {
-<b class="fc">&nbsp;        if (transaction == null || transaction.isEmpty())</b>
+&nbsp;    public String processTransfer(InternalTransactionDto internalTransactionDto, Model model, Principal principal) {
+<b class="fc">&nbsp;        if (model == null || principal == null)</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        if(internalTransactionDto == null)</b>
 <b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
 <b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
-<b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
+<b class="fc">&nbsp;        if (connectedUser == null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
-<b class="fc">&nbsp;        transaction.setSenderId(connectedUser.getId());</b>
-<b class="fc">&nbsp;        if (transactionService.addInternalTransaction(transaction) != null) {</b>
+<b class="fc">&nbsp;        internalTransactionDto.setSenderId(connectedUser.getId());</b>
+<b class="fc">&nbsp;        if (internalTransactionDto.isEmpty())</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+<b class="fc">&nbsp;        if (transactionService.addInternalTransaction(internalTransactionDto) != null) {</b>
 <b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
+<b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new InternalTransactionDto());</b>
 <b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
 <b class="fc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
-<b class="fc">&nbsp;            return &quot;transfer&quot;;</b>
+<b class="fc">&nbsp;            return showAddTransactionForm(model, principal);</b>
 &nbsp;        }
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
@@ -195,31 +202,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="fc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
+<b class="fc">&nbsp;        ExternalTransactionDto transaction = new ExternalTransactionDto();</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
 <b class="fc">&nbsp;        return &quot;add_transaction_from_bank_account&quot;;</b>
 &nbsp;    }
 &nbsp;    @PostMapping(&quot;/process_add_transaction_from_bank_account&quot;)
-&nbsp;    public String processAddTransactionFromBankAccountForm(TransactionDto transaction, Model model, Principal principal) {
-<b class="fc">&nbsp;        if (transaction == null</b>
-<b class="fc">&nbsp;                || transaction.getAmount() == null</b>
-<b class="fc">&nbsp;                || transaction.getIban() == null</b>
-<b class="fc">&nbsp;                || transaction.getSenderId() == null)</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
+&nbsp;    public String processAddTransactionFromBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+<b class="fc">&nbsp;        if (model == null || principal == null)</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        if (externalTransactionDto == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
 <b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
 <b class="fc">&nbsp;        if (connectedUser == null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
-<b class="fc">&nbsp;        transaction.setSenderId(connectedUser.getId());</b>
-<b class="fc">&nbsp;        transaction.setReceiverId(connectedUser.getId());</b>
-<b class="fc">&nbsp;        transaction.setIban(connectedUser.getIban());</b>
-<b class="fc">&nbsp;        transaction.setToIban(false);</b>
-<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(transaction) != null) {</b>
-<b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
-<b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
-<b class="fc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
-<b class="fc">&nbsp;            return &quot;profile&quot;;</b>
-&nbsp;        }
+<b class="fc">&nbsp;        externalTransactionDto.setSenderId(connectedUser.getId());</b>
+<b class="fc">&nbsp;        externalTransactionDto.setIban(connectedUser.getIban());</b>
+<b class="fc">&nbsp;        externalTransactionDto.setToIban(false);</b>
+<b class="fc">&nbsp;        if (externalTransactionDto.isEmpty())</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</b>
+<b class="fc">&nbsp;            return profile(model, principal);</b>
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
 &nbsp;
@@ -229,30 +231,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="fc">&nbsp;        TransactionDto transaction = new TransactionDto();</b>
+<b class="fc">&nbsp;        ExternalTransactionDto transaction = new ExternalTransactionDto();</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
 <b class="fc">&nbsp;        return &quot;add_transaction_to_bank_account&quot;;</b>
 &nbsp;    }
 &nbsp;    @PostMapping(&quot;/process_add_transaction_to_bank_account&quot;)
-&nbsp;    public String processAddTransactionToBankAccountForm(TransactionDto transaction, Model model, Principal principal) {
-<b class="fc">&nbsp;        if (transaction == null</b>
-<b class="fc">&nbsp;                || transaction.getAmount() == null</b>
-<b class="fc">&nbsp;                || transaction.getIban() == null</b>
-<b class="fc">&nbsp;                || transaction.getSenderId() == null)</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
+&nbsp;    public String processAddTransactionToBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+<b class="fc">&nbsp;        if (model == null || principal == null)</b>
+<b class="fc">&nbsp;            return &quot;error&quot;;</b>
+<b class="fc">&nbsp;        if (externalTransactionDto == null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
 <b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
 <b class="fc">&nbsp;        if (connectedUser == null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
-<b class="fc">&nbsp;        transaction.setSenderId(connectedUser.getId());</b>
-<b class="fc">&nbsp;        transaction.setIban(connectedUser.getIban());</b>
-<b class="fc">&nbsp;        transaction.setToIban(true);</b>
-<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(transaction) != null) {</b>
-<b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
-<b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new TransactionDto());</b>
-<b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
-<b class="fc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
-<b class="fc">&nbsp;            return &quot;profile&quot;;</b>
-&nbsp;        }
+<b class="fc">&nbsp;        externalTransactionDto.setSenderId(connectedUser.getId());</b>
+<b class="fc">&nbsp;        externalTransactionDto.setIban(connectedUser.getIban());</b>
+<b class="fc">&nbsp;        externalTransactionDto.setToIban(true);</b>
+<b class="fc">&nbsp;        if (externalTransactionDto.isEmpty())</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</b>
+<b class="fc">&nbsp;            return profile(model, principal);</b>
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
 &nbsp;}
@@ -279,7 +277,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-08-31 15:57</div>
+    <div style="float:right;">generated on 2023-09-04 18:58</div>
 </div>
 </body>
 </html>

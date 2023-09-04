@@ -4,7 +4,6 @@ import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -100,7 +99,7 @@ public class PastTransactionDtoTest extends TestVariables {
 
         @Test
         public void isEmptyTestIfNoCurrency() {
-            pastTransactionDto.setCurrency(null);
+            pastTransactionDto.setCurrencyName(null);
             assertTrue(pastTransactionDto.isEmpty());
         }
 

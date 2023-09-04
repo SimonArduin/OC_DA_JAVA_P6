@@ -6,14 +6,14 @@ public class PastTransactionDto {
     private String username;
     private String description;
     private Double amount;
-    private String currency;
+    private String currencyName;
 
-    public PastTransactionDto(Integer id, String username, String description, Double amount, String currency) {
+    public PastTransactionDto(Integer id, String username, String description, Double amount, String currencyName) {
         this.id = id;
         this.username = username;
         this.description = description;
         this.amount = amount;
-        this.currency = currency;
+        this.currencyName = currencyName;
     }
 
     public PastTransactionDto() {
@@ -51,19 +51,19 @@ public class PastTransactionDto {
         this.amount = amount;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getCurrencyName() {
+        return currencyName;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
     }
 
     public boolean isEmpty() {
         return (this.username == null
         || this.amount == null
         || this.description == null
-        || this.currency == null);
+        || this.currencyName == null);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class PastTransactionDto {
         } else if (this.getId().equals(objPastTransactionDto.getId())
                 && this.getAmount().equals(objPastTransactionDto.getAmount())
                 && this.getDescription().equals(objPastTransactionDto.getDescription())
-                && this.getCurrency().equals(objPastTransactionDto.getCurrency())
+                && this.getCurrencyName().equals(objPastTransactionDto.getCurrencyName())
                 && this.getUsername().equals(objPastTransactionDto.getUsername()))
             return true;
         return false;

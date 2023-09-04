@@ -94,8 +94,14 @@ public class DatabaseTransactionDtoTest extends TestVariables {
         }
 
         @Test
-        public void isEmptyTestIfNoReceiverId() {
-            databaseTransactionDto.setReceiverId(null);
+        public void isEmptyTestIfNoCurrencyId() {
+            databaseTransactionDto.setCurrencyId(null);
+            assertTrue(databaseTransactionDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoTimestampId() {
+            databaseTransactionDto.setTimestamp(null);
             assertTrue(databaseTransactionDto.isEmpty());
         }
 

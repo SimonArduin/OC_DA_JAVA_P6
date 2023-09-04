@@ -69,6 +69,8 @@ public class HomeController {
     }
     @PostMapping("/process_add_connection")
     public String processAddConnection(UserDto connection, Model model, Principal principal) {
+        if (model == null || principal == null)
+            return "error";
         if (connection == null || connection.isEmpty())
             throw new IllegalArgumentException("Invalid connection to add");
         UserDto connectedUser = userService.findByUsername(principal.getName());
@@ -79,7 +81,7 @@ public class HomeController {
             return "error";
         if(userService.addConnectionToUser(connectedUser, connection)!=null) {
             model.addAttribute("connectedUser", connectedUser);
-            return "transfer";
+            return contact(model, principal);
         }
         return "error";
     }
@@ -98,18 +100,22 @@ public class HomeController {
     }
     @PostMapping("/process_transfer")
     public String processTransfer(InternalTransactionDto internalTransactionDto, Model model, Principal principal) {
-        if (internalTransactionDto == null || internalTransactionDto.isEmpty())
+        if (model == null || principal == null)
+            return "error";
+        if(internalTransactionDto == null)
             throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());
-        if(connectedUser==null || connectedUser.isEmpty())
+        if (connectedUser == null || connectedUser.isEmpty())
             return "error";
         internalTransactionDto.setSenderId(connectedUser.getId());
+        if (internalTransactionDto.isEmpty())
+            throw new IllegalArgumentException("Invalid transaction");
         if (transactionService.addInternalTransaction(internalTransactionDto) != null) {
             model.addAttribute("connectedUser", connectedUser);
             model.addAttribute("transaction", new InternalTransactionDto());
             List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
             model.addAttribute("transactionList", transactionList);
-            return "transfer";
+            return showAddTransactionForm(model, principal);
         }
         return "error";
     }
@@ -126,24 +132,20 @@ public class HomeController {
     }
     @PostMapping("/process_add_transaction_from_bank_account")
     public String processAddTransactionFromBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
-        if (externalTransactionDto == null
-                || externalTransactionDto.getAmount() == null
-                || externalTransactionDto.getIban() == null
-                || externalTransactionDto.getSenderId() == null)
-            throw new IllegalArgumentException();
+        if (model == null || principal == null)
+            return "error";
+        if (externalTransactionDto == null)
+            throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());
         if (connectedUser == null || connectedUser.isEmpty())
             return "error";
         externalTransactionDto.setSenderId(connectedUser.getId());
         externalTransactionDto.setIban(connectedUser.getIban());
         externalTransactionDto.setToIban(false);
-        if (transactionService.addExternalTransaction(externalTransactionDto) != null) {
-            model.addAttribute("connectedUser", connectedUser);
-            model.addAttribute("transaction", new ExternalTransactionDto());
-            List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
-            model.addAttribute("transactionList", transactionList);
-            return "profile";
-        }
+        if (externalTransactionDto.isEmpty())
+            throw new IllegalArgumentException("Invalid transaction");
+        if (transactionService.addExternalTransaction(externalTransactionDto) != null)
+            return profile(model, principal);
         return "error";
     }
 
@@ -159,24 +161,20 @@ public class HomeController {
     }
     @PostMapping("/process_add_transaction_to_bank_account")
     public String processAddTransactionToBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
-        if (externalTransactionDto == null
-                || externalTransactionDto.getAmount() == null
-                || externalTransactionDto.getIban() == null
-                || externalTransactionDto.getSenderId() == null)
-            throw new IllegalArgumentException();
+        if (model == null || principal == null)
+            return "error";
+        if (externalTransactionDto == null)
+            throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());
         if (connectedUser == null || connectedUser.isEmpty())
             return "error";
         externalTransactionDto.setSenderId(connectedUser.getId());
         externalTransactionDto.setIban(connectedUser.getIban());
         externalTransactionDto.setToIban(true);
-        if (transactionService.addExternalTransaction(externalTransactionDto) != null) {
-            model.addAttribute("connectedUser", connectedUser);
-            model.addAttribute("transaction", new ExternalTransactionDto());
-            List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
-            model.addAttribute("transactionList", transactionList);
-            return "profile";
-        }
+        if (externalTransactionDto.isEmpty())
+            throw new IllegalArgumentException("Invalid transaction");
+        if (transactionService.addExternalTransaction(externalTransactionDto) != null)
+            return profile(model, principal);
         return "error";
     }
 }

@@ -39,12 +39,12 @@ public class Transaction {
     private Timestamp timestamp;
 
     @Column(name = "to_iban")
-    private boolean toIban;
+    private Boolean toIban;
 
     public Transaction() {
     }
 
-    public Transaction(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
+    public Transaction(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, Boolean toIban) {
         this.id = id;
         this.amount = amount;
         this.commission = commission;
@@ -56,7 +56,7 @@ public class Transaction {
         this.timestamp = timestamp;
         this.toIban = toIban;
     }
-    
+
     public Transaction(InternalTransactionDto internalTransactionDto) {
         this.id = internalTransactionDto.getId();
         this.amount = internalTransactionDto.getAmount();
@@ -152,18 +152,28 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public boolean isToIban() {
+    public Boolean isToIban() {
         return toIban;
     }
 
-    public void setToIban(boolean toIban) {
+    public void setToIban(Boolean toIban) {
         this.toIban = toIban;
     }
 
-    public boolean isEmpty() {
+    public Boolean isEmpty() {
         return(this.amount == null
                 || this.senderId == null
-                || this.receiverId == null);
+                || this.currencyId == null
+                || this.timestamp == null);
+    }
+
+    public Boolean isExternalTransaction() {
+        return!(this.iban == null
+                || this.toIban == null);
+    }
+
+    public Boolean isInternalTransaction() {
+        return!(this.receiverId == null);
     }
 
     public void calculateCommission() {

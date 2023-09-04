@@ -23,7 +23,9 @@ public class InternalTransactionDto extends TransactionDto {
     }
 
     public InternalTransactionDto(Transaction transaction) {
-        if (transaction == null || transaction.isEmpty())
+        if (transaction == null
+                || transaction.isEmpty()
+                || !transaction.isInternalTransaction())
             throw new IllegalArgumentException();
         else {
             this.id = transaction.getId();

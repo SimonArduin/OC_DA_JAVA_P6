@@ -2,8 +2,6 @@ package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -21,6 +19,8 @@ abstract class TestVariables {
     protected UserDto userDtoOther;
     protected Transaction transaction;
     protected Transaction transactionOther;
+    protected Transaction internalTransaction;
+    protected Transaction externalTransaction;
     protected List<Transaction> transactionList;
     protected DatabaseTransactionDto databaseTransactionDto;
     protected DatabaseTransactionDto databaseTransactionDtoOther;
@@ -46,8 +46,8 @@ abstract class TestVariables {
         userOther = new User(2, 200.00,1,"emailOtherOther","ibanOther","passwordOther",1,"usernameOther",new ArrayList<>());
         userDto = new UserDto(user);
         userDtoOther = new UserDto(userOther);
-        transaction = new Transaction(1, 10.0, commission.getRate()*10.0, currency.getId(), "description", userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);
-        transactionOther = new Transaction(2, 20.0, commission.getRate()*20.0, 2, "descriptionOther", userDtoOther.getIban(), userDtoOther.getId(), 4, new Timestamp(0), true);
+        transaction = new Transaction(user.getId(), 10.0, commission.getRate()*10.0, currency.getId(), "description", userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);
+        transactionOther = new Transaction(userOther.getId(), 20.0, commission.getRate()*20.0, 2, "descriptionOther", userDtoOther.getIban(), userDtoOther.getId(), 4, new Timestamp(0), true);
         transactionList = new ArrayList<>(Arrays.asList(transaction, transactionOther));
         databaseTransactionDto = new DatabaseTransactionDto(transaction);
         databaseTransactionDtoOther = new DatabaseTransactionDto(transactionOther);
@@ -56,6 +56,8 @@ abstract class TestVariables {
         internalTransactionDtoOther = new InternalTransactionDto(transactionOther);
         externalTransactionDto = new ExternalTransactionDto(transaction);
         externalTransactionDtoOther = new ExternalTransactionDto(transactionOther);
+        internalTransaction = new Transaction(internalTransactionDto);
+        externalTransaction = new Transaction(externalTransactionDto);
         pastTransactionDto = new PastTransactionDto(databaseTransactionDto.getId(), userDto.getUsername(), databaseTransactionDto.getDescription(), databaseTransactionDto.getAmount(), currency.getName());
         pastTransactionDtoOther = new PastTransactionDto(databaseTransactionDtoOther.getId(), userDtoOther.getUsername(), databaseTransactionDtoOther.getDescription(), databaseTransactionDtoOther.getAmount(), currency.getName());
         pastTransactionDtoList = new ArrayList<>(Arrays.asList(pastTransactionDto, pastTransactionDtoOther));

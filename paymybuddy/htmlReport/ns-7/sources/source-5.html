@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > CurrencyRepository</title>
+  <title>Coverage Report > TransactionRepository</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">com.openclassrooms.paymybuddy.repository</a>
 </div>
 
-<h1>Coverage Summary for Class: CurrencyRepository (com.openclassrooms.paymybuddy.repository)</h1>
+<h1>Coverage Summary for Class: TransactionRepository (com.openclassrooms.paymybuddy.repository)</h1>
 
 <table class="coverageStats">
 
@@ -29,13 +29,13 @@ Current scope:     <a href="../../index.html">all classes</a>
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">CurrencyRepository$MockitoMock$vcOreRI6</td>
+    <td class="name">TransactionRepository$MockitoMock$wKZZEAbf</td>
   </tr>
   <tr>
-    <td class="name">CurrencyRepository$MockitoMock$vcOreRI6$auxiliary$HrU45F9t</td>
+    <td class="name">TransactionRepository$MockitoMock$wKZZEAbf$auxiliary$0dTw2MBd</td>
   </tr>
   <tr>
-    <td class="name">CurrencyRepository$MockitoMock$vcOreRI6$auxiliary$v6gWwHZk</td>
+    <td class="name">TransactionRepository$MockitoMock$wKZZEAbf$auxiliary$TO7LUfS6</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -49,12 +49,17 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.repository;
 &nbsp;
-&nbsp;import com.openclassrooms.paymybuddy.entity.Currency;
+&nbsp;import com.openclassrooms.paymybuddy.entity.Transaction;
 &nbsp;import org.springframework.data.jpa.repository.JpaRepository;
 &nbsp;
-&nbsp;public interface CurrencyRepository extends JpaRepository&lt;Currency, Long&gt; {
-&nbsp;    public Currency findById(int id);
+&nbsp;import java.util.List;
 &nbsp;
+&nbsp;public interface TransactionRepository extends JpaRepository&lt;Transaction, Long&gt; {
+&nbsp;    public Transaction findById(int id);
+&nbsp;
+&nbsp;    public List&lt;Transaction&gt; findBySenderId(int id);
+&nbsp;
+&nbsp;    public List&lt;Transaction&gt; findByReceiverId(int id);
 &nbsp;}
 </code>
 </pre>
@@ -79,7 +84,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-08-31 15:57</div>
+    <div style="float:right;">generated on 2023-09-04 18:58</div>
 </div>
 </body>
 </html>

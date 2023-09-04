@@ -93,8 +93,14 @@ public class TransactionTest extends TestVariables{
         }
 
         @Test
-        public void isEmptyTestIfNoReceiverId() {
-            transaction.setReceiverId(null);
+        public void isEmptyTestIfNoCurrencyId() {
+            transaction.setCurrencyId(null);
+            assertTrue(transaction.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoTimestampId() {
+            transaction.setTimestamp(null);
             assertTrue(transaction.isEmpty());
         }
 

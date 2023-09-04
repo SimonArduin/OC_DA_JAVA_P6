@@ -94,15 +94,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 <span class="fc" id="L94">        }</span>
 
         @Test
-        public void isEmptyTestIfNoReceiverId() {
-<span class="fc" id="L98">            databaseTransactionDto.setReceiverId(null);</span>
+        public void isEmptyTestIfNoCurrencyId() {
+<span class="fc" id="L98">            databaseTransactionDto.setCurrencyId(null);</span>
 <span class="fc" id="L99">            assertTrue(databaseTransactionDto.isEmpty());</span>
 <span class="fc" id="L100">        }</span>
 
         @Test
+        public void isEmptyTestIfNoTimestampId() {
+<span class="fc" id="L104">            databaseTransactionDto.setTimestamp(null);</span>
+<span class="fc" id="L105">            assertTrue(databaseTransactionDto.isEmpty());</span>
+<span class="fc" id="L106">        }</span>
+
+        @Test
         public void isEmptyTestIfEmpty() {
-<span class="fc" id="L104">            assertTrue(new DatabaseTransactionDto().isEmpty());</span>
-<span class="fc" id="L105">        }</span>
+<span class="fc" id="L110">            assertTrue(new DatabaseTransactionDto().isEmpty());</span>
+<span class="fc" id="L111">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

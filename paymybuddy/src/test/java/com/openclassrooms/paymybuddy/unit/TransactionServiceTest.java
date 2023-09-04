@@ -1,7 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.dto.*;
-import com.openclassrooms.paymybuddy.entity.Currency;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import com.openclassrooms.paymybuddy.service.CurrencyService;
@@ -15,10 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -257,20 +255,93 @@ public class TransactionServiceTest extends TestVariables {
     @Nested
     class getPastTransactionsTests {
 
-        @BeforeEach
-        public void getPastTransactionsTestsSetUp() {
+        @Test
+        public void getPastTransactionsTest() {
             pastTransactionDtoList = new ArrayList<>(Arrays.asList(
+                    new PastTransactionDto(pastTransactionDto.getId(),
+                            pastTransactionDto.getUsername(),
+                            pastTransactionDto.getDescription(),
+                            -pastTransactionDto.getAmount(),
+                            pastTransactionDto.getCurrencyName()),
+                    pastTransactionDto,
                     new PastTransactionDto(pastTransactionDtoOther.getId(),
                             pastTransactionDto.getUsername(),
                             pastTransactionDtoOther.getDescription(),
                             -pastTransactionDtoOther.getAmount(),
-                            pastTransactionDtoOther.getCurrency()),
-                    pastTransactionDto
+                            pastTransactionDtoOther.getCurrencyName()),
+                    new PastTransactionDto(pastTransactionDtoOther.getId(),
+                            pastTransactionDto.getUsername(),
+                            pastTransactionDtoOther.getDescription(),
+                            pastTransactionDtoOther.getAmount(),
+                            pastTransactionDtoOther.getCurrencyName())
             ));
+            pastTransactionDtoList.sort(Comparator.comparing(PastTransactionDto::getId).reversed());
+            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));
+            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
         }
 
         @Test
-        public void getPastTransactionsTest() {
+        public void getPastTransactionsTestIfSenderAndInternal() {
+            pastTransactionDtoList = new ArrayList<>(Arrays.asList(
+                    new PastTransactionDto(internalTransaction.getId(),
+                            user.getUsername(),
+                            internalTransaction.getDescription(),
+                            -internalTransaction.getAmount(),
+                            currency.getName())
+            ));
+            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(internalTransaction)));
+            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);
+            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));
+            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+        }
+
+        @Test
+        public void getPastTransactionsTestIfReceiverAndInternal() {
+            pastTransactionDtoList = new ArrayList<>(Arrays.asList(
+                    new PastTransactionDto(internalTransaction.getId(),
+                            user.getUsername(),
+                            internalTransaction.getDescription(),
+                            internalTransaction.getAmount(),
+                            currency.getName())
+            ));
+            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);
+            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(internalTransaction)));
+            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));
+            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+        }
+
+        @Test
+        public void getPastTransactionsTestIfExternalAndToIban() {
+            pastTransactionDtoList = new ArrayList<>(Arrays.asList(
+                    new PastTransactionDto(externalTransaction.getId(),
+                            user.getUsername(),
+                            transactionService.getExternalToIbanDescription(),
+                            -externalTransaction.getAmount(),
+                            currency.getName())
+            ));
+            externalTransaction.setToIban(true);
+            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(externalTransaction)));
+            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);
+            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));
+            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
+        }
+
+        @Test
+        public void getPastTransactionsTestIfExternalAndNotToIban() {
+            pastTransactionDtoList = new ArrayList<>(Arrays.asList(
+                    new PastTransactionDto(externalTransaction.getId(),
+                            user.getUsername(),
+                            transactionService.getExternalFromIbanDescription(),
+                            externalTransaction.getAmount(),
+                            currency.getName())
+            ));
+            externalTransaction.setToIban(false);
+            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(externalTransaction)));
+            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);
             assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));
             verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
             verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));
