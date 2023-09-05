@@ -5,6 +5,7 @@ import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -13,7 +14,8 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-<span class="fc" id="L16">public class TransactionService {</span>
+@Transactional
+<span class="fc" id="L18">public class TransactionService {</span>
 
     @Autowired
     CurrencyService currencyService;
@@ -24,131 +26,131 @@ import java.util.List;
     @Autowired
     UserService userService;
 
-<span class="fc" id="L27">    private String externalToIbanDescription = &quot;to bank account&quot;;</span>
-<span class="fc" id="L28">    private String externalFromIbanDescription = &quot;from bank account&quot;;</span>
+<span class="fc" id="L29">    private String externalToIbanDescription = &quot;to bank account&quot;;</span>
+<span class="fc" id="L30">    private String externalFromIbanDescription = &quot;from bank account&quot;;</span>
 
     public String getExternalToIbanDescription() {
-<span class="fc" id="L31">        return externalToIbanDescription;</span>
+<span class="fc" id="L33">        return externalToIbanDescription;</span>
     }
 
     public String getExternalFromIbanDescription() {
-<span class="fc" id="L35">        return externalFromIbanDescription;</span>
+<span class="fc" id="L37">        return externalFromIbanDescription;</span>
     }
 
     public InternalTransactionDto addInternalTransaction(InternalTransactionDto transactionDto) {
-<span class="fc bfc" id="L39" title="All 4 branches covered.">        if(transactionDto == null || transactionDto.isEmpty())</span>
-<span class="fc" id="L40">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L41">        UserDto sender = userService.findById(transactionDto.getSenderId());</span>
-<span class="fc" id="L42">        UserDto receiver = userService.findById(transactionDto.getReceiverId());</span>
-<span class="fc" id="L43">        transactionDto.calculateCommission();</span>
-<span class="fc" id="L44">        Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommission();</span>
-<span class="fc bfc" id="L45" title="All 6 branches covered.">        if(sender!=null &amp;&amp; receiver!=null &amp;&amp; sender.getAccountBalance()&gt;=(fullTransactionAmount)) {</span>
-<span class="fc" id="L46">            transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));</span>
-<span class="fc" id="L47">            Transaction transaction = new Transaction(transactionDto);</span>
-<span class="fc" id="L48">            userService.removeFromAccountBalance(sender, fullTransactionAmount);</span>
-<span class="fc" id="L49">            userService.addToAccountBalance(receiver, transaction.getAmount());</span>
-<span class="fc" id="L50">            return new InternalTransactionDto(transactionRepository.save(transaction));</span>
+<span class="fc bfc" id="L41" title="All 4 branches covered.">        if(transactionDto == null || transactionDto.isEmpty())</span>
+<span class="fc" id="L42">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L43">        UserDto sender = userService.findById(transactionDto.getSenderId());</span>
+<span class="fc" id="L44">        UserDto receiver = userService.findById(transactionDto.getReceiverId());</span>
+<span class="fc" id="L45">        transactionDto.calculateCommission();</span>
+<span class="fc" id="L46">        Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommission();</span>
+<span class="fc bfc" id="L47" title="All 6 branches covered.">        if(sender!=null &amp;&amp; receiver!=null &amp;&amp; sender.getAccountBalance()&gt;=(fullTransactionAmount)) {</span>
+<span class="fc" id="L48">            transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));</span>
+<span class="fc" id="L49">            Transaction transaction = new Transaction(transactionDto);</span>
+<span class="fc" id="L50">            userService.removeFromAccountBalance(sender, fullTransactionAmount);</span>
+<span class="fc" id="L51">            userService.addToAccountBalance(receiver, transaction.getAmount());</span>
+<span class="fc" id="L52">            return new InternalTransactionDto(transactionRepository.save(transaction));</span>
         }
-<span class="fc" id="L52">        return null;</span>
+<span class="fc" id="L54">        return null;</span>
     }
 
     public ExternalTransactionDto addExternalTransaction(ExternalTransactionDto externalTransactionDto) {
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        if(externalTransactionDto == null</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">                || externalTransactionDto.isEmpty())</span>
-<span class="fc" id="L58">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L59">        UserDto sender = userService.findById(externalTransactionDto.getSenderId());</span>
-<span class="pc bpc" id="L60" title="1 of 4 branches missed.">        if (sender == null || sender.isEmpty())</span>
-<span class="fc" id="L61">            return null;</span>
-<span class="fc" id="L62">        externalTransactionDto.calculateCommission();</span>
-<span class="fc" id="L63">        Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommission();</span>
-<span class="fc" id="L64">        externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));</span>
-<span class="fc" id="L65">        Transaction transaction = new Transaction(externalTransactionDto);</span>
-<span class="fc bfc" id="L66" title="All 4 branches covered.">        if(externalTransactionDto.isToIban() &amp;&amp; sender.getAccountBalance()&gt;=(fullTransactionAmount)) {</span>
-<span class="fc" id="L67">            userService.removeFromAccountBalance(sender, fullTransactionAmount);</span>
-<span class="fc" id="L68">            return new ExternalTransactionDto(transactionRepository.save(transaction));</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if(externalTransactionDto == null</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">                || externalTransactionDto.isEmpty())</span>
+<span class="fc" id="L60">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L61">        UserDto sender = userService.findById(externalTransactionDto.getSenderId());</span>
+<span class="pc bpc" id="L62" title="1 of 4 branches missed.">        if (sender == null || sender.isEmpty())</span>
+<span class="fc" id="L63">            return null;</span>
+<span class="fc" id="L64">        externalTransactionDto.calculateCommission();</span>
+<span class="fc" id="L65">        Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommission();</span>
+<span class="fc" id="L66">        externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));</span>
+<span class="fc" id="L67">        Transaction transaction = new Transaction(externalTransactionDto);</span>
+<span class="fc bfc" id="L68" title="All 4 branches covered.">        if(externalTransactionDto.isToIban() &amp;&amp; sender.getAccountBalance()&gt;=(fullTransactionAmount)) {</span>
+<span class="fc" id="L69">            userService.removeFromAccountBalance(sender, fullTransactionAmount);</span>
+<span class="fc" id="L70">            return new ExternalTransactionDto(transactionRepository.save(transaction));</span>
         }
-<span class="fc bfc" id="L70" title="All 2 branches covered.">        if(!externalTransactionDto.isToIban()) {</span>
-<span class="fc" id="L71">            userService.addToAccountBalance(sender, transaction.getAmount());</span>
-<span class="fc" id="L72">            return new ExternalTransactionDto(transactionRepository.save(transaction));</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if(!externalTransactionDto.isToIban()) {</span>
+<span class="fc" id="L73">            userService.addToAccountBalance(sender, transaction.getAmount());</span>
+<span class="fc" id="L74">            return new ExternalTransactionDto(transactionRepository.save(transaction));</span>
         }
-<span class="fc" id="L74">        return null;</span>
+<span class="fc" id="L76">        return null;</span>
     }
 
     public DatabaseTransactionDto findById(Integer id) {
-<span class="fc bfc" id="L78" title="All 2 branches covered.">        if(id==null)</span>
-<span class="fc" id="L79">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L80">        Transaction transaction = transactionRepository.findById(id);</span>
-<span class="pc bpc" id="L81" title="1 of 4 branches missed.">        if(transaction!=null &amp;&amp; !transaction.isEmpty())</span>
-<span class="fc" id="L82">            return new DatabaseTransactionDto(transaction);</span>
-<span class="fc" id="L83">        return null;</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if(id==null)</span>
+<span class="fc" id="L81">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L82">        Transaction transaction = transactionRepository.findById(id);</span>
+<span class="pc bpc" id="L83" title="1 of 4 branches missed.">        if(transaction!=null &amp;&amp; !transaction.isEmpty())</span>
+<span class="fc" id="L84">            return new DatabaseTransactionDto(transaction);</span>
+<span class="fc" id="L85">        return null;</span>
     }
 
     public List&lt;DatabaseTransactionDto&gt; findBySenderId(Integer id) {
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        if(id==null)</span>
-<span class="fc" id="L88">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L89">        List&lt;DatabaseTransactionDto&gt; result = new ArrayList&lt;DatabaseTransactionDto&gt;();</span>
-<span class="fc" id="L90">        List&lt;Transaction&gt; transactions = transactionRepository.findBySenderId(id);</span>
-<span class="pc bpc" id="L91" title="1 of 4 branches missed.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">            for (Transaction transaction : transactions)</span>
-<span class="fc" id="L93">                result.add(new DatabaseTransactionDto(transaction));</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if(id==null)</span>
+<span class="fc" id="L90">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L91">        List&lt;DatabaseTransactionDto&gt; result = new ArrayList&lt;DatabaseTransactionDto&gt;();</span>
+<span class="fc" id="L92">        List&lt;Transaction&gt; transactions = transactionRepository.findBySenderId(id);</span>
+<span class="pc bpc" id="L93" title="1 of 4 branches missed.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            for (Transaction transaction : transactions)</span>
+<span class="fc" id="L95">                result.add(new DatabaseTransactionDto(transaction));</span>
         }
-<span class="fc" id="L95">        return result;</span>
+<span class="fc" id="L97">        return result;</span>
     }
 
     public List&lt;DatabaseTransactionDto&gt; findByReceiverId(Integer id) {
-<span class="fc bfc" id="L99" title="All 2 branches covered.">        if(id==null)</span>
-<span class="fc" id="L100">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L101">        List&lt;DatabaseTransactionDto&gt; result = new ArrayList&lt;DatabaseTransactionDto&gt;();</span>
-<span class="fc" id="L102">        List&lt;Transaction&gt; transactions = transactionRepository.findByReceiverId(id);</span>
-<span class="pc bpc" id="L103" title="1 of 4 branches missed.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">            for (Transaction transaction : transactions)</span>
-<span class="fc" id="L105">                result.add(new DatabaseTransactionDto(transaction));</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if(id==null)</span>
+<span class="fc" id="L102">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L103">        List&lt;DatabaseTransactionDto&gt; result = new ArrayList&lt;DatabaseTransactionDto&gt;();</span>
+<span class="fc" id="L104">        List&lt;Transaction&gt; transactions = transactionRepository.findByReceiverId(id);</span>
+<span class="pc bpc" id="L105" title="1 of 4 branches missed.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            for (Transaction transaction : transactions)</span>
+<span class="fc" id="L107">                result.add(new DatabaseTransactionDto(transaction));</span>
         }
-<span class="fc" id="L107">        return result;</span>
+<span class="fc" id="L109">        return result;</span>
     }
 
     public List&lt;PastTransactionDto&gt; getPastTransactions(UserDto userDto) {
-<span class="fc bfc" id="L111" title="All 4 branches covered.">        if(userDto==null || userDto.isEmpty())</span>
-<span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
-<span class="fc" id="L113">        List&lt;PastTransactionDto&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        for (DatabaseTransactionDto databaseTransactionDto : findBySenderId(userDto.getId())) {</span>
-<span class="pc bpc" id="L115" title="2 of 4 branches missed.">            if(databaseTransactionDto!=null &amp;&amp; !databaseTransactionDto.isEmpty()) {</span>
-<span class="fc bfc" id="L116" title="All 2 branches covered.">                if(databaseTransactionDto.isInternalTransaction()) {</span>
-<span class="fc" id="L117">                    result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
-<span class="fc" id="L118">                            userService.findById(databaseTransactionDto.getReceiverId()).getUsername(),</span>
-<span class="fc" id="L119">                            databaseTransactionDto.getDescription(),</span>
-<span class="fc" id="L120">                            -databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L121">                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc bfc" id="L113" title="All 4 branches covered.">        if(userDto==null || userDto.isEmpty())</span>
+<span class="fc" id="L114">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
+<span class="fc" id="L115">        List&lt;PastTransactionDto&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        for (DatabaseTransactionDto databaseTransactionDto : findBySenderId(userDto.getId())) {</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">            if(databaseTransactionDto!=null &amp;&amp; !databaseTransactionDto.isEmpty()) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">                if(databaseTransactionDto.isInternalTransaction()) {</span>
+<span class="fc" id="L119">                    result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
+<span class="fc" id="L120">                            userService.findById(databaseTransactionDto.getReceiverId()).getUsername(),</span>
+<span class="fc" id="L121">                            databaseTransactionDto.getDescription(),</span>
+<span class="fc" id="L122">                            -databaseTransactionDto.getAmount(),</span>
+<span class="fc" id="L123">                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
                 }
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">                else if (databaseTransactionDto.isExternalTransaction()) {</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">                    if (databaseTransactionDto.isToIban()) {</span>
-<span class="fc" id="L125">                        result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
-<span class="fc" id="L126">                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                else if (databaseTransactionDto.isExternalTransaction()) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                    if (databaseTransactionDto.isToIban()) {</span>
+<span class="fc" id="L127">                        result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
+<span class="fc" id="L128">                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
                                 externalToIbanDescription,
-<span class="fc" id="L128">                                -databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L129">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc" id="L130">                                -databaseTransactionDto.getAmount(),</span>
+<span class="fc" id="L131">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
                     }
                     else {
-<span class="fc" id="L132">                        result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
-<span class="fc" id="L133">                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
+<span class="fc" id="L134">                        result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
+<span class="fc" id="L135">                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
                                 externalFromIbanDescription,
-<span class="fc" id="L135">                                databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L136">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc" id="L137">                                databaseTransactionDto.getAmount(),</span>
+<span class="fc" id="L138">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
                     }
                 }
             }
-<span class="fc" id="L140">        }</span>
-<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (DatabaseTransactionDto databaseTransactionDto : findByReceiverId(userDto.getId())) {</span>
-<span class="pc bpc" id="L142" title="3 of 6 branches missed.">            if(databaseTransactionDto!=null &amp;&amp; !databaseTransactionDto.isEmpty() &amp;&amp; databaseTransactionDto.isInternalTransaction()) {</span>
-<span class="fc" id="L143">                result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
-<span class="fc" id="L144">                        userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
-<span class="fc" id="L145">                        databaseTransactionDto.getDescription(),</span>
-<span class="fc" id="L146">                        databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L147">                        currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc" id="L142">        }</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for (DatabaseTransactionDto databaseTransactionDto : findByReceiverId(userDto.getId())) {</span>
+<span class="pc bpc" id="L144" title="3 of 6 branches missed.">            if(databaseTransactionDto!=null &amp;&amp; !databaseTransactionDto.isEmpty() &amp;&amp; databaseTransactionDto.isInternalTransaction()) {</span>
+<span class="fc" id="L145">                result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
+<span class="fc" id="L146">                        userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
+<span class="fc" id="L147">                        databaseTransactionDto.getDescription(),</span>
+<span class="fc" id="L148">                        databaseTransactionDto.getAmount(),</span>
+<span class="fc" id="L149">                        currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
             }
-<span class="fc" id="L149">        }</span>
-<span class="fc" id="L150">        result.sort(Comparator.comparing(PastTransactionDto::getId).reversed());</span>
-<span class="fc" id="L151">        return result;</span>
+<span class="fc" id="L151">        }</span>
+<span class="fc" id="L152">        result.sort(Comparator.comparing(PastTransactionDto::getId).reversed());</span>
+<span class="fc" id="L153">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

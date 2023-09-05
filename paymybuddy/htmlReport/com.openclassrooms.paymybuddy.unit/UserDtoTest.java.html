@@ -107,27 +107,63 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 <span class="fc" id="L107">        }</span>
 
         @Test
-        public void isEmptyTestIfNoAmount() {
-<span class="fc" id="L111">            userDto.setUsername(null);</span>
+        public void isEmptyTestIfNoId() {
+<span class="fc" id="L111">            userDto.setId(null);</span>
 <span class="fc" id="L112">            assertTrue(userDto.isEmpty());</span>
 <span class="fc" id="L113">        }</span>
 
         @Test
-        public void isEmptyTestIfNoSenderId() {
-<span class="fc" id="L117">            userDto.setPassword(null);</span>
+        public void isEmptyTestIfNoAccountBalance() {
+<span class="fc" id="L117">            userDto.setAccountBalance(null);</span>
 <span class="fc" id="L118">            assertTrue(userDto.isEmpty());</span>
 <span class="fc" id="L119">        }</span>
 
         @Test
-        public void isEmptyTestIfNoReceiverId() {
-<span class="fc" id="L123">            userDto.setEmail(null);</span>
+        public void isEmptyTestIfNoCurrencyId() {
+<span class="fc" id="L123">            userDto.setCurrencyId(null);</span>
 <span class="fc" id="L124">            assertTrue(userDto.isEmpty());</span>
 <span class="fc" id="L125">        }</span>
 
         @Test
+        public void isEmptyTestIfNoEmail() {
+<span class="fc" id="L129">            userDto.setEmail(null);</span>
+<span class="fc" id="L130">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L131">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoIban() {
+<span class="fc" id="L135">            userDto.setIban(null);</span>
+<span class="fc" id="L136">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L137">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoPassword() {
+<span class="fc" id="L141">            userDto.setPassword(null);</span>
+<span class="fc" id="L142">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L143">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoRoleId() {
+<span class="fc" id="L147">            userDto.setRoleId(null);</span>
+<span class="fc" id="L148">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L149">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoUsername() {
+<span class="fc" id="L153">            userDto.setUsername(null);</span>
+<span class="fc" id="L154">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L155">        }</span>
+
+        @Test
+        public void isEmptyTestIfNoConnections() {
+<span class="fc" id="L159">            userDto.setConnections(null);</span>
+<span class="fc" id="L160">            assertTrue(userDto.isEmpty());</span>
+<span class="fc" id="L161">        }</span>
+
+        @Test
         public void isEmptyTestIfEmpty() {
-<span class="fc" id="L129">            assertTrue(new UserDto().isEmpty());</span>
-<span class="fc" id="L130">        }</span>
+<span class="fc" id="L165">            assertTrue(new UserDto().isEmpty());</span>
+<span class="fc" id="L166">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

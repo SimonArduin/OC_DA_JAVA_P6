@@ -107,20 +107,56 @@ public class UserDtoTest extends TestVariables {
         }
 
         @Test
-        public void isEmptyTestIfNoAmount() {
-            userDto.setUsername(null);
+        public void isEmptyTestIfNoId() {
+            userDto.setId(null);
             assertTrue(userDto.isEmpty());
         }
 
         @Test
-        public void isEmptyTestIfNoSenderId() {
+        public void isEmptyTestIfNoAccountBalance() {
+            userDto.setAccountBalance(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoCurrencyId() {
+            userDto.setCurrencyId(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoEmail() {
+            userDto.setEmail(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoIban() {
+            userDto.setIban(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoPassword() {
             userDto.setPassword(null);
             assertTrue(userDto.isEmpty());
         }
 
         @Test
-        public void isEmptyTestIfNoReceiverId() {
-            userDto.setEmail(null);
+        public void isEmptyTestIfNoRoleId() {
+            userDto.setRoleId(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoUsername() {
+            userDto.setUsername(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfNoConnections() {
+            userDto.setConnections(null);
             assertTrue(userDto.isEmpty());
         }
 

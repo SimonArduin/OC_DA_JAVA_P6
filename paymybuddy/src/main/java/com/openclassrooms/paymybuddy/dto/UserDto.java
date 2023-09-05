@@ -158,9 +158,15 @@ public class UserDto {
     }
 
     public boolean isEmpty() {
-        return (this.getUsername() == null
-                || this.getPassword() == null
-                || this.getEmail() == null);
+        return (this.id == null
+                || this.accountBalance == null
+                || this.currencyId == null
+                || this.email == null
+                || this.iban == null
+                || this.password == null
+                || this.roleId == null
+                || this.username == null
+                || this.connections == null);
     }
 
     @Override
