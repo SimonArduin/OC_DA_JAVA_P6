@@ -109,5 +109,47 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 <span class="fc" id="L109">            assertTrue(new Transaction().isEmpty());</span>
 <span class="fc" id="L110">        }</span>
     }
+    @Nested
+<span class="fc" id="L113">    class isExternalTransactionTests {</span>
+        @Test
+        public void isExternalTransactionTest() {
+<span class="fc" id="L116">            assertTrue(transaction.isExternalTransaction());</span>
+<span class="fc" id="L117">        }</span>
+
+        @Test
+        public void isExternalTransactionTestIfNoIban() {
+<span class="fc" id="L121">            transaction.setIban(null);</span>
+<span class="fc" id="L122">            assertFalse(transaction.isExternalTransaction());</span>
+<span class="fc" id="L123">        }</span>
+
+        @Test
+        public void isExternalTransactionTestIfNoToIban() {
+<span class="fc" id="L127">            transaction.setToIban(null);</span>
+<span class="fc" id="L128">            assertFalse(transaction.isExternalTransaction());</span>
+<span class="fc" id="L129">        }</span>
+
+        @Test
+        public void isExternalTransactionTestIfEmpty() {
+<span class="fc" id="L133">            assertFalse(new Transaction().isExternalTransaction());</span>
+<span class="fc" id="L134">        }</span>
+    }
+    @Nested
+<span class="fc" id="L137">    class isInternalTransactionTests {</span>
+        @Test
+        public void isInternalTransactionTest() {
+<span class="fc" id="L140">            assertTrue(transaction.isInternalTransaction());</span>
+<span class="fc" id="L141">        }</span>
+
+        @Test
+        public void isInternalTransactionTestIfNoReceiverId() {
+<span class="fc" id="L145">            transaction.setReceiverId(null);</span>
+<span class="fc" id="L146">            assertFalse(transaction.isInternalTransaction());</span>
+<span class="fc" id="L147">        }</span>
+
+        @Test
+        public void isInternalTransactionTestIfEmpty() {
+<span class="fc" id="L151">            assertFalse(new Transaction().isInternalTransaction());</span>
+<span class="fc" id="L152">        }</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

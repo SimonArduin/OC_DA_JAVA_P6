@@ -125,16 +125,16 @@ public class Transaction {
     }
 
     public void setIban(String iban) {
-<span class="nc" id="L128">        this.iban = iban;</span>
-<span class="nc" id="L129">    }</span>
+<span class="fc" id="L128">        this.iban = iban;</span>
+<span class="fc" id="L129">    }</span>
 
     public Integer getReceiverId() {
 <span class="fc" id="L132">        return receiverId;</span>
     }
 
     public void setReceiverId(Integer receiverId) {
-<span class="nc" id="L136">        this.receiverId = receiverId;</span>
-<span class="nc" id="L137">    }</span>
+<span class="fc" id="L136">        this.receiverId = receiverId;</span>
+<span class="fc" id="L137">    }</span>
 
     public Integer getSenderId() {
 <span class="fc" id="L140">        return senderId;</span>
@@ -168,7 +168,7 @@ public class Transaction {
     }
 
     public Boolean isExternalTransaction() {
-<span class="pc bpc" id="L171" title="1 of 4 branches missed.">        return!(this.iban == null</span>
+<span class="fc bfc" id="L171" title="All 4 branches covered.">        return!(this.iban == null</span>
                 || this.toIban == null);
     }
 

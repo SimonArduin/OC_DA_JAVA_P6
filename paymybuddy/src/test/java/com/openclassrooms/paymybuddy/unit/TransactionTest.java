@@ -109,4 +109,46 @@ public class TransactionTest extends TestVariables{
             assertTrue(new Transaction().isEmpty());
         }
     }
+    @Nested
+    class isExternalTransactionTests {
+        @Test
+        public void isExternalTransactionTest() {
+            assertTrue(transaction.isExternalTransaction());
+        }
+
+        @Test
+        public void isExternalTransactionTestIfNoIban() {
+            transaction.setIban(null);
+            assertFalse(transaction.isExternalTransaction());
+        }
+
+        @Test
+        public void isExternalTransactionTestIfNoToIban() {
+            transaction.setToIban(null);
+            assertFalse(transaction.isExternalTransaction());
+        }
+
+        @Test
+        public void isExternalTransactionTestIfEmpty() {
+            assertFalse(new Transaction().isExternalTransaction());
+        }
+    }
+    @Nested
+    class isInternalTransactionTests {
+        @Test
+        public void isInternalTransactionTest() {
+            assertTrue(transaction.isInternalTransaction());
+        }
+
+        @Test
+        public void isInternalTransactionTestIfNoReceiverId() {
+            transaction.setReceiverId(null);
+            assertFalse(transaction.isInternalTransaction());
+        }
+
+        @Test
+        public void isInternalTransactionTestIfEmpty() {
+            assertFalse(new Transaction().isInternalTransaction());
+        }
+    }
 }

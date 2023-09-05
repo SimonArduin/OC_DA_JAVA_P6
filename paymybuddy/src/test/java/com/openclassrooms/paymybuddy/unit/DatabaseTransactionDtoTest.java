@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.dto.DatabaseTransactionDto;
+import com.openclassrooms.paymybuddy.entity.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -108,6 +109,48 @@ public class DatabaseTransactionDtoTest extends TestVariables {
         @Test
         public void isEmptyTestIfEmpty() {
             assertTrue(new DatabaseTransactionDto().isEmpty());
+        }
+    }
+    @Nested
+    class isExternalTransactionTests {
+        @Test
+        public void isExternalTransactionTest() {
+            assertTrue(databaseTransactionDto.isExternalTransaction());
+        }
+
+        @Test
+        public void isExternalTransactionTestIfNoIban() {
+            databaseTransactionDto.setIban(null);
+            assertFalse(databaseTransactionDto.isExternalTransaction());
+        }
+
+        @Test
+        public void isExternalTransactionTestIfNoToIban() {
+            databaseTransactionDto.setToIban(null);
+            assertFalse(databaseTransactionDto.isExternalTransaction());
+        }
+
+        @Test
+        public void isExternalTransactionTestIfEmpty() {
+            assertFalse(new DatabaseTransactionDto().isExternalTransaction());
+        }
+    }
+    @Nested
+    class isInternalTransactionTests {
+        @Test
+        public void isInternalTransactionTest() {
+            assertTrue(databaseTransactionDto.isInternalTransaction());
+        }
+
+        @Test
+        public void isInternalTransactionTestIfNoReceiverId() {
+            databaseTransactionDto.setReceiverId(null);
+            assertFalse(databaseTransactionDto.isInternalTransaction());
+        }
+
+        @Test
+        public void isInternalTransactionTestIfEmpty() {
+            assertFalse(new DatabaseTransactionDto().isInternalTransaction());
         }
     }
 }

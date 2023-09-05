@@ -123,16 +123,16 @@ public class DatabaseTransactionDto {
     }
 
     public void setIban(String iban) {
-<span class="nc" id="L126">        this.iban = iban;</span>
-<span class="nc" id="L127">    }</span>
+<span class="fc" id="L126">        this.iban = iban;</span>
+<span class="fc" id="L127">    }</span>
 
     public Integer getReceiverId() {
 <span class="fc" id="L130">        return receiverId;</span>
     }
 
     public void setReceiverId(Integer receiverId) {
-<span class="nc" id="L134">        this.receiverId = receiverId;</span>
-<span class="nc" id="L135">    }</span>
+<span class="fc" id="L134">        this.receiverId = receiverId;</span>
+<span class="fc" id="L135">    }</span>
 
     public Integer getSenderId() {
 <span class="fc" id="L138">        return senderId;</span>
@@ -155,8 +155,8 @@ public class DatabaseTransactionDto {
     }
 
     public void setToIban(Boolean toIban) {
-<span class="nc" id="L158">        this.toIban = toIban;</span>
-<span class="nc" id="L159">    }</span>
+<span class="fc" id="L158">        this.toIban = toIban;</span>
+<span class="fc" id="L159">    }</span>
 
     public boolean isEmpty() {
 <span class="fc bfc" id="L162" title="All 8 branches covered.">        return(this.amount == null</span>
@@ -166,7 +166,7 @@ public class DatabaseTransactionDto {
     }
 
     public Boolean isExternalTransaction() {
-<span class="pc bpc" id="L169" title="2 of 4 branches missed.">        return!(this.iban == null</span>
+<span class="fc bfc" id="L169" title="All 4 branches covered.">        return!(this.iban == null</span>
                 || this.toIban == null);
     }
 
