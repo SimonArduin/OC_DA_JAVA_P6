@@ -11,10 +11,11 @@ public class InternalTransactionDto extends TransactionDto {
     public InternalTransactionDto() {
     }
 
-    public InternalTransactionDto(Integer id, Double amount, Double commission, Integer currencyId, String description, Integer receiverId, Integer senderId, Timestamp timestamp) {
+    public InternalTransactionDto(Integer id, Double amount, Integer commissionId, Double commissionAmount, Integer currencyId, String description, Integer receiverId, Integer senderId, Timestamp timestamp) {
         this.id = id;
         this.amount = amount;
-        this.commissionAmount = commission;
+        this.commissionId = commissionId;
+        this.commissionAmount = commissionAmount;
         this.currencyId = currencyId;
         this.description = description;
         this.receiverId = receiverId;
@@ -30,6 +31,7 @@ public class InternalTransactionDto extends TransactionDto {
         else {
             this.id = transaction.getId();
             this.amount = transaction.getAmount();
+            this.commissionId = transaction.getCommissionId();
             this.commissionAmount = transaction.getCommissionAmount();
             this.currencyId = transaction.getCurrencyId();
             this.description = transaction.getDescription();
@@ -45,6 +47,7 @@ public class InternalTransactionDto extends TransactionDto {
         else {
             this.id = transactionDto.getId();
             this.amount = transactionDto.getAmount();
+            this.commissionId = transactionDto.getCommissionId();
             this.commissionAmount = transactionDto.getCommissionAmount();
             this.currencyId = transactionDto.getCurrencyId();
             this.description = transactionDto.getDescription();
@@ -63,6 +66,7 @@ public class InternalTransactionDto extends TransactionDto {
 
     public boolean isEmpty() {
         return(this.amount == null
+                || this.commissionId == null
                 || this.senderId == null
                 || this.receiverId == null);
     }
@@ -83,6 +87,7 @@ public class InternalTransactionDto extends TransactionDto {
             return false;
         } else if (this.getId().equals(objTransactionDto.getId())
                 && this.getAmount().equals(objTransactionDto.getAmount())
+                && this.getCommissionId().equals(objTransactionDto.getCommissionId())
                 && this.getCommissionAmount().equals(objTransactionDto.getCommissionAmount())
                 && this.getCurrencyId().equals(objTransactionDto.getCurrencyId())
                 && this.getDescription().equals(objTransactionDto.getDescription())

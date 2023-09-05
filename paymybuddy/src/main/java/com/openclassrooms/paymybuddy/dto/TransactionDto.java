@@ -8,6 +8,8 @@ public abstract class TransactionDto {
 
     protected Double amount;
 
+    protected Integer commissionId = 1;
+
     protected Double commissionAmount;
 
     protected Integer currencyId = 1;
@@ -32,6 +34,14 @@ public abstract class TransactionDto {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public Integer getCommissionId() {
+        return commissionId;
+    }
+
+    public void setCommissionId(Integer commissionId) {
+        this.commissionId = commissionId;
     }
 
     public Double getCommissionAmount() {

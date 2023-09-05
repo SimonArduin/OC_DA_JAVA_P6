@@ -4,35 +4,22 @@ import com.openclassrooms.paymybuddy.entity.Transaction;
 
 import java.sql.Timestamp;
 
-public class DatabaseTransactionDto {
-
-    private Integer id;
-
-    private Double amount;
-
-    private Double commission;
-
-    private Integer currencyId;
-
-    private String description;
+public class DatabaseTransactionDto extends TransactionDto {
 
     private String iban;
 
     private Integer receiverId;
-
-    private Integer senderId;
-
-    private Timestamp timestamp;
 
     private Boolean toIban;
 
     public DatabaseTransactionDto() {
     }
 
-    public DatabaseTransactionDto(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
+    public DatabaseTransactionDto(Integer id, Double amount, Integer commissionId, Double commissionAmount, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, boolean toIban) {
         this.id = id;
         this.amount = amount;
-        this.commission = commission;
+        this.commissionId = commissionId;
+        this.commissionAmount = commissionAmount;
         this.currencyId = currencyId;
         this.description = description;
         this.iban = iban;
@@ -47,7 +34,8 @@ public class DatabaseTransactionDto {
             throw new IllegalArgumentException();
         this.id = transaction.getId();
         this.amount = transaction.getAmount();
-        this.commission = transaction.getCommissionAmount();
+        this.commissionId = transaction.getCommissionId();
+        this.commissionAmount = transaction.getCommissionAmount();
         this.currencyId = transaction.getCurrencyId();
         this.description = transaction.getDescription();
         this.senderId = transaction.getSenderId();
@@ -67,7 +55,8 @@ public class DatabaseTransactionDto {
         else {
             this.id = transactionDto.getId();
             this.amount = transactionDto.getAmount();
-            this.commission = transactionDto.getCommission();
+            this.commissionId = transactionDto.getCommissionId();
+            this.commissionAmount = transactionDto.getCommissionAmount();
             this.currencyId = transactionDto.getCurrencyId();
             this.description = transactionDto.getDescription();
             this.iban = transactionDto.getIban();
@@ -94,12 +83,12 @@ public class DatabaseTransactionDto {
         this.amount = amount;
     }
 
-    public Double getCommission() {
-        return commission;
+    public Double getCommissionAmount() {
+        return commissionAmount;
     }
 
-    public void setCommission(Double commission) {
-        this.commission = commission;
+    public void setCommissionAmount(Double commissionAmount) {
+        this.commissionAmount = commissionAmount;
     }
 
     public Integer getCurrencyId() {
@@ -160,6 +149,7 @@ public class DatabaseTransactionDto {
 
     public boolean isEmpty() {
         return(this.amount == null
+                || this.commissionId == null
                 || this.senderId == null
                 || this.currencyId == null
                 || this.timestamp == null);
@@ -174,8 +164,8 @@ public class DatabaseTransactionDto {
         return!(this.receiverId == null);
     }
 
-    public void calculateCommission() {
-        commission = 0.05*amount;
+    public void calculateCommissionAmount() {
+        commissionAmount = 0.05*amount;
     }
 
     @Override
@@ -195,7 +185,8 @@ public class DatabaseTransactionDto {
             return false;
         } else if (this.getId().equals(objDatabaseTransactionDto.getId())
                 && this.getAmount().equals(objDatabaseTransactionDto.getAmount())
-                && this.getCommission().equals(objDatabaseTransactionDto.getCommission())
+                && this.getCommissionId().equals(objDatabaseTransactionDto.getCommissionId())
+                && this.getCommissionAmount().equals(objDatabaseTransactionDto.getCommissionAmount())
                 && this.getCurrencyId().equals(objDatabaseTransactionDto.getCurrencyId())
                 && this.getDescription().equals(objDatabaseTransactionDto.getDescription())
                 && this.getIban().equals(objDatabaseTransactionDto.getIban())
