@@ -17,8 +17,11 @@ public class Transaction {
     @Column(nullable = false)
     private Double amount;
 
-    @Column(nullable = false)
-    private Double commission;
+    @Column(name = "commission_amount", nullable = false)
+    private Double commissionAmount;
+
+    @Column(name = "commission_id", nullable = false)
+    private Integer commissionId = 1;
 
     @Column(name = "currency_id", nullable = false)
     private Integer currencyId = 1;
@@ -44,10 +47,11 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Integer id, Double amount, Double commission, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, Boolean toIban) {
+    public Transaction(Integer id, Double amount, Double commissionAmount, Integer commissionId, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, Boolean toIban) {
         this.id = id;
         this.amount = amount;
-        this.commission = commission;
+        this.commissionAmount = commissionAmount;
+        this.commissionId = commissionId;
         this.currencyId = currencyId;
         this.description = description;
         this.iban = iban;
@@ -60,7 +64,7 @@ public class Transaction {
     public Transaction(InternalTransactionDto internalTransactionDto) {
         this.id = internalTransactionDto.getId();
         this.amount = internalTransactionDto.getAmount();
-        this.commission = internalTransactionDto.getCommission();
+        this.commissionAmount = internalTransactionDto.getCommissionAmount();
         this.currencyId = internalTransactionDto.getCurrencyId();
         this.description = internalTransactionDto.getDescription();
         this.receiverId = internalTransactionDto.getReceiverId();
@@ -71,7 +75,7 @@ public class Transaction {
     public Transaction(ExternalTransactionDto externalTransactionDto) {
         this.id = externalTransactionDto.getId();
         this.amount = externalTransactionDto.getAmount();
-        this.commission = externalTransactionDto.getCommission();
+        this.commissionAmount = externalTransactionDto.getCommissionAmount();
         this.currencyId = externalTransactionDto.getCurrencyId();
         this.description = externalTransactionDto.getDescription();
         this.iban = externalTransactionDto.getIban();
@@ -96,12 +100,20 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Double getCommission() {
-        return commission;
+    public Double getCommissionAmount() {
+        return commissionAmount;
     }
 
-    public void setCommission(Double commission) {
-        this.commission = commission;
+    public void setCommissionAmount(Double commissionAmount) {
+        this.commissionAmount = commissionAmount;
+    }
+
+    public Integer getCommissionId() {
+        return commissionId;
+    }
+
+    public void setCommissionId(Integer commissionId) {
+        this.commissionId = commissionId;
     }
 
     public Integer getCurrencyId() {
@@ -176,8 +188,8 @@ public class Transaction {
         return!(this.receiverId == null);
     }
 
-    public void calculateCommission() {
-        commission = 0.05*amount;
+    public void calculateCommissionAmount() {
+        commissionAmount = 0.05*amount;
     }
 
     @Override
@@ -193,7 +205,7 @@ public class Transaction {
         Transaction objTransaction = (Transaction) obj;
         if (objTransaction.getId() == this.getId()
                 && objTransaction.getAmount() == this.getAmount()
-                && objTransaction.getCommission() == this.getCommission()
+                && objTransaction.getCommissionAmount() == this.getCommissionAmount()
                 && objTransaction.getCurrencyId() == this.getCurrencyId()
                 && objTransaction.getDescription() == this.getDescription()
                 && objTransaction.getIban() == this.getIban()

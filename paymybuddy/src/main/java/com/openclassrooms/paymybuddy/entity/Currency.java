@@ -13,6 +13,9 @@ public class Currency {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Column(nullable = false, length = 1)
+    private String symbol;
+
     public Integer getId() {
         return id;
     }
@@ -29,9 +32,18 @@ public class Currency {
         this.name = name;
     }
 
-    public Currency(Integer id, String name) {
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public Currency(Integer id, String name, String symbol) {
         this.id = id;
         this.name = name;
+        this.symbol = symbol;
     }
 
     public Currency () {

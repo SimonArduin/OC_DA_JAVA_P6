@@ -43,7 +43,7 @@ public class TransactionService {
         UserDto sender = userService.findById(transactionDto.getSenderId());
         UserDto receiver = userService.findById(transactionDto.getReceiverId());
         transactionDto.calculateCommission();
-        Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommission();
+        Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommissionAmount();
         if(sender!=null && receiver!=null && sender.getAccountBalance()>=(fullTransactionAmount)) {
             transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
             Transaction transaction = new Transaction(transactionDto);
@@ -62,7 +62,7 @@ public class TransactionService {
         if (sender == null || sender.isEmpty())
             return null;
         externalTransactionDto.calculateCommission();
-        Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommission();
+        Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommissionAmount();
         externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
         Transaction transaction = new Transaction(externalTransactionDto);
         if(externalTransactionDto.isToIban() && sender.getAccountBalance()>=(fullTransactionAmount)) {

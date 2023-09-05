@@ -47,7 +47,7 @@ public class DatabaseTransactionDto {
             throw new IllegalArgumentException();
         this.id = transaction.getId();
         this.amount = transaction.getAmount();
-        this.commission = transaction.getCommission();
+        this.commission = transaction.getCommissionAmount();
         this.currencyId = transaction.getCurrencyId();
         this.description = transaction.getDescription();
         this.senderId = transaction.getSenderId();

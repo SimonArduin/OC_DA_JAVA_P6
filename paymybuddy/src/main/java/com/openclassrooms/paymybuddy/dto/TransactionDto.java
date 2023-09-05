@@ -1,7 +1,5 @@
 package com.openclassrooms.paymybuddy.dto;
 
-import com.openclassrooms.paymybuddy.entity.Transaction;
-
 import java.sql.Timestamp;
 
 public abstract class TransactionDto {
@@ -10,7 +8,7 @@ public abstract class TransactionDto {
 
     protected Double amount;
 
-    protected Double commission;
+    protected Double commissionAmount;
 
     protected Integer currencyId = 1;
 
@@ -36,12 +34,12 @@ public abstract class TransactionDto {
         this.amount = amount;
     }
 
-    public Double getCommission() {
-        return commission;
+    public Double getCommissionAmount() {
+        return commissionAmount;
     }
 
-    public void setCommission(Double commission) {
-        this.commission = commission;
+    public void setCommissionAmount(Double commissionAmount) {
+        this.commissionAmount = commissionAmount;
     }
 
     public Integer getCurrencyId() {
@@ -79,6 +77,6 @@ public abstract class TransactionDto {
     public abstract boolean isEmpty();
 
     public void calculateCommission() {
-        commission = 0.05*amount;
+        commissionAmount = 0.05*amount;
     }
 }

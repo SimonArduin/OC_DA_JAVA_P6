@@ -38,7 +38,7 @@ abstract class TestVariables {
 
         role = new Role(1, "role");
 
-        currency = new Currency(1, "currency");
+        currency = new Currency(1, "currency", "€");
 
         commission = new Commission(1, 0.1);
 
@@ -46,8 +46,8 @@ abstract class TestVariables {
         userOther = new User(2, 200.00,1,"emailOtherOther","ibanOther","passwordOther",1,"usernameOther",new ArrayList<>());
         userDto = new UserDto(user);
         userDtoOther = new UserDto(userOther);
-        transaction = new Transaction(user.getId(), 10.0, commission.getRate()*10.0, currency.getId(), "description", userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);
-        transactionOther = new Transaction(userOther.getId(), 20.0, commission.getRate()*20.0, 2, "descriptionOther", userDtoOther.getIban(), userDtoOther.getId(), 4, new Timestamp(0), true);
+        transaction = new Transaction(user.getId(), 10.0, commission.getRate()*10.0, commission.getId(), currency.getId(), "description", userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);
+        transactionOther = new Transaction(userOther.getId(), 20.0, commission.getRate()*20.0, commission.getId(), 2, "descriptionOther", userDtoOther.getIban(), userDtoOther.getId(), 4, new Timestamp(0), true);
         transactionList = new ArrayList<>(Arrays.asList(transaction, transactionOther));
         databaseTransactionDto = new DatabaseTransactionDto(transaction);
         databaseTransactionDtoOther = new DatabaseTransactionDto(transactionOther);

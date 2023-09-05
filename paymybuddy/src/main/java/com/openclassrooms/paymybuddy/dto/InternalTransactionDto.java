@@ -14,7 +14,7 @@ public class InternalTransactionDto extends TransactionDto {
     public InternalTransactionDto(Integer id, Double amount, Double commission, Integer currencyId, String description, Integer receiverId, Integer senderId, Timestamp timestamp) {
         this.id = id;
         this.amount = amount;
-        this.commission = commission;
+        this.commissionAmount = commission;
         this.currencyId = currencyId;
         this.description = description;
         this.receiverId = receiverId;
@@ -30,7 +30,7 @@ public class InternalTransactionDto extends TransactionDto {
         else {
             this.id = transaction.getId();
             this.amount = transaction.getAmount();
-            this.commission = transaction.getCommission();
+            this.commissionAmount = transaction.getCommissionAmount();
             this.currencyId = transaction.getCurrencyId();
             this.description = transaction.getDescription();
             this.receiverId = transaction.getReceiverId();
@@ -45,7 +45,7 @@ public class InternalTransactionDto extends TransactionDto {
         else {
             this.id = transactionDto.getId();
             this.amount = transactionDto.getAmount();
-            this.commission = transactionDto.getCommission();
+            this.commissionAmount = transactionDto.getCommissionAmount();
             this.currencyId = transactionDto.getCurrencyId();
             this.description = transactionDto.getDescription();
             this.receiverId = transactionDto.getReceiverId();
@@ -83,7 +83,7 @@ public class InternalTransactionDto extends TransactionDto {
             return false;
         } else if (this.getId().equals(objTransactionDto.getId())
                 && this.getAmount().equals(objTransactionDto.getAmount())
-                && this.getCommission().equals(objTransactionDto.getCommission())
+                && this.getCommissionAmount().equals(objTransactionDto.getCommissionAmount())
                 && this.getCurrencyId().equals(objTransactionDto.getCurrencyId())
                 && this.getDescription().equals(objTransactionDto.getDescription())
                 && this.getReceiverId().equals(objTransactionDto.getReceiverId())
