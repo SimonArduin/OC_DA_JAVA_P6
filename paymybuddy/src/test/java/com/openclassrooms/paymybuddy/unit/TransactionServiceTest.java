@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.unit;
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
+import com.openclassrooms.paymybuddy.service.CommissionService;
 import com.openclassrooms.paymybuddy.service.CurrencyService;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
@@ -18,8 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,6 +35,8 @@ public class TransactionServiceTest extends TestVariables {
     UserService userService;
     @MockBean
     CurrencyService currencyService;
+    @MockBean
+    CommissionService commissionService;
 
     @BeforeEach
     private void setUp() {
@@ -46,6 +48,8 @@ public class TransactionServiceTest extends TestVariables {
         when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
         when(userService.findById(any(Integer.class))).thenReturn(userDto);
+
+        when(commissionService.findById(any(Integer.class))).thenReturn(commission);
 
         when(currencyService.findById(any(Integer.class))).thenReturn(currency);
     }
@@ -368,6 +372,42 @@ public class TransactionServiceTest extends TestVariables {
             assertEquals(new ArrayList<>(), transactionService.getPastTransactions(userDto));
             verify(userService, Mockito.times(0)).findById(any(Integer.class));
             verify(currencyService, Mockito.times(0)).findById(any(Integer.class));
+        }
+    }
+    @Nested
+    class calculateCommissionAmountTests {
+
+        @Test
+        public void calculateCommissionAmountTest() {
+            Double result = transactionService.calculateCommissionAmount(externalTransactionDto);
+            assertEquals(externalTransactionDto.getAmount() * commission.getRate(), result);
+            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));
+        }
+
+        @Test
+        public void calculateCommissionAmountTestIfInternal() {
+            Double result = transactionService.calculateCommissionAmount(internalTransactionDto);
+            assertEquals(internalTransactionDto.getAmount() * commission.getRate(), result);
+            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));
+        }
+
+        @Test
+        public void calculateCommissionAmountTestIfEmpty() {
+            assertThrows(IllegalArgumentException.class, () -> transactionService.calculateCommissionAmount(new ExternalTransactionDto()));
+            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));
+        }
+
+        @Test
+        public void calculateCommissionAmountTestIfNull() {
+            assertThrows(IllegalArgumentException.class, () -> transactionService.calculateCommissionAmount(null));
+            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));
+        }
+
+        @Test
+        public void calculateCommissionAmountTestIfCommissionNotFound() {
+            when(commissionService.findById(any(Integer.class))).thenReturn(null);
+            assertThrows(IllegalArgumentException.class, () -> transactionService.calculateCommissionAmount(externalTransactionDto));
+            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));
         }
     }
 }

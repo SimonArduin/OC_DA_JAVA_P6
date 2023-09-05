@@ -188,10 +188,6 @@ public class Transaction {
         return!(this.receiverId == null);
     }
 
-    public void calculateCommissionAmount() {
-        commissionAmount = 0.05*amount;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

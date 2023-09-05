@@ -1,6 +1,8 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.dto.*;
+import com.openclassrooms.paymybuddy.entity.Commission;
+import com.openclassrooms.paymybuddy.entity.Currency;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ import java.util.List;
 @Service
 @Transactional
 public class TransactionService {
+
+    @Autowired
+    CommissionService commissionService;
 
     @Autowired
     CurrencyService currencyService;
@@ -37,16 +42,16 @@ public class TransactionService {
         return externalFromIbanDescription;
     }
 
-    public InternalTransactionDto addInternalTransaction(InternalTransactionDto transactionDto) {
-        if(transactionDto == null || transactionDto.isEmpty())
+    public InternalTransactionDto addInternalTransaction(InternalTransactionDto internalTransactionDto) {
+        if(internalTransactionDto == null || internalTransactionDto.isEmpty())
             throw new IllegalArgumentException();
-        UserDto sender = userService.findById(transactionDto.getSenderId());
-        UserDto receiver = userService.findById(transactionDto.getReceiverId());
-        transactionDto.calculateCommission();
-        Double fullTransactionAmount = transactionDto.getAmount() + transactionDto.getCommissionAmount();
+        UserDto sender = userService.findById(internalTransactionDto.getSenderId());
+        UserDto receiver = userService.findById(internalTransactionDto.getReceiverId());
+        internalTransactionDto.setCommissionAmount(calculateCommissionAmount(internalTransactionDto));
+        Double fullTransactionAmount = internalTransactionDto.getAmount() + internalTransactionDto.getCommissionAmount();
         if(sender!=null && receiver!=null && sender.getAccountBalance()>=(fullTransactionAmount)) {
-            transactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
-            Transaction transaction = new Transaction(transactionDto);
+            internalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
+            Transaction transaction = new Transaction(internalTransactionDto);
             userService.removeFromAccountBalance(sender, fullTransactionAmount);
             userService.addToAccountBalance(receiver, transaction.getAmount());
             return new InternalTransactionDto(transactionRepository.save(transaction));
@@ -61,7 +66,7 @@ public class TransactionService {
         UserDto sender = userService.findById(externalTransactionDto.getSenderId());
         if (sender == null || sender.isEmpty())
             return null;
-        externalTransactionDto.calculateCommission();
+        externalTransactionDto.setCommissionAmount(calculateCommissionAmount(externalTransactionDto));
         Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommissionAmount();
         externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
         Transaction transaction = new Transaction(externalTransactionDto);
@@ -83,6 +88,17 @@ public class TransactionService {
         if(transaction!=null && !transaction.isEmpty())
             return new DatabaseTransactionDto(transaction);
         return null;
+    }
+
+    public Double calculateCommissionAmount(TransactionDto transactionDto) {
+        if(transactionDto == null
+                || transactionDto.getCommissionId() == null
+                || transactionDto.getAmount() == null)
+            throw new IllegalArgumentException("Invalid transaction");
+        Commission commission = commissionService.findById(transactionDto.getCommissionId());
+        if(commission == null)
+            throw new IllegalArgumentException("Invalid commission");
+        return transactionDto.getAmount() * commission.getRate();
     }
 
     public List<DatabaseTransactionDto> findBySenderId(Integer id) {

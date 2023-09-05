@@ -86,8 +86,4 @@ public abstract class TransactionDto {
 
     public abstract boolean isEmpty();
 
-    public void calculateCommission() {
-        commissionAmount = 0.05*amount;
-    }
-
 }
