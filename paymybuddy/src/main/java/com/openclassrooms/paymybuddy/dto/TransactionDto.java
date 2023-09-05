@@ -89,4 +89,5 @@ public abstract class TransactionDto {
     public void calculateCommission() {
         commissionAmount = 0.05*amount;
     }
+
 }

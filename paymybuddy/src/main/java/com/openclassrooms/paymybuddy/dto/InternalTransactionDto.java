@@ -73,19 +73,15 @@ public class InternalTransactionDto extends TransactionDto {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
-            if (this.isEmpty())
-                return true;
-            return false;
+            return this.isEmpty();
         }
         if (obj.getClass() != this.getClass()) {
             return false;
         }
         InternalTransactionDto objTransactionDto = (InternalTransactionDto) obj;
         if (this.isEmpty()) {
-            if (objTransactionDto.isEmpty())
-                return true;
-            return false;
-        } else if (this.getId().equals(objTransactionDto.getId())
+            return objTransactionDto.isEmpty();
+        } else return this.getId().equals(objTransactionDto.getId())
                 && this.getAmount().equals(objTransactionDto.getAmount())
                 && this.getCommissionId().equals(objTransactionDto.getCommissionId())
                 && this.getCommissionAmount().equals(objTransactionDto.getCommissionAmount())
@@ -93,9 +89,6 @@ public class InternalTransactionDto extends TransactionDto {
                 && this.getDescription().equals(objTransactionDto.getDescription())
                 && this.getReceiverId().equals(objTransactionDto.getReceiverId())
                 && this.getSenderId().equals(objTransactionDto.getSenderId())
-                && this.getTimestamp().equals(objTransactionDto.getTimestamp())) {
-                return true;
-        }
-        return false;
+                && this.getTimestamp().equals(objTransactionDto.getTimestamp());
     }
 }

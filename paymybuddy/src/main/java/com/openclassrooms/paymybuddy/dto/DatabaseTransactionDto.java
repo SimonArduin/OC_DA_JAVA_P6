@@ -67,46 +67,6 @@ public class DatabaseTransactionDto extends TransactionDto {
         }
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public Double getCommissionAmount() {
-        return commissionAmount;
-    }
-
-    public void setCommissionAmount(Double commissionAmount) {
-        this.commissionAmount = commissionAmount;
-    }
-
-    public Integer getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Integer currencyId) {
-        this.currencyId = currencyId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getIban() {
         return iban;
     }
@@ -121,22 +81,6 @@ public class DatabaseTransactionDto extends TransactionDto {
 
     public void setReceiverId(Integer receiverId) {
         this.receiverId = receiverId;
-    }
-
-    public Integer getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(Integer senderId) {
-        this.senderId = senderId;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
     }
 
     public Boolean isToIban() {
@@ -171,19 +115,15 @@ public class DatabaseTransactionDto extends TransactionDto {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
-            if (this.isEmpty())
-                return true;
-            return false;
+            return this.isEmpty();
         }
         if (obj.getClass() != this.getClass()) {
             return false;
         }
         DatabaseTransactionDto objDatabaseTransactionDto = (DatabaseTransactionDto) obj;
         if (this.isEmpty()) {
-            if (objDatabaseTransactionDto.isEmpty())
-                return true;
-            return false;
-        } else if (this.getId().equals(objDatabaseTransactionDto.getId())
+            return objDatabaseTransactionDto.isEmpty();
+        } else return this.getId().equals(objDatabaseTransactionDto.getId())
                 && this.getAmount().equals(objDatabaseTransactionDto.getAmount())
                 && this.getCommissionId().equals(objDatabaseTransactionDto.getCommissionId())
                 && this.getCommissionAmount().equals(objDatabaseTransactionDto.getCommissionAmount())
@@ -193,9 +133,6 @@ public class DatabaseTransactionDto extends TransactionDto {
                 && this.getReceiverId().equals(objDatabaseTransactionDto.getReceiverId())
                 && this.getSenderId().equals(objDatabaseTransactionDto.getSenderId())
                 && this.getTimestamp().equals(objDatabaseTransactionDto.getTimestamp())
-                && this.isToIban() == objDatabaseTransactionDto.isToIban()) {
-            return true;
-        }
-        return false;
+                && this.isToIban() == objDatabaseTransactionDto.isToIban();
     }
 }
