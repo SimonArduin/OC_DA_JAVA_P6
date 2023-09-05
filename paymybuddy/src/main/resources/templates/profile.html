@@ -37,7 +37,6 @@
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th>User ID</th>
                 <th>Username</th>
                 <th>Email</th>
                 <th>Account balance</th>
@@ -45,17 +44,16 @@
             </thead>
             <tbody>
             <tr>
-                <td th:text="${connectedUser.id}">User ID</td>
                 <td th:text="${connectedUser.username}">Username</td>
                 <td th:text="${connectedUser.email}">Email</td>
-                <td th:text="${connectedUser.accountBalance}">Account balance</td>
+                <td th:text="${#numbers.formatDecimal(connectedUser.accountBalance, 0, 2)}">Account balance</td>
             </tr>
             </tbody>
         </table>
     </div>
     <div>
-        <h3><a th:href="@{/add_transaction_from_bank_account}">Add money to account</a></h3>
-        <h3><a th:href="@{/add_transaction_to_bank_account}">Transfer money to bank account</a></h3>
+        <h3><a th:href="@{/add_transaction_from_bank_account}"><button class="btn btn-primary">Add money to account</button></a></h3>
+        <h3><a th:href="@{/add_transaction_to_bank_account}"><button class="btn btn-primary">Transfer money to bank account</button></a></h3>
     </div>
 </div>
 
