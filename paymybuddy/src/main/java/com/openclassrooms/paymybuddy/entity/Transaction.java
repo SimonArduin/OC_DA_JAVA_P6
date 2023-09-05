@@ -77,7 +77,6 @@ public class Transaction {
         this.amount = externalTransactionDto.getAmount();
         this.commissionAmount = externalTransactionDto.getCommissionAmount();
         this.currencyId = externalTransactionDto.getCurrencyId();
-        this.description = externalTransactionDto.getDescription();
         this.iban = externalTransactionDto.getIban();
         this.senderId = externalTransactionDto.getSenderId();
         this.timestamp = externalTransactionDto.getTimestamp();

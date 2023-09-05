@@ -12,6 +12,8 @@ public class DatabaseTransactionDto extends TransactionDto {
 
     private Boolean toIban;
 
+    private String description;
+
     public DatabaseTransactionDto() {
     }
 
@@ -89,6 +91,14 @@ public class DatabaseTransactionDto extends TransactionDto {
 
     public void setToIban(Boolean toIban) {
         this.toIban = toIban;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isEmpty() {

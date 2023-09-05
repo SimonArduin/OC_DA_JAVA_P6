@@ -14,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-<span class="fc" id="L17">    @Column(nullable = false)</span>
+<span class="fc" id="L17">    @Column(name = &quot;account_balance&quot;, nullable = false)</span>
 <span class="fc" id="L18">    private Double accountBalance = 0.0;</span>
 
 <span class="fc" id="L20">    @Column(name = &quot;currency_id&quot;, nullable = false)</span>

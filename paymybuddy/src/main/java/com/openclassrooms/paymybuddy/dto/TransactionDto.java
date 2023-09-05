@@ -14,8 +14,6 @@ public abstract class TransactionDto {
 
     protected Integer currencyId = 1;
 
-    protected String description;
-
     protected Integer senderId;
 
     protected Timestamp timestamp;
@@ -58,14 +56,6 @@ public abstract class TransactionDto {
 
     public void setCurrencyId(Integer currencyId) {
         this.currencyId = currencyId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Integer getSenderId() {

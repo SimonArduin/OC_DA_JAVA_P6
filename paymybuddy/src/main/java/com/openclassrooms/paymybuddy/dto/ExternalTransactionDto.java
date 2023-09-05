@@ -19,7 +19,6 @@ public class ExternalTransactionDto extends TransactionDto {
         this.commissionId = commissionId;
         this.commissionAmount = commissionAmount;
         this.currencyId = currencyId;
-        this.description = description;
         this.iban = iban;
         this.senderId = senderId;
         this.timestamp = timestamp;
@@ -37,7 +36,6 @@ public class ExternalTransactionDto extends TransactionDto {
             this.commissionId = transaction.getCommissionId();
             this.commissionAmount = transaction.getCommissionAmount();
             this.currencyId = transaction.getCurrencyId();
-            this.description = transaction.getDescription();
             this.iban = transaction.getIban();
             this.senderId = transaction.getSenderId();
             this.timestamp = transaction.getTimestamp();
@@ -54,7 +52,6 @@ public class ExternalTransactionDto extends TransactionDto {
             this.commissionId = transactionDto.getCommissionId();
             this.commissionAmount = transactionDto.getCommissionAmount();
             this.currencyId = transactionDto.getCurrencyId();
-            this.description = transactionDto.getDescription();
             this.iban = transactionDto.getIban();
             this.senderId = transactionDto.getSenderId();
             this.timestamp = transactionDto.getTimestamp();
@@ -101,7 +98,6 @@ public class ExternalTransactionDto extends TransactionDto {
                 && this.getCommissionId().equals(objTransactionDto.getCommissionId())
                 && this.getCommissionAmount().equals(objTransactionDto.getCommissionAmount())
                 && this.getCurrencyId().equals(objTransactionDto.getCurrencyId())
-                && this.getDescription().equals(objTransactionDto.getDescription())
                 && this.getIban().equals(objTransactionDto.getIban())
                 && this.getSenderId().equals(objTransactionDto.getSenderId())
                 && this.getTimestamp().equals(objTransactionDto.getTimestamp())

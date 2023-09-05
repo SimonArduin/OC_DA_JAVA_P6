@@ -8,6 +8,8 @@ public class InternalTransactionDto extends TransactionDto {
 
     private Integer receiverId;
 
+    private String description;
+
     public InternalTransactionDto() {
     }
 
@@ -62,6 +64,14 @@ public class InternalTransactionDto extends TransactionDto {
 
     public void setReceiverId(Integer receiverId) {
         this.receiverId = receiverId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isEmpty() {
