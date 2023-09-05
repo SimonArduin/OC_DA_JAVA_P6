@@ -174,6 +174,7 @@ public class Transaction {
 
     public Boolean isEmpty() {
         return(this.amount == null
+                || this.commissionId == null
                 || this.senderId == null
                 || this.currencyId == null
                 || this.timestamp == null);
@@ -201,6 +202,7 @@ public class Transaction {
         Transaction objTransaction = (Transaction) obj;
         if (objTransaction.getId() == this.getId()
                 && objTransaction.getAmount() == this.getAmount()
+                && objTransaction.getCommissionId() == this.getCommissionId()
                 && objTransaction.getCommissionAmount() == this.getCommissionAmount()
                 && objTransaction.getCurrencyId() == this.getCurrencyId()
                 && objTransaction.getDescription() == this.getDescription()
