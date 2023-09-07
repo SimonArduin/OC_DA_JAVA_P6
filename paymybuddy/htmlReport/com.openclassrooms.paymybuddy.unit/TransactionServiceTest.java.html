@@ -266,18 +266,18 @@ import static org.mockito.Mockito.when;
 <span class="fc" id="L266">                            pastTransactionDto.getUsername(),</span>
 <span class="fc" id="L267">                            pastTransactionDto.getDescription(),</span>
 <span class="fc" id="L268">                            -pastTransactionDto.getAmount(),</span>
-<span class="fc" id="L269">                            pastTransactionDto.getCurrencyName()),</span>
+<span class="fc" id="L269">                            pastTransactionDto.getCurrencySymbol()),</span>
                     pastTransactionDto,
 <span class="fc" id="L271">                    new PastTransactionDto(pastTransactionDtoOther.getId(),</span>
 <span class="fc" id="L272">                            pastTransactionDto.getUsername(),</span>
 <span class="fc" id="L273">                            pastTransactionDtoOther.getDescription(),</span>
 <span class="fc" id="L274">                            -pastTransactionDtoOther.getAmount(),</span>
-<span class="fc" id="L275">                            pastTransactionDtoOther.getCurrencyName()),</span>
+<span class="fc" id="L275">                            pastTransactionDtoOther.getCurrencySymbol()),</span>
 <span class="fc" id="L276">                    new PastTransactionDto(pastTransactionDtoOther.getId(),</span>
 <span class="fc" id="L277">                            pastTransactionDto.getUsername(),</span>
 <span class="fc" id="L278">                            pastTransactionDtoOther.getDescription(),</span>
 <span class="fc" id="L279">                            pastTransactionDtoOther.getAmount(),</span>
-<span class="fc" id="L280">                            pastTransactionDtoOther.getCurrencyName())</span>
+<span class="fc" id="L280">                            pastTransactionDtoOther.getCurrencySymbol())</span>
             ));
 <span class="fc" id="L282">            pastTransactionDtoList.sort(Comparator.comparing(PastTransactionDto::getId).reversed());</span>
 <span class="fc" id="L283">            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));</span>
@@ -292,7 +292,7 @@ import static org.mockito.Mockito.when;
 <span class="fc" id="L292">                            user.getUsername(),</span>
 <span class="fc" id="L293">                            internalTransaction.getDescription(),</span>
 <span class="fc" id="L294">                            -internalTransaction.getAmount(),</span>
-<span class="fc" id="L295">                            currency.getName())</span>
+<span class="fc" id="L295">                            currency.getSymbol())</span>
             ));
 <span class="fc" id="L297">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(internalTransaction)));</span>
 <span class="fc" id="L298">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
@@ -308,7 +308,7 @@ import static org.mockito.Mockito.when;
 <span class="fc" id="L308">                            user.getUsername(),</span>
 <span class="fc" id="L309">                            internalTransaction.getDescription(),</span>
 <span class="fc" id="L310">                            internalTransaction.getAmount(),</span>
-<span class="fc" id="L311">                            currency.getName())</span>
+<span class="fc" id="L311">                            currency.getSymbol())</span>
             ));
 <span class="fc" id="L313">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);</span>
 <span class="fc" id="L314">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(internalTransaction)));</span>
@@ -324,7 +324,7 @@ import static org.mockito.Mockito.when;
 <span class="fc" id="L324">                            user.getUsername(),</span>
 <span class="fc" id="L325">                            transactionService.getExternalToIbanDescription(),</span>
 <span class="fc" id="L326">                            -externalTransaction.getAmount(),</span>
-<span class="fc" id="L327">                            currency.getName())</span>
+<span class="fc" id="L327">                            currency.getSymbol())</span>
             ));
 <span class="fc" id="L329">            externalTransaction.setToIban(true);</span>
 <span class="fc" id="L330">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(externalTransaction)));</span>
@@ -341,7 +341,7 @@ import static org.mockito.Mockito.when;
 <span class="fc" id="L341">                            user.getUsername(),</span>
 <span class="fc" id="L342">                            transactionService.getExternalFromIbanDescription(),</span>
 <span class="fc" id="L343">                            externalTransaction.getAmount(),</span>
-<span class="fc" id="L344">                            currency.getName())</span>
+<span class="fc" id="L344">                            currency.getSymbol())</span>
             ));
 <span class="fc" id="L346">            externalTransaction.setToIban(false);</span>
 <span class="fc" id="L347">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(externalTransaction)));</span>

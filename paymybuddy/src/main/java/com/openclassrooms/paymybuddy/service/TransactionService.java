@@ -136,7 +136,7 @@ public class TransactionService {
                             userService.findById(databaseTransactionDto.getReceiverId()).getUsername(),
                             databaseTransactionDto.getDescription(),
                             -databaseTransactionDto.getAmount(),
-                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));
+                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
                 }
                 else if (databaseTransactionDto.isExternalTransaction()) {
                     if (databaseTransactionDto.isToIban()) {
@@ -144,14 +144,14 @@ public class TransactionService {
                                 userService.findById(databaseTransactionDto.getSenderId()).getUsername(),
                                 externalToIbanDescription,
                                 -databaseTransactionDto.getAmount(),
-                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));
+                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
                     }
                     else {
                         result.add(new PastTransactionDto(databaseTransactionDto.getId(),
                                 userService.findById(databaseTransactionDto.getSenderId()).getUsername(),
                                 externalFromIbanDescription,
                                 databaseTransactionDto.getAmount(),
-                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));
+                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
                     }
                 }
             }
@@ -162,7 +162,7 @@ public class TransactionService {
                         userService.findById(databaseTransactionDto.getSenderId()).getUsername(),
                         databaseTransactionDto.getDescription(),
                         databaseTransactionDto.getAmount(),
-                        currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));
+                        currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
             }
         }
         result.sort(Comparator.comparing(PastTransactionDto::getId).reversed());

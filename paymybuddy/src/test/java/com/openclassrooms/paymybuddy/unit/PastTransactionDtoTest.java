@@ -99,7 +99,7 @@ public class PastTransactionDtoTest extends TestVariables {
 
         @Test
         public void isEmptyTestIfNoCurrency() {
-            pastTransactionDto.setCurrencyName(null);
+            pastTransactionDto.setCurrencySymbol(null);
             assertTrue(pastTransactionDto.isEmpty());
         }
 

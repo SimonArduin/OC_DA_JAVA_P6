@@ -266,18 +266,18 @@ public class TransactionServiceTest extends TestVariables {
                             pastTransactionDto.getUsername(),
                             pastTransactionDto.getDescription(),
                             -pastTransactionDto.getAmount(),
-                            pastTransactionDto.getCurrencyName()),
+                            pastTransactionDto.getCurrencySymbol()),
                     pastTransactionDto,
                     new PastTransactionDto(pastTransactionDtoOther.getId(),
                             pastTransactionDto.getUsername(),
                             pastTransactionDtoOther.getDescription(),
                             -pastTransactionDtoOther.getAmount(),
-                            pastTransactionDtoOther.getCurrencyName()),
+                            pastTransactionDtoOther.getCurrencySymbol()),
                     new PastTransactionDto(pastTransactionDtoOther.getId(),
                             pastTransactionDto.getUsername(),
                             pastTransactionDtoOther.getDescription(),
                             pastTransactionDtoOther.getAmount(),
-                            pastTransactionDtoOther.getCurrencyName())
+                            pastTransactionDtoOther.getCurrencySymbol())
             ));
             pastTransactionDtoList.sort(Comparator.comparing(PastTransactionDto::getId).reversed());
             assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));
@@ -292,7 +292,7 @@ public class TransactionServiceTest extends TestVariables {
                             user.getUsername(),
                             internalTransaction.getDescription(),
                             -internalTransaction.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(internalTransaction)));
             when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);
@@ -308,7 +308,7 @@ public class TransactionServiceTest extends TestVariables {
                             user.getUsername(),
                             internalTransaction.getDescription(),
                             internalTransaction.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);
             when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(internalTransaction)));
@@ -324,7 +324,7 @@ public class TransactionServiceTest extends TestVariables {
                             user.getUsername(),
                             transactionService.getExternalToIbanDescription(),
                             -externalTransaction.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             externalTransaction.setToIban(true);
             when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(externalTransaction)));
@@ -341,7 +341,7 @@ public class TransactionServiceTest extends TestVariables {
                             user.getUsername(),
                             transactionService.getExternalFromIbanDescription(),
                             externalTransaction.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             externalTransaction.setToIban(false);
             when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(Arrays.asList(externalTransaction)));

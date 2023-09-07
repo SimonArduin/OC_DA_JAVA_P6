@@ -77,7 +77,7 @@
       <tr th:each="transaction: ${transactionList}">
         <td th:text="${transaction.username}">Username</td>
         <td th:text="${transaction.description}">Description</td>
-        <td th:text="${#numbers.formatDecimal(transaction.amount, 0, 2)}+${transaction.currencyName}">Amount</td>
+        <td th:text="${#numbers.formatDecimal(transaction.amount, 0, 2)}+${transaction.currencySymbol}">Amount</td>
       </tr>
       </tbody>
     </table>

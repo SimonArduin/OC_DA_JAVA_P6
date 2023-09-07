@@ -136,7 +136,7 @@ import java.util.List;
 <span class="fc" id="L136">                            userService.findById(databaseTransactionDto.getReceiverId()).getUsername(),</span>
 <span class="fc" id="L137">                            databaseTransactionDto.getDescription(),</span>
 <span class="fc" id="L138">                            -databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L139">                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc" id="L139">                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));</span>
                 }
 <span class="pc bpc" id="L141" title="1 of 2 branches missed.">                else if (databaseTransactionDto.isExternalTransaction()) {</span>
 <span class="fc bfc" id="L142" title="All 2 branches covered.">                    if (databaseTransactionDto.isToIban()) {</span>
@@ -144,14 +144,14 @@ import java.util.List;
 <span class="fc" id="L144">                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
                                 externalToIbanDescription,
 <span class="fc" id="L146">                                -databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L147">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc" id="L147">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));</span>
                     }
                     else {
 <span class="fc" id="L150">                        result.add(new PastTransactionDto(databaseTransactionDto.getId(),</span>
 <span class="fc" id="L151">                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
                                 externalFromIbanDescription,
 <span class="fc" id="L153">                                databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L154">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc" id="L154">                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));</span>
                     }
                 }
             }
@@ -162,7 +162,7 @@ import java.util.List;
 <span class="fc" id="L162">                        userService.findById(databaseTransactionDto.getSenderId()).getUsername(),</span>
 <span class="fc" id="L163">                        databaseTransactionDto.getDescription(),</span>
 <span class="fc" id="L164">                        databaseTransactionDto.getAmount(),</span>
-<span class="fc" id="L165">                        currencyService.findById(databaseTransactionDto.getCurrencyId()).getName()));</span>
+<span class="fc" id="L165">                        currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));</span>
             }
 <span class="fc" id="L167">        }</span>
 <span class="fc" id="L168">        result.sort(Comparator.comparing(PastTransactionDto::getId).reversed());</span>

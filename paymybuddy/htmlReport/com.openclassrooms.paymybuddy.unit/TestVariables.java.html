@@ -58,8 +58,8 @@ import java.util.List;
 <span class="fc" id="L58">        externalTransactionDtoOther = new ExternalTransactionDto(transactionOther);</span>
 <span class="fc" id="L59">        internalTransaction = new Transaction(internalTransactionDto);</span>
 <span class="fc" id="L60">        externalTransaction = new Transaction(externalTransactionDto);</span>
-<span class="fc" id="L61">        pastTransactionDto = new PastTransactionDto(databaseTransactionDto.getId(), userDto.getUsername(), databaseTransactionDto.getDescription(), databaseTransactionDto.getAmount(), currency.getName());</span>
-<span class="fc" id="L62">        pastTransactionDtoOther = new PastTransactionDto(databaseTransactionDtoOther.getId(), userDtoOther.getUsername(), databaseTransactionDtoOther.getDescription(), databaseTransactionDtoOther.getAmount(), currency.getName());</span>
+<span class="fc" id="L61">        pastTransactionDto = new PastTransactionDto(databaseTransactionDto.getId(), userDto.getUsername(), databaseTransactionDto.getDescription(), databaseTransactionDto.getAmount(), currency.getSymbol());</span>
+<span class="fc" id="L62">        pastTransactionDtoOther = new PastTransactionDto(databaseTransactionDtoOther.getId(), userDtoOther.getUsername(), databaseTransactionDtoOther.getDescription(), databaseTransactionDtoOther.getAmount(), currency.getSymbol());</span>
 <span class="fc" id="L63">        pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(pastTransactionDto, pastTransactionDtoOther));</span>
 <span class="fc" id="L64">    }</span>
 }

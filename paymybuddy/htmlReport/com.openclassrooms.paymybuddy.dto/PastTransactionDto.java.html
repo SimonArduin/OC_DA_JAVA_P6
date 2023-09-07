@@ -6,14 +6,14 @@ public class PastTransactionDto {
     private String username;
     private String description;
     private Double amount;
-    private String currencyName;
+    private String currencySymbol;
 
-<span class="fc" id="L11">    public PastTransactionDto(Integer id, String username, String description, Double amount, String currencyName) {</span>
+<span class="fc" id="L11">    public PastTransactionDto(Integer id, String username, String description, Double amount, String currencySymbol) {</span>
 <span class="fc" id="L12">        this.id = id;</span>
 <span class="fc" id="L13">        this.username = username;</span>
 <span class="fc" id="L14">        this.description = description;</span>
 <span class="fc" id="L15">        this.amount = amount;</span>
-<span class="fc" id="L16">        this.currencyName = currencyName;</span>
+<span class="fc" id="L16">        this.currencySymbol = currencySymbol;</span>
 <span class="fc" id="L17">    }</span>
 
 <span class="fc" id="L19">    public PastTransactionDto() {</span>
@@ -51,19 +51,19 @@ public class PastTransactionDto {
 <span class="fc" id="L51">        this.amount = amount;</span>
 <span class="fc" id="L52">    }</span>
 
-    public String getCurrencyName() {
-<span class="fc" id="L55">        return currencyName;</span>
+    public String getCurrencySymbol() {
+<span class="fc" id="L55">        return currencySymbol;</span>
     }
 
-    public void setCurrencyName(String currencyName) {
-<span class="fc" id="L59">        this.currencyName = currencyName;</span>
+    public void setCurrencySymbol(String currencySymbol) {
+<span class="fc" id="L59">        this.currencySymbol = currencySymbol;</span>
 <span class="fc" id="L60">    }</span>
 
     public boolean isEmpty() {
 <span class="fc bfc" id="L63" title="All 8 branches covered.">        return (this.username == null</span>
         || this.amount == null
         || this.description == null
-        || this.currencyName == null);
+        || this.currencySymbol == null);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class PastTransactionDto {
 <span class="fc bfc" id="L83" title="All 2 branches covered.">        } else if (this.getId().equals(objPastTransactionDto.getId())</span>
 <span class="pc bpc" id="L84" title="1 of 2 branches missed.">                &amp;&amp; this.getAmount().equals(objPastTransactionDto.getAmount())</span>
 <span class="pc bpc" id="L85" title="1 of 2 branches missed.">                &amp;&amp; this.getDescription().equals(objPastTransactionDto.getDescription())</span>
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                &amp;&amp; this.getCurrencyName().equals(objPastTransactionDto.getCurrencyName())</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">                &amp;&amp; this.getCurrencySymbol().equals(objPastTransactionDto.getCurrencySymbol())</span>
 <span class="pc bpc" id="L87" title="1 of 2 branches missed.">                &amp;&amp; this.getUsername().equals(objPastTransactionDto.getUsername()))</span>
 <span class="fc" id="L88">            return true;</span>
 <span class="fc" id="L89">        return false;</span>
