@@ -1,8 +1,7 @@
 package com.openclassrooms.paymybuddy.unit;
 
-import com.openclassrooms.paymybuddy.controller.HomeController;
+import com.openclassrooms.paymybuddy.controller.ApplicationController;
 import com.openclassrooms.paymybuddy.dto.*;
-import com.openclassrooms.paymybuddy.entity.User;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +21,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = HomeController.class)
-class HomeControllerTest extends TestVariables {
+@SpringBootTest(classes = ApplicationController.class)
+class ApplicationControllerTest extends TestVariables {
 	
 	@Autowired
-	HomeController homeController;
+	ApplicationController applicationController;
 
 	Model model = new ConcurrentModel();
 
@@ -64,11 +63,11 @@ class HomeControllerTest extends TestVariables {
 	class showRegistrationFormTests {
 		@Test
 		public void showRegistrationFormTest() {
-			assertEquals("signup_form",homeController.showRegistrationForm(model));
+			assertEquals("signup_form", applicationController.showRegistrationForm(model));
 		}
 		@Test
 		public void showRegistrationFormTestIfNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showRegistrationForm(null));
+			assertThrows(NullPointerException.class, () -> applicationController.showRegistrationForm(null));
 		}
 	}
 
@@ -76,25 +75,25 @@ class HomeControllerTest extends TestVariables {
 	class processRegisterTests {
 		@Test
 		public void processRegisterTest() {
-			assertEquals("register_success",homeController.processRegister(userDto));
+			assertEquals("register_success", applicationController.processRegister(userDto));
 			verify(userService, Mockito.times(1)).addUser(any(UserDto.class));
 		}
 		
 		@Test
 		public void processRegisterTestIfEmpty() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processRegister(new UserDto()));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processRegister(new UserDto()));
 			verify(userService, Mockito.times(0)).addUser(any(UserDto.class));
 		}
 		@Test
 		public void processRegisterTestIfNull() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processRegister(null));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processRegister(null));
 			verify(userService, Mockito.times(0)).addUser(any(UserDto.class));
 		}
 
 		@Test
 		public void processRegisterTestIfErrorOnSave() {
 			when(userService.addUser(any(UserDto.class))).thenThrow(new IllegalArgumentException());
-			assertThrows(IllegalArgumentException.class, () -> homeController.processRegister(userDto));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processRegister(userDto));
 			verify(userService, Mockito.times(1)).addUser(any(UserDto.class));
 		}
 	}
@@ -103,26 +102,26 @@ class HomeControllerTest extends TestVariables {
 	class profileTests {
 		@Test
 		public void profileTest() {
-			assertEquals("profile", homeController.profile(model, principal));
+			assertEquals("profile", applicationController.profile(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void profileTestIfModelNull() {
-			assertThrows(NullPointerException.class, () -> homeController.profile(null, principal));
+			assertThrows(NullPointerException.class, () -> applicationController.profile(null, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void profileTestIfPrincipalNull() {
-			assertThrows(NullPointerException.class, () -> homeController.profile(model, null));
+			assertThrows(NullPointerException.class, () -> applicationController.profile(model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void profileTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.profile(model, principal));
+			assertEquals("error", applicationController.profile(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 	}
@@ -131,26 +130,26 @@ class HomeControllerTest extends TestVariables {
 	class contactTests {
 		@Test
 		public void contactTest() {
-			assertEquals("contact", homeController.contact(model, principal));
+			assertEquals("contact", applicationController.contact(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void contactTestIfModelNull() {
-			assertThrows(NullPointerException.class, () -> homeController.contact(null, principal));
+			assertThrows(NullPointerException.class, () -> applicationController.contact(null, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void contactTestIfPrincipalNull() {
-			assertThrows(NullPointerException.class, () -> homeController.contact(model, null));
+			assertThrows(NullPointerException.class, () -> applicationController.contact(model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void contactTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.contact(model, principal));
+			assertEquals("error", applicationController.contact(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 	}
@@ -159,11 +158,11 @@ class HomeControllerTest extends TestVariables {
 	class showAddConnectionFormTests {
 		@Test
 		public void showAddConnectionFormTest() {
-			assertEquals("add_connection_form",homeController.showAddConnectionForm(model));
+			assertEquals("add_connection_form", applicationController.showAddConnectionForm(model));
 		}
 		@Test
 		public void showAddConnectionFormTestIfNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showAddConnectionForm(null));
+			assertThrows(NullPointerException.class, () -> applicationController.showAddConnectionForm(null));
 		}
 	}
 
@@ -171,35 +170,35 @@ class HomeControllerTest extends TestVariables {
 	class processAddConnectionTests {
 		@Test
 		public void processAddConnectionTest() {
-			assertEquals("contact", homeController.processAddConnection(userDto, model, principal));
+			assertEquals("contact", applicationController.processAddConnection(userDto, model, principal));
 			verify(userService, Mockito.times(2+1)).findByUsername(any(String.class));
 			verify(userService, Mockito.times(1)).addConnectionToUser(any(UserDto.class), any(UserDto.class));
 		}
 
 		@Test
 		public void processAddConnectionTestIfConnectionNull() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processAddConnection(null, model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddConnection(null, model, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(userService, Mockito.times(0)).addConnectionToUser(any(UserDto.class), any(UserDto.class));
 		}
 
 		@Test
 		public void processAddConnectionTestIfConnectionEmpty() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processAddConnection(new UserDto(), model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddConnection(new UserDto(), model, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(userService, Mockito.times(0)).addConnectionToUser(any(UserDto.class), any(UserDto.class));
 		}
 
 		@Test
 		public void processAddConnectionTestIfModelNull() {
-			assertEquals("error", homeController.processAddConnection(userDto, null, principal));
+			assertEquals("error", applicationController.processAddConnection(userDto, null, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(userService, Mockito.times(0)).addConnectionToUser(any(UserDto.class), any(UserDto.class));
 		}
 
 		@Test
 		public void processAddConnectionTestIfPrincipalNull() {
-			assertEquals("error", homeController.processAddConnection(userDto, model, null));
+			assertEquals("error", applicationController.processAddConnection(userDto, model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(userService, Mockito.times(0)).addConnectionToUser(any(UserDto.class), any(UserDto.class));
 		}
@@ -207,7 +206,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddConnectionTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.processAddConnection(userDto, model, principal));
+			assertEquals("error", applicationController.processAddConnection(userDto, model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(userService, Mockito.times(0)).addConnectionToUser(any(UserDto.class), any(UserDto.class));
 		}
@@ -215,7 +214,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddConnectionTestIfErrorOnAddAction() {
 			when(userService.addConnectionToUser(any(UserDto.class), any(UserDto.class))).thenThrow(new IllegalArgumentException());
-			assertThrows(Exception.class, () -> homeController.processAddConnection(userDto, model, principal));
+			assertThrows(Exception.class, () -> applicationController.processAddConnection(userDto, model, principal));
 			verify(userService, Mockito.times(2)).findByUsername(any(String.class));
 			verify(userService, Mockito.times(1)).addConnectionToUser(any(UserDto.class), any(UserDto.class));
 		}
@@ -225,19 +224,19 @@ class HomeControllerTest extends TestVariables {
 	class showAddTransactionFormTests {
 		@Test
 		public void showAddTransactionFormTest() {
-			assertEquals("transfer",homeController.showAddTransactionForm(model, principal));
+			assertEquals("transfer", applicationController.showAddTransactionForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).getPastTransactions(any(UserDto.class));
 		}
 		@Test
 		public void showAddTransactionFormTestIfModelNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showAddTransactionForm(null, principal));
+			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionForm(null, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
 		}
 		@Test
 		public void showAddTransactionFormTestIfPrincipalNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showAddTransactionForm(model, null));
+			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionForm(model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
 		}
@@ -245,7 +244,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void showAddTransactionFormTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.showAddTransactionForm(model, principal));
+			assertEquals("error", applicationController.showAddTransactionForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
 		}
@@ -253,7 +252,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void showAddTransactionFormTestIfNoPastTransactionsFound() {
 			when(transactionService.getPastTransactions(any(UserDto.class))).thenReturn(null);
-			assertEquals("transfer", homeController.showAddTransactionForm(model, principal));
+			assertEquals("transfer", applicationController.showAddTransactionForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).getPastTransactions(any(UserDto.class));
 		}
@@ -263,7 +262,7 @@ class HomeControllerTest extends TestVariables {
 	class processTransferTests {
 		@Test
 		public void processTransferTest() {
-			assertEquals("transfer", homeController.processTransfer(internalTransactionDto, model, principal));
+			assertEquals("transfer", applicationController.processTransfer(internalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(1+1)).getPastTransactions(any(UserDto.class));
@@ -271,7 +270,7 @@ class HomeControllerTest extends TestVariables {
 
 		@Test
 		public void processTransferTestIfTransactionEmpty() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processTransfer(new InternalTransactionDto(), model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processTransfer(new InternalTransactionDto(), model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
@@ -279,7 +278,7 @@ class HomeControllerTest extends TestVariables {
 
 		@Test
 		public void processTransferTestIfTransactionNull() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processTransfer(null, model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processTransfer(null, model, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
@@ -287,7 +286,7 @@ class HomeControllerTest extends TestVariables {
 
 		@Test
 		public void processTransferTestIfModelNull() {
-			assertEquals("error", homeController.processTransfer(internalTransactionDto, null, principal));
+			assertEquals("error", applicationController.processTransfer(internalTransactionDto, null, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
@@ -295,7 +294,7 @@ class HomeControllerTest extends TestVariables {
 
 		@Test
 		public void processTransferTestIfPrincipalNull() {
-			assertEquals("error", homeController.processTransfer(internalTransactionDto, model, null));
+			assertEquals("error", applicationController.processTransfer(internalTransactionDto, model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
@@ -304,7 +303,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processTransferTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.processTransfer(internalTransactionDto, model, principal));
+			assertEquals("error", applicationController.processTransfer(internalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
@@ -313,7 +312,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processTransferTestIfNoPastTransactionFound() {
 			when(transactionService.getPastTransactions(any(UserDto.class))).thenReturn(null);
-			assertEquals("transfer", homeController.processTransfer(internalTransactionDto, model, principal));
+			assertEquals("transfer", applicationController.processTransfer(internalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(1+1)).getPastTransactions(any(UserDto.class));
@@ -322,7 +321,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processTransferTestIfErrorOnAddTransaction() {
 			when(transactionService.addInternalTransaction(any(InternalTransactionDto.class))).thenThrow(new IllegalArgumentException());
-			assertThrows(Exception.class, () -> homeController.processTransfer(internalTransactionDto, model, principal));
+			assertThrows(Exception.class, () -> applicationController.processTransfer(internalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addInternalTransaction(any(InternalTransactionDto.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
@@ -333,31 +332,31 @@ class HomeControllerTest extends TestVariables {
 	class showAddTransactionFromBankAccountFormTests {
 		@Test
 		public void showAddTransactionFromBankAccountFormTest() {
-			assertEquals("add_transaction_from_bank_account",homeController.showAddTransactionFromBankAccountForm(model, principal));
+			assertEquals("add_transaction_from_bank_account", applicationController.showAddTransactionFromBankAccountForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 		@Test
 		public void showAddTransactionFromBankAccountFormTestIfModelNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showAddTransactionFromBankAccountForm(null, principal));
+			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionFromBankAccountForm(null, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 		@Test
 		public void showAddTransactionFromBankAccountFormTestIfPrincipalNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showAddTransactionFromBankAccountForm(model, null));
+			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionFromBankAccountForm(model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void showAddTransactionFromBankAccountFormTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.showAddTransactionFromBankAccountForm(model, principal));
+			assertEquals("error", applicationController.showAddTransactionFromBankAccountForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void showAddTransactionFromBankAccountFormTestIfNoPastTransactionsFound() {
 			when(transactionService.getPastTransactions(any(UserDto.class))).thenReturn(null);
-			assertEquals("add_transaction_from_bank_account", homeController.showAddTransactionFromBankAccountForm(model, principal));
+			assertEquals("add_transaction_from_bank_account", applicationController.showAddTransactionFromBankAccountForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 	}
@@ -366,35 +365,35 @@ class HomeControllerTest extends TestVariables {
 	class processAddTransactionFromBankAccountFormTests {
 		@Test
 		public void processAddTransactionFromBankAccountFormTest() {
-			assertEquals("profile", homeController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("profile", applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfTransactionEmpty() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processAddTransactionFromBankAccountForm(new ExternalTransactionDto(), model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionFromBankAccountForm(new ExternalTransactionDto(), model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfTransactionNull() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processAddTransactionFromBankAccountForm(null, model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionFromBankAccountForm(null, model, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfModelNull() {
-			assertEquals("error", homeController.processAddTransactionFromBankAccountForm(externalTransactionDto, null, principal));
+			assertEquals("error", applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, null, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfPrincipalNull() {
-			assertEquals("error", homeController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, null));
+			assertEquals("error", applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -402,7 +401,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("error", applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -410,7 +409,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfNoPastTransactionFound() {
 			when(transactionService.getPastTransactions(any(UserDto.class))).thenReturn(null);
-			assertEquals("profile", homeController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("profile", applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -418,7 +417,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfErrorOnAddTransaction() {
 			when(transactionService.addExternalTransaction(any(ExternalTransactionDto.class))).thenThrow(new IllegalArgumentException());
-			assertThrows(Exception.class, () -> homeController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
+			assertThrows(Exception.class, () -> applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -428,31 +427,31 @@ class HomeControllerTest extends TestVariables {
 	class showAddTransactionToBankAccountFormTests {
 		@Test
 		public void showAddTransactionToBankAccountFormTest() {
-			assertEquals("add_transaction_to_bank_account",homeController.showAddTransactionToBankAccountForm(model, principal));
+			assertEquals("add_transaction_to_bank_account", applicationController.showAddTransactionToBankAccountForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 		@Test
 		public void showAddTransactionToBankAccountFormTestIfModelNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showAddTransactionToBankAccountForm(null, principal));
+			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionToBankAccountForm(null, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 		@Test
 		public void showAddTransactionToBankAccountFormTestIfPrincipalNull() {
-			assertThrows(NullPointerException.class, () -> homeController.showAddTransactionToBankAccountForm(model, null));
+			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionToBankAccountForm(model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void showAddTransactionToBankAccountFormTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.showAddTransactionToBankAccountForm(model, principal));
+			assertEquals("error", applicationController.showAddTransactionToBankAccountForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 
 		@Test
 		public void showAddTransactionToBankAccountFormTestIfNoPastTransactionsFound() {
 			when(transactionService.getPastTransactions(any(UserDto.class))).thenReturn(null);
-			assertEquals("add_transaction_to_bank_account", homeController.showAddTransactionToBankAccountForm(model, principal));
+			assertEquals("add_transaction_to_bank_account", applicationController.showAddTransactionToBankAccountForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 		}
 	}
@@ -461,35 +460,35 @@ class HomeControllerTest extends TestVariables {
 	class processAddTransactionToBankAccountFormTests {
 		@Test
 		public void processAddTransactionToBankAccountFormTest() {
-			assertEquals("profile", homeController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("profile", applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfTransactionEmpty() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processAddTransactionToBankAccountForm(new ExternalTransactionDto(), model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionToBankAccountForm(new ExternalTransactionDto(), model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfTransactionNull() {
-			assertThrows(IllegalArgumentException.class, () -> homeController.processAddTransactionToBankAccountForm(null, model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionToBankAccountForm(null, model, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfModelNull() {
-			assertEquals("error", homeController.processAddTransactionToBankAccountForm(externalTransactionDto, null, principal));
+			assertEquals("error", applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, null, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfPrincipalNull() {
-			assertEquals("error", homeController.processAddTransactionToBankAccountForm(externalTransactionDto, model, null));
+			assertEquals("error", applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -497,7 +496,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", homeController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("error", applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -505,7 +504,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfNoPastTransactionFound() {
 			when(transactionService.getPastTransactions(any(UserDto.class))).thenReturn(null);
-			assertEquals("profile", homeController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("profile", applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -513,7 +512,7 @@ class HomeControllerTest extends TestVariables {
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfErrorOnAddTransaction() {
 			when(transactionService.addExternalTransaction(any(ExternalTransactionDto.class))).thenThrow(new IllegalArgumentException());
-			assertThrows(Exception.class, () -> homeController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
+			assertThrows(Exception.class, () -> applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
