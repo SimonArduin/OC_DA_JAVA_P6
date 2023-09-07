@@ -36,10 +36,10 @@ public class ApplicationController {
     }
 
     @PostMapping("/process_register")
-    public String processRegister(UserDto user) {
-        if (user == null || user.isEmpty())
+    public String processRegister(UserDto userDto) {
+        if (userDto == null || userDto.isEmpty())
             throw new IllegalArgumentException("Invalid user");
-        userService.addUser(user);
+        userService.addUser(userDto);
         return "register_success";
     }
 
@@ -87,7 +87,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/transfer")
-    public String showAddTransactionForm(Model model, Principal principal) {
+    public String showTransferForm(Model model, Principal principal) {
         UserDto connectedUser = userService.findByUsername(principal.getName());
         if(connectedUser==null || connectedUser.isEmpty())
             return "error";
@@ -115,7 +115,7 @@ public class ApplicationController {
             model.addAttribute("transaction", new InternalTransactionDto());
             List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
             model.addAttribute("transactionList", transactionList);
-            return showAddTransactionForm(model, principal);
+            return showTransferForm(model, principal);
         }
         return "error";
     }

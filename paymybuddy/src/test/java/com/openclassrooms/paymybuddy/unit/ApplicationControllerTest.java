@@ -224,19 +224,19 @@ class ApplicationControllerTest extends TestVariables {
 	class showAddTransactionFormTests {
 		@Test
 		public void showAddTransactionFormTest() {
-			assertEquals("transfer", applicationController.showAddTransactionForm(model, principal));
+			assertEquals("transfer", applicationController.showTransferForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).getPastTransactions(any(UserDto.class));
 		}
 		@Test
 		public void showAddTransactionFormTestIfModelNull() {
-			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionForm(null, principal));
+			assertThrows(NullPointerException.class, () -> applicationController.showTransferForm(null, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
 		}
 		@Test
 		public void showAddTransactionFormTestIfPrincipalNull() {
-			assertThrows(NullPointerException.class, () -> applicationController.showAddTransactionForm(model, null));
+			assertThrows(NullPointerException.class, () -> applicationController.showTransferForm(model, null));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
 		}
@@ -244,7 +244,7 @@ class ApplicationControllerTest extends TestVariables {
 		@Test
 		public void showAddTransactionFormTestIfNoUserFound() {
 			when(userService.findByUsername(any(String.class))).thenReturn(null);
-			assertEquals("error", applicationController.showAddTransactionForm(model, principal));
+			assertEquals("error", applicationController.showTransferForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(0)).getPastTransactions(any(UserDto.class));
 		}
@@ -252,7 +252,7 @@ class ApplicationControllerTest extends TestVariables {
 		@Test
 		public void showAddTransactionFormTestIfNoPastTransactionsFound() {
 			when(transactionService.getPastTransactions(any(UserDto.class))).thenReturn(null);
-			assertEquals("transfer", applicationController.showAddTransactionForm(model, principal));
+			assertEquals("transfer", applicationController.showTransferForm(model, principal));
 			verify(userService, Mockito.times(1)).findByUsername(any(String.class));
 			verify(transactionService, Mockito.times(1)).getPastTransactions(any(UserDto.class));
 		}
