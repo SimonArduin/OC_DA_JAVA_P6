@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.service;
 
+import com.openclassrooms.paymybuddy.entity.Currency;
 import com.openclassrooms.paymybuddy.entity.Role;
 import com.openclassrooms.paymybuddy.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ public class RoleService {
     public Role findById(Integer id) {
         if(id==null)
             throw new IllegalArgumentException();
-        return roleRepository.findById(id);
+        Role result = roleRepository.findById(id);
+        if (result == null)
+            throw new IllegalArgumentException("Role not found");
+        return result;
     }
 }

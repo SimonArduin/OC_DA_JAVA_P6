@@ -11,7 +11,10 @@ public class CurrencyService {
     CurrencyRepository currencyRepository;
     public Currency findById(Integer id) {
         if(id==null)
-            throw new IllegalArgumentException();
-        return currencyRepository.findById(id);
+            throw new IllegalArgumentException("Invalid id");
+        Currency result = currencyRepository.findById(id);
+        if (result == null)
+            throw new IllegalArgumentException("Currency not found");
+        return result;
     }
 }
