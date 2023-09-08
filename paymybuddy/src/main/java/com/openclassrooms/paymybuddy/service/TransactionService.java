@@ -22,14 +22,14 @@ public class TransactionService {
         if(id==null)
             throw new IllegalArgumentException();
         Transaction transaction = transactionRepository.findById(id);
-        if(transaction!=null && !transaction.isEmpty()) {
-            if (transaction.isInternalTransaction() && !transaction.isExternalTransaction())
-                return new InternalTransactionDto(transaction);
-            if (transaction.isExternalTransaction() && !transaction.isInternalTransaction())
-                return new ExternalTransactionDto(transaction);
-            throw new IllegalArgumentException("Invalid transaction");
+        if(transaction==null || transaction.isEmpty()) {
+            throw new IllegalArgumentException("Transaction not found");
         }
-        return null;
+        if (transaction.isInternalTransaction() && !transaction.isExternalTransaction())
+            return new InternalTransactionDto(transaction);
+        else if (transaction.isExternalTransaction() && !transaction.isInternalTransaction())
+            return new ExternalTransactionDto(transaction);
+        throw new IllegalArgumentException("Invalid transaction");
     }
 
     public List<TransactionDto> findBySenderId(Integer id) {
