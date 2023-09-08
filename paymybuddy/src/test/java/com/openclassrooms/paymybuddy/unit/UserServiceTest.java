@@ -106,7 +106,7 @@ public class UserServiceTest extends TestVariables {
 
         @Test
         public void addConnectionToUserTestIfSame() {
-            assertEquals(null, userService.addConnectionToUser(userDto, userDto));
+            assertThrows(IllegalArgumentException.class, () -> userService.addConnectionToUser(userDto, userDto));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
     }
@@ -116,14 +116,14 @@ public class UserServiceTest extends TestVariables {
 
         @Test
         public void findByIdTest() {
-            assertEquals(userDto, userService.findById(user.getId()));
+            assertEquals(userDto, userService.findById(userDto.getId()));
             verify(userRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 
         @Test
         public void findByIdTestIfNotInDB() {
             when(userRepository.findById(any(Integer.class))).thenReturn(null);
-            assertEquals(null, userService.findById(user.getId()));
+            assertThrows(IllegalArgumentException.class, () -> userService.findById(userDto.getId()));
             verify(userRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 
@@ -146,7 +146,7 @@ public class UserServiceTest extends TestVariables {
         @Test
         public void findByUsernameTestIfNotInDB() {
             when(userRepository.findByUsername(any(String.class))).thenReturn(null);
-            assertEquals(null, userService.findByUsername(user.getUsername()));
+            assertThrows(IllegalArgumentException.class, () -> userService.findByUsername(user.getUsername()));
             verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));
         }
 
@@ -195,7 +195,7 @@ public class UserServiceTest extends TestVariables {
 
         @Test
         public void removeFromAccountBalanceTestIfAmountMoreThanAccountBalance() {
-            assertEquals(null, userService.removeFromAccountBalance(userDto, user.getAccountBalance() + amount));
+            assertThrows(IllegalArgumentException.class, () -> userService.removeFromAccountBalance(userDto, user.getAccountBalance() + amount));
             verify(userRepository, Mockito.times(0)).save(any(User.class));
         }
 
