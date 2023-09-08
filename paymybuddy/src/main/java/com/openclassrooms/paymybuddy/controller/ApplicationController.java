@@ -4,6 +4,7 @@ import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
+import com.openclassrooms.paymybuddy.service.GlobalService;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class ApplicationController {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private GlobalService globalService;
 
     @GetMapping("/")
     public String viewHomePage() {
@@ -94,7 +98,7 @@ public class ApplicationController {
         model.addAttribute("connectedUser", connectedUser);
         InternalTransactionDto transaction = new InternalTransactionDto();
         model.addAttribute("transaction", transaction);
-        List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
+        List<PastTransactionDto> transactionList = globalService.getPastTransactions(connectedUser);
         model.addAttribute("transactionList", transactionList);
         return "transfer";
     }
@@ -110,10 +114,10 @@ public class ApplicationController {
         internalTransactionDto.setSenderId(connectedUser.getId());
         if (internalTransactionDto.isEmpty())
             throw new IllegalArgumentException("Invalid transaction");
-        if (transactionService.addInternalTransaction(internalTransactionDto) != null) {
+        if (globalService.addInternalTransaction(internalTransactionDto) != null) {
             model.addAttribute("connectedUser", connectedUser);
             model.addAttribute("transaction", new InternalTransactionDto());
-            List<PastTransactionDto> transactionList = transactionService.getPastTransactions(connectedUser);
+            List<PastTransactionDto> transactionList = globalService.getPastTransactions(connectedUser);
             model.addAttribute("transactionList", transactionList);
             return showTransferForm(model, principal);
         }
@@ -144,7 +148,7 @@ public class ApplicationController {
         externalTransactionDto.setToIban(false);
         if (externalTransactionDto.isEmpty())
             throw new IllegalArgumentException("Invalid transaction");
-        if (transactionService.addExternalTransaction(externalTransactionDto) != null)
+        if (globalService.addExternalTransaction(externalTransactionDto) != null)
             return profile(model, principal);
         return "error";
     }
@@ -173,7 +177,7 @@ public class ApplicationController {
         externalTransactionDto.setToIban(true);
         if (externalTransactionDto.isEmpty())
             throw new IllegalArgumentException("Invalid transaction");
-        if (transactionService.addExternalTransaction(externalTransactionDto) != null)
+        if (globalService.addExternalTransaction(externalTransactionDto) != null)
             return profile(model, principal);
         return "error";
     }

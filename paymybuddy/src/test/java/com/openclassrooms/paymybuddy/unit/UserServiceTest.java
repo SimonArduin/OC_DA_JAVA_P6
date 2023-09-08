@@ -31,7 +31,7 @@ public class UserServiceTest extends TestVariables {
     @BeforeEach
     private void setUp() {
         initializeVariables();
-        amount = transaction.getAmount();
+        amount = internalTransaction.getAmount();
 
         when(userRepository.findById(any(Integer.class))).thenReturn(user);
         when(userRepository.findByUsername(any(String.class))).thenReturn(user);

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > HomeController</title>
+  <title>Coverage Report > ApplicationController</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">com.openclassrooms.paymybuddy.controller</a>
 </div>
 
-<h1>Coverage Summary for Class: HomeController (com.openclassrooms.paymybuddy.controller)</h1>
+<h1>Coverage Summary for Class: ApplicationController (com.openclassrooms.paymybuddy.controller)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -40,7 +40,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">HomeController</td>
+  <td class="name">ApplicationController</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -59,10 +59,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    91,4%
+    94,3%
   </span>
   <span class="absValue">
-    (96/105)
+    (99/105)
   </span>
 </td>
 </tr>
@@ -80,6 +80,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
 &nbsp;import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 &nbsp;import com.openclassrooms.paymybuddy.dto.UserDto;
+&nbsp;import com.openclassrooms.paymybuddy.service.GlobalService;
 &nbsp;import com.openclassrooms.paymybuddy.service.TransactionService;
 &nbsp;import com.openclassrooms.paymybuddy.service.UserService;
 &nbsp;import org.springframework.beans.factory.annotation.Autowired;
@@ -92,13 +93,16 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.List;
 &nbsp;
 &nbsp;@Controller
-<b class="fc">&nbsp;public class HomeController {</b>
+<b class="fc">&nbsp;public class ApplicationController {</b>
 &nbsp;
 &nbsp;    @Autowired
 &nbsp;    private UserService userService;
 &nbsp;
 &nbsp;    @Autowired
 &nbsp;    private TransactionService transactionService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private GlobalService globalService;
 &nbsp;
 &nbsp;    @GetMapping(&quot;/&quot;)
 &nbsp;    public String viewHomePage() {
@@ -112,10 +116,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    @PostMapping(&quot;/process_register&quot;)
-&nbsp;    public String processRegister(UserDto user) {
-<b class="fc">&nbsp;        if (user == null || user.isEmpty())</b>
+&nbsp;    public String processRegister(UserDto userDto) {
+<b class="fc">&nbsp;        if (userDto == null || userDto.isEmpty())</b>
 <b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user&quot;);</b>
-<b class="fc">&nbsp;        userService.addUser(user);</b>
+<b class="fc">&nbsp;        userService.addUser(userDto);</b>
 <b class="fc">&nbsp;        return &quot;register_success&quot;;</b>
 &nbsp;    }
 &nbsp;
@@ -147,12 +151,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public String processAddConnection(UserDto connection, Model model, Principal principal) {
 <b class="fc">&nbsp;        if (model == null || principal == null)</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
-<b class="fc">&nbsp;        if (connection == null || connection.isEmpty())</b>
+<b class="fc">&nbsp;        if (connection == null || connection.getUsername() == null)</b>
 <b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid connection to add&quot;);</b>
 <b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
 <b class="fc">&nbsp;        if (connectedUser == null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
-<b class="fc">&nbsp;        connection = userService.findById((connection.getId()));</b>
+<b class="fc">&nbsp;        connection = userService.findByUsername((connection.getUsername()));</b>
 <b class="fc">&nbsp;        if (connection == null || connection.isEmpty())</b>
 <b class="nc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</b>
@@ -163,14 +167,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    }
 &nbsp;
 &nbsp;    @GetMapping(&quot;/transfer&quot;)
-&nbsp;    public String showAddTransactionForm(Model model, Principal principal) {
+&nbsp;    public String showTransferForm(Model model, Principal principal) {
 <b class="fc">&nbsp;        UserDto connectedUser = userService.findByUsername(principal.getName());</b>
 <b class="fc">&nbsp;        if(connectedUser==null || connectedUser.isEmpty())</b>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
 <b class="fc">&nbsp;        InternalTransactionDto transaction = new InternalTransactionDto();</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;transaction&quot;, transaction);</b>
-<b class="fc">&nbsp;        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="fc">&nbsp;        List&lt;PastTransactionDto&gt; transactionList = globalService.getPastTransactions(connectedUser);</b>
 <b class="fc">&nbsp;        model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
 <b class="fc">&nbsp;        return &quot;transfer&quot;;</b>
 &nbsp;    }
@@ -185,13 +189,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;            return &quot;error&quot;;</b>
 <b class="fc">&nbsp;        internalTransactionDto.setSenderId(connectedUser.getId());</b>
 <b class="fc">&nbsp;        if (internalTransactionDto.isEmpty())</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
-<b class="fc">&nbsp;        if (transactionService.addInternalTransaction(internalTransactionDto) != null) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+<b class="fc">&nbsp;        if (globalService.addInternalTransaction(internalTransactionDto) != null) {</b>
 <b class="fc">&nbsp;            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</b>
 <b class="fc">&nbsp;            model.addAttribute(&quot;transaction&quot;, new InternalTransactionDto());</b>
-<b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</b>
+<b class="fc">&nbsp;            List&lt;PastTransactionDto&gt; transactionList = globalService.getPastTransactions(connectedUser);</b>
 <b class="fc">&nbsp;            model.addAttribute(&quot;transactionList&quot;, transactionList);</b>
-<b class="fc">&nbsp;            return showAddTransactionForm(model, principal);</b>
+<b class="fc">&nbsp;            return showTransferForm(model, principal);</b>
 &nbsp;        }
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
@@ -219,8 +223,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        externalTransactionDto.setIban(connectedUser.getIban());</b>
 <b class="fc">&nbsp;        externalTransactionDto.setToIban(false);</b>
 <b class="fc">&nbsp;        if (externalTransactionDto.isEmpty())</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
-<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+<b class="fc">&nbsp;        if (globalService.addExternalTransaction(externalTransactionDto) != null)</b>
 <b class="fc">&nbsp;            return profile(model, principal);</b>
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
@@ -248,8 +252,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="fc">&nbsp;        externalTransactionDto.setIban(connectedUser.getIban());</b>
 <b class="fc">&nbsp;        externalTransactionDto.setToIban(true);</b>
 <b class="fc">&nbsp;        if (externalTransactionDto.isEmpty())</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
-<b class="fc">&nbsp;        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+<b class="fc">&nbsp;        if (globalService.addExternalTransaction(externalTransactionDto) != null)</b>
 <b class="fc">&nbsp;            return profile(model, principal);</b>
 <b class="nc">&nbsp;        return &quot;error&quot;;</b>
 &nbsp;    }
@@ -277,7 +281,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-09-04 18:58</div>
+    <div style="float:right;">generated on 2023-09-08 11:40</div>
 </div>
 </body>
 </html>

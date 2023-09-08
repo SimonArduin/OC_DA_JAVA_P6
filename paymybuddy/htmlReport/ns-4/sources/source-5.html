@@ -56,10 +56,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 </tr>
   <tr>
-    <td class="name">User$HibernateInstantiator$vGzFE5lx</td>
+    <td class="name">User$HibernateInstantiator$CgBzbphn</td>
   </tr>
   <tr>
-    <td class="name">User$HibernateProxy$WFNDE2yV</td>
+    <td class="name">User$HibernateProxy$Tv3Hb7Eh</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -103,7 +103,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
 &nbsp;    private Integer id;
 &nbsp;
-<b class="fc">&nbsp;    @Column(nullable = false)</b>
+<b class="fc">&nbsp;    @Column(name = &quot;account_balance&quot;, nullable = false)</b>
 <b class="fc">&nbsp;    private Double accountBalance = 0.0;</b>
 &nbsp;
 <b class="fc">&nbsp;    @Column(name = &quot;currency_id&quot;, nullable = false)</b>
@@ -112,7 +112,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Column(nullable = false, unique = true, length = 100)
 &nbsp;    private String email;
 &nbsp;
-&nbsp;    @Column
+&nbsp;    @Column(nullable = false)
 &nbsp;    private String iban;
 &nbsp;
 &nbsp;    @Column(nullable = false, length = 100)
@@ -302,7 +302,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-09-04 18:58</div>
+    <div style="float:right;">generated on 2023-09-08 11:40</div>
 </div>
 </body>
 </html>

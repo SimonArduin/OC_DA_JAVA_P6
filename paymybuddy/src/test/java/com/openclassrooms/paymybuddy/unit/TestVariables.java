@@ -22,13 +22,11 @@ abstract class TestVariables {
     protected Transaction internalTransaction;
     protected Transaction externalTransaction;
     protected List<Transaction> transactionList;
-    protected DatabaseTransactionDto databaseTransactionDto;
-    protected DatabaseTransactionDto databaseTransactionDtoOther;
-    protected List<DatabaseTransactionDto> databaseTransactionDtoList;
     protected InternalTransactionDto internalTransactionDto;
     protected InternalTransactionDto internalTransactionDtoOther;
     protected ExternalTransactionDto externalTransactionDto;
     protected ExternalTransactionDto externalTransactionDtoOther;
+    protected List<TransactionDto> transactionDtoList;
     protected PastTransactionDto pastTransactionDto;
     protected PastTransactionDto pastTransactionDtoOther;
     protected List<PastTransactionDto> pastTransactionDtoList;
@@ -46,20 +44,18 @@ abstract class TestVariables {
         userOther = new User(2, 200.00,1,"emailOtherOther","ibanOther","passwordOther",1,"usernameOther",new ArrayList<>());
         userDto = new UserDto(user);
         userDtoOther = new UserDto(userOther);
-        transaction = new Transaction(user.getId(), 10.0, commission.getRate()*10.0, commission.getId(), currency.getId(), "description", userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);
-        transactionOther = new Transaction(userOther.getId(), 20.0, commission.getRate()*20.0, commission.getId(), 2, "descriptionOther", userDtoOther.getIban(), userDtoOther.getId(), 4, new Timestamp(0), true);
-        transactionList = new ArrayList<>(Arrays.asList(transaction, transactionOther));
-        databaseTransactionDto = new DatabaseTransactionDto(transaction);
-        databaseTransactionDtoOther = new DatabaseTransactionDto(transactionOther);
-        databaseTransactionDtoList = new ArrayList<>(Arrays.asList(databaseTransactionDto, databaseTransactionDtoOther));
+        transaction = new Transaction(user.getId(), 10.0, commission.getRate()*10.0, commission.getId(), currency.getId(), "description", userDto.getIban(), 2, userDto.getId(), new Timestamp(0), false);
+        transactionOther = new Transaction(userOther.getId(), 20.0, commission.getRate()*20.0, commission.getId(), 2, "descriptionOther", userDtoOther.getIban(), 4, userDtoOther.getId(), new Timestamp(0), true);
         internalTransactionDto = new InternalTransactionDto(transaction);
         internalTransactionDtoOther = new InternalTransactionDto(transactionOther);
         externalTransactionDto = new ExternalTransactionDto(transaction);
         externalTransactionDtoOther = new ExternalTransactionDto(transactionOther);
+        transactionDtoList = new ArrayList<>(Arrays.asList(internalTransactionDto, externalTransactionDto));
         internalTransaction = new Transaction(internalTransactionDto);
         externalTransaction = new Transaction(externalTransactionDto);
-        pastTransactionDto = new PastTransactionDto(databaseTransactionDto.getId(), userDto.getUsername(), databaseTransactionDto.getDescription(), databaseTransactionDto.getAmount(), currency.getName());
-        pastTransactionDtoOther = new PastTransactionDto(databaseTransactionDtoOther.getId(), userDtoOther.getUsername(), databaseTransactionDtoOther.getDescription(), databaseTransactionDtoOther.getAmount(), currency.getName());
+        transactionList = new ArrayList<>(Arrays.asList(internalTransaction, externalTransaction));
+        pastTransactionDto = new PastTransactionDto(internalTransactionDto.getId(), userDto.getUsername(), internalTransactionDto.getDescription(), internalTransactionDto.getAmount(), currency.getName());
+        pastTransactionDtoOther = new PastTransactionDto(internalTransactionDtoOther.getId(), userDtoOther.getUsername(), internalTransactionDtoOther.getDescription(), internalTransactionDtoOther.getAmount(), currency.getName());
         pastTransactionDtoList = new ArrayList<>(Arrays.asList(pastTransactionDto, pastTransactionDtoOther));
     }
 }

@@ -22,27 +22,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 <span class="fc" id="L22">        class thisNotEmpty {</span>
             @Test
             public void equalsTest() {
-<span class="fc" id="L25">                assertTrue(transaction.equals(transaction));</span>
+<span class="fc" id="L25">                assertTrue(internalTransaction.equals(internalTransaction));</span>
 <span class="fc" id="L26">            }</span>
 
             @Test
             public void equalsTestIfEmpty() {
-<span class="fc" id="L30">                assertFalse(transaction.equals(new Transaction()));</span>
+<span class="fc" id="L30">                assertFalse(internalTransaction.equals(new Transaction()));</span>
 <span class="fc" id="L31">            }</span>
 
             @Test
             public void equalsTestIfNull() {
-<span class="fc" id="L35">                assertFalse(transaction.equals(null));</span>
+<span class="fc" id="L35">                assertFalse(internalTransaction.equals(null));</span>
 <span class="fc" id="L36">            }</span>
 
             @Test
             public void equalsTestIfNotTransaction() {
-<span class="fc" id="L40">                assertFalse(transaction.equals(&quot;notTransaction&quot;));</span>
+<span class="fc" id="L40">                assertFalse(internalTransaction.equals(&quot;notTransaction&quot;));</span>
 <span class="fc" id="L41">            }</span>
 
             @Test
             public void equalsTestIfDifferentTransaction() {
-<span class="fc" id="L45">                assertFalse(transaction.equals(transactionOther));</span>
+<span class="fc" id="L45">                assertFalse(internalTransaction.equals(transactionOther));</span>
 <span class="fc" id="L46">            }</span>
         }
 
@@ -74,31 +74,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 <span class="fc" id="L74">    class isEmptyTests {</span>
         @Test
         public void isEmptyTest() {
-<span class="fc" id="L77">            assertFalse(transaction.isEmpty());</span>
+<span class="fc" id="L77">            assertFalse(internalTransaction.isEmpty());</span>
 <span class="fc" id="L78">        }</span>
 
         @Test
         public void isEmptyTestIfNoAmount() {
-<span class="fc" id="L82">            transaction.setAmount(null);</span>
-<span class="fc" id="L83">            assertTrue(transaction.isEmpty());</span>
+<span class="fc" id="L82">            internalTransaction.setAmount(null);</span>
+<span class="fc" id="L83">            assertTrue(internalTransaction.isEmpty());</span>
 <span class="fc" id="L84">        }</span>
 
         @Test
         public void isEmptyTestIfNoSenderId() {
-<span class="fc" id="L88">            transaction.setSenderId(null);</span>
-<span class="fc" id="L89">            assertTrue(transaction.isEmpty());</span>
+<span class="fc" id="L88">            internalTransaction.setSenderId(null);</span>
+<span class="fc" id="L89">            assertTrue(internalTransaction.isEmpty());</span>
 <span class="fc" id="L90">        }</span>
 
         @Test
         public void isEmptyTestIfNoCurrencyId() {
-<span class="fc" id="L94">            transaction.setCurrencyId(null);</span>
-<span class="fc" id="L95">            assertTrue(transaction.isEmpty());</span>
+<span class="fc" id="L94">            internalTransaction.setCurrencyId(null);</span>
+<span class="fc" id="L95">            assertTrue(internalTransaction.isEmpty());</span>
 <span class="fc" id="L96">        }</span>
 
         @Test
         public void isEmptyTestIfNoTimestampId() {
-<span class="fc" id="L100">            transaction.setTimestamp(null);</span>
-<span class="fc" id="L101">            assertTrue(transaction.isEmpty());</span>
+<span class="fc" id="L100">            internalTransaction.setTimestamp(null);</span>
+<span class="fc" id="L101">            assertTrue(internalTransaction.isEmpty());</span>
 <span class="fc" id="L102">        }</span>
 
         @Test
@@ -110,43 +110,53 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 <span class="fc" id="L110">    class isExternalTransactionTests {</span>
         @Test
         public void isExternalTransactionTest() {
-<span class="fc" id="L113">            assertTrue(transaction.isExternalTransaction());</span>
+<span class="fc" id="L113">            assertTrue(externalTransaction.isExternalTransaction());</span>
 <span class="fc" id="L114">        }</span>
 
         @Test
         public void isExternalTransactionTestIfNoIban() {
-<span class="fc" id="L118">            transaction.setIban(null);</span>
-<span class="fc" id="L119">            assertFalse(transaction.isExternalTransaction());</span>
+<span class="fc" id="L118">            externalTransaction.setIban(null);</span>
+<span class="fc" id="L119">            assertFalse(externalTransaction.isExternalTransaction());</span>
 <span class="fc" id="L120">        }</span>
 
         @Test
         public void isExternalTransactionTestIfNoToIban() {
-<span class="fc" id="L124">            transaction.setToIban(null);</span>
-<span class="fc" id="L125">            assertFalse(transaction.isExternalTransaction());</span>
+<span class="fc" id="L124">            externalTransaction.setToIban(null);</span>
+<span class="fc" id="L125">            assertFalse(externalTransaction.isExternalTransaction());</span>
 <span class="fc" id="L126">        }</span>
 
         @Test
         public void isExternalTransactionTestIfEmpty() {
 <span class="fc" id="L130">            assertFalse(new Transaction().isExternalTransaction());</span>
 <span class="fc" id="L131">        }</span>
+
+        @Test
+        public void isExternalTransactionTestIfInternal() {
+<span class="fc" id="L135">            assertFalse(internalTransaction.isExternalTransaction());</span>
+<span class="fc" id="L136">        }</span>
     }
     @Nested
-<span class="fc" id="L134">    class isInternalTransactionTests {</span>
+<span class="fc" id="L139">    class isInternalTransactionTests {</span>
         @Test
         public void isInternalTransactionTest() {
-<span class="fc" id="L137">            assertTrue(transaction.isInternalTransaction());</span>
-<span class="fc" id="L138">        }</span>
+<span class="fc" id="L142">            assertTrue(internalTransaction.isInternalTransaction());</span>
+<span class="fc" id="L143">        }</span>
 
         @Test
         public void isInternalTransactionTestIfNoReceiverId() {
-<span class="fc" id="L142">            transaction.setReceiverId(null);</span>
-<span class="fc" id="L143">            assertFalse(transaction.isInternalTransaction());</span>
-<span class="fc" id="L144">        }</span>
+<span class="fc" id="L147">            internalTransaction.setReceiverId(null);</span>
+<span class="fc" id="L148">            assertFalse(internalTransaction.isInternalTransaction());</span>
+<span class="fc" id="L149">        }</span>
 
         @Test
         public void isInternalTransactionTestIfEmpty() {
-<span class="fc" id="L148">            assertFalse(new Transaction().isInternalTransaction());</span>
-<span class="fc" id="L149">        }</span>
+<span class="fc" id="L153">            assertFalse(new Transaction().isInternalTransaction());</span>
+<span class="fc" id="L154">        }</span>
+
+        @Test
+        public void isInternalTransactionTestIfExternal() {
+<span class="fc" id="L158">            assertFalse(externalTransaction.isInternalTransaction());</span>
+<span class="fc" id="L159">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

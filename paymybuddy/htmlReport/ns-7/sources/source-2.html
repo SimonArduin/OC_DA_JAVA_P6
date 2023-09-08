@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > CommissionRepository</title>
+  <title>Coverage Report > UserRepository</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,7 +21,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">com.openclassrooms.paymybuddy.repository</a>
 </div>
 
-<h1>Coverage Summary for Class: CommissionRepository (com.openclassrooms.paymybuddy.repository)</h1>
+<h1>Coverage Summary for Class: UserRepository (com.openclassrooms.paymybuddy.repository)</h1>
 
 <table class="coverageStats">
 
@@ -29,13 +29,13 @@ Current scope:     <a href="../../index.html">all classes</a>
   <th class="name">Class</th>
 </tr>
   <tr>
-    <td class="name">CommissionRepository$MockitoMock$4X8gZvDh</td>
+    <td class="name">UserRepository$MockitoMock$3sRVmlsz</td>
   </tr>
   <tr>
-    <td class="name">CommissionRepository$MockitoMock$4X8gZvDh$auxiliary$EzXB6qQ3</td>
+    <td class="name">UserRepository$MockitoMock$3sRVmlsz$auxiliary$sTYCRLfd</td>
   </tr>
   <tr>
-    <td class="name">CommissionRepository$MockitoMock$4X8gZvDh$auxiliary$La1HgEsm</td>
+    <td class="name">UserRepository$MockitoMock$3sRVmlsz$auxiliary$ZARLBphL</td>
   </tr>
 <tr>
   <td class="name"><strong>Total</strong></td>
@@ -49,12 +49,13 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.repository;
 &nbsp;
-&nbsp;import com.openclassrooms.paymybuddy.entity.Commission;
+&nbsp;import com.openclassrooms.paymybuddy.entity.User;
 &nbsp;import org.springframework.data.jpa.repository.JpaRepository;
 &nbsp;
-&nbsp;public interface CommissionRepository extends JpaRepository&lt;Commission, Long&gt; {
-&nbsp;    public Commission findById(int id);
+&nbsp;public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+&nbsp;    public User findByUsername(String username);
 &nbsp;
+&nbsp;    public User findById(int id);
 &nbsp;}
 </code>
 </pre>
@@ -79,7 +80,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-09-04 18:58</div>
+    <div style="float:right;">generated on 2023-09-08 11:40</div>
 </div>
 </body>
 </html>

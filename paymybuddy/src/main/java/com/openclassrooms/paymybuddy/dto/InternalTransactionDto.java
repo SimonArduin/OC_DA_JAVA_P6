@@ -13,18 +13,6 @@ public class InternalTransactionDto extends TransactionDto {
     public InternalTransactionDto() {
     }
 
-    public InternalTransactionDto(Integer id, Double amount, Integer commissionId, Double commissionAmount, Integer currencyId, String description, Integer receiverId, Integer senderId, Timestamp timestamp) {
-        this.id = id;
-        this.amount = amount;
-        this.commissionId = commissionId;
-        this.commissionAmount = commissionAmount;
-        this.currencyId = currencyId;
-        this.description = description;
-        this.receiverId = receiverId;
-        this.senderId = senderId;
-        this.timestamp = timestamp;
-    }
-
     public InternalTransactionDto(Transaction transaction) {
         if (transaction == null
                 || transaction.isEmpty()
@@ -43,21 +31,6 @@ public class InternalTransactionDto extends TransactionDto {
         }
     }
 
-    public InternalTransactionDto(InternalTransactionDto transactionDto) {
-        if (transactionDto == null || transactionDto.isEmpty())
-            throw new IllegalArgumentException();
-        else {
-            this.id = transactionDto.getId();
-            this.amount = transactionDto.getAmount();
-            this.commissionId = transactionDto.getCommissionId();
-            this.commissionAmount = transactionDto.getCommissionAmount();
-            this.currencyId = transactionDto.getCurrencyId();
-            this.description = transactionDto.getDescription();
-            this.receiverId = transactionDto.getReceiverId();
-            this.senderId = transactionDto.getSenderId();
-            this.timestamp = transactionDto.getTimestamp();
-        }
-    }
     public Integer getReceiverId() {
         return receiverId;
     }
@@ -66,6 +39,7 @@ public class InternalTransactionDto extends TransactionDto {
         this.receiverId = receiverId;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -100,5 +74,15 @@ public class InternalTransactionDto extends TransactionDto {
                 && this.getReceiverId().equals(objTransactionDto.getReceiverId())
                 && this.getSenderId().equals(objTransactionDto.getSenderId())
                 && this.getTimestamp().equals(objTransactionDto.getTimestamp());
+    }
+
+    @Override
+    public boolean isExternalTransaction() {
+        return false;
+    }
+
+    @Override
+    public boolean isInternalTransaction() {
+        return true;
     }
 }

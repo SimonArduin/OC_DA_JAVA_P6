@@ -10,19 +10,10 @@ public class ExternalTransactionDto extends TransactionDto {
 
     private boolean toIban;
 
-    public ExternalTransactionDto() {
-    }
+    private String toIbanDescription = "to bank account";
+    private String notToIbanDescription = "from bank account";
 
-    public ExternalTransactionDto(Integer id, Double amount, Integer commissionId, Double commissionAmount, Integer currencyId, String description, String iban, Integer senderId, Timestamp timestamp, boolean toIban) {
-        this.id = id;
-        this.amount = amount;
-        this.commissionId = commissionId;
-        this.commissionAmount = commissionAmount;
-        this.currencyId = currencyId;
-        this.iban = iban;
-        this.senderId = senderId;
-        this.timestamp = timestamp;
-        this.toIban = toIban;
+    public ExternalTransactionDto() {
     }
 
     public ExternalTransactionDto(Transaction transaction) {
@@ -40,22 +31,6 @@ public class ExternalTransactionDto extends TransactionDto {
             this.senderId = transaction.getSenderId();
             this.timestamp = transaction.getTimestamp();
             this.toIban = transaction.isToIban();
-        }
-    }
-
-    public ExternalTransactionDto(ExternalTransactionDto transactionDto) {
-        if (transactionDto == null || transactionDto.isEmpty())
-            throw new IllegalArgumentException();
-        else {
-            this.id = transactionDto.getId();
-            this.amount = transactionDto.getAmount();
-            this.commissionId = transactionDto.getCommissionId();
-            this.commissionAmount = transactionDto.getCommissionAmount();
-            this.currencyId = transactionDto.getCurrencyId();
-            this.iban = transactionDto.getIban();
-            this.senderId = transactionDto.getSenderId();
-            this.timestamp = transactionDto.getTimestamp();
-            this.toIban = transactionDto.isToIban();
         }
     }
 
@@ -102,5 +77,22 @@ public class ExternalTransactionDto extends TransactionDto {
                 && this.getSenderId().equals(objTransactionDto.getSenderId())
                 && this.getTimestamp().equals(objTransactionDto.getTimestamp())
                 && this.isToIban() == (objTransactionDto.isToIban());
+    }
+
+    @Override
+    public boolean isExternalTransaction() {
+        return true;
+    }
+
+    @Override
+    public boolean isInternalTransaction() {
+        return false;
+    }
+
+    @Override
+    public String getDescription() {
+        if (toIban)
+            return toIbanDescription;
+        return notToIbanDescription;
     }
 }

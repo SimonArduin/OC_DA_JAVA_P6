@@ -27,18 +27,6 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(Integer id, Double accountBalance, Integer currencyId, String email, String iban, String password, Integer roleId, String username, List<UserDto> connections) {
-        this.id = id;
-        this.accountBalance = accountBalance;
-        this.currencyId = currencyId;
-        this.email = email;
-        this.iban = iban;
-        this.password = password;
-        this.roleId = roleId;
-        this.username = username;
-        this.connections = connections;
-    }
-
     public UserDto(User user) {
         if (user == null || user.isEmpty())
             throw new IllegalArgumentException();
@@ -54,25 +42,6 @@ public class UserDto {
             this.connections = new ArrayList<>();
             if (user.getConnections() != null && !user.getConnections().isEmpty())
                 for (User connection : user.getConnections())
-                    this.connections.add(new UserDto(connection));
-        }
-    }
-
-    public UserDto(UserDto userDto) {
-        if (userDto == null || userDto.isEmpty())
-            throw new IllegalArgumentException();
-        else {
-            this.id = userDto.getId();
-            this.accountBalance = userDto.getAccountBalance();
-            this.currencyId = userDto.getCurrencyId();
-            this.email = userDto.getEmail();
-            this.iban = userDto.getIban();
-            this.password = userDto.getPassword();
-            this.roleId = userDto.getRoleId();
-            this.username = userDto.getUsername();
-            this.connections = new ArrayList<>();
-            if (userDto.getConnections() != null && !userDto.getConnections().isEmpty())
-                for (UserDto connection : userDto.getConnections())
                     this.connections.add(new UserDto(connection));
         }
     }

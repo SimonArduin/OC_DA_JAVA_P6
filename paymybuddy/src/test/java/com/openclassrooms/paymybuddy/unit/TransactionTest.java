@@ -22,27 +22,27 @@ public class TransactionTest extends TestVariables{
         class thisNotEmpty {
             @Test
             public void equalsTest() {
-                assertTrue(transaction.equals(transaction));
+                assertTrue(internalTransaction.equals(internalTransaction));
             }
 
             @Test
             public void equalsTestIfEmpty() {
-                assertFalse(transaction.equals(new Transaction()));
+                assertFalse(internalTransaction.equals(new Transaction()));
             }
 
             @Test
             public void equalsTestIfNull() {
-                assertFalse(transaction.equals(null));
+                assertFalse(internalTransaction.equals(null));
             }
 
             @Test
             public void equalsTestIfNotTransaction() {
-                assertFalse(transaction.equals("notTransaction"));
+                assertFalse(internalTransaction.equals("notTransaction"));
             }
 
             @Test
             public void equalsTestIfDifferentTransaction() {
-                assertFalse(transaction.equals(transactionOther));
+                assertFalse(internalTransaction.equals(transactionOther));
             }
         }
 
@@ -74,31 +74,31 @@ public class TransactionTest extends TestVariables{
     class isEmptyTests {
         @Test
         public void isEmptyTest() {
-            assertFalse(transaction.isEmpty());
+            assertFalse(internalTransaction.isEmpty());
         }
 
         @Test
         public void isEmptyTestIfNoAmount() {
-            transaction.setAmount(null);
-            assertTrue(transaction.isEmpty());
+            internalTransaction.setAmount(null);
+            assertTrue(internalTransaction.isEmpty());
         }
 
         @Test
         public void isEmptyTestIfNoSenderId() {
-            transaction.setSenderId(null);
-            assertTrue(transaction.isEmpty());
+            internalTransaction.setSenderId(null);
+            assertTrue(internalTransaction.isEmpty());
         }
 
         @Test
         public void isEmptyTestIfNoCurrencyId() {
-            transaction.setCurrencyId(null);
-            assertTrue(transaction.isEmpty());
+            internalTransaction.setCurrencyId(null);
+            assertTrue(internalTransaction.isEmpty());
         }
 
         @Test
         public void isEmptyTestIfNoTimestampId() {
-            transaction.setTimestamp(null);
-            assertTrue(transaction.isEmpty());
+            internalTransaction.setTimestamp(null);
+            assertTrue(internalTransaction.isEmpty());
         }
 
         @Test
@@ -110,42 +110,52 @@ public class TransactionTest extends TestVariables{
     class isExternalTransactionTests {
         @Test
         public void isExternalTransactionTest() {
-            assertTrue(transaction.isExternalTransaction());
+            assertTrue(externalTransaction.isExternalTransaction());
         }
 
         @Test
         public void isExternalTransactionTestIfNoIban() {
-            transaction.setIban(null);
-            assertFalse(transaction.isExternalTransaction());
+            externalTransaction.setIban(null);
+            assertFalse(externalTransaction.isExternalTransaction());
         }
 
         @Test
         public void isExternalTransactionTestIfNoToIban() {
-            transaction.setToIban(null);
-            assertFalse(transaction.isExternalTransaction());
+            externalTransaction.setToIban(null);
+            assertFalse(externalTransaction.isExternalTransaction());
         }
 
         @Test
         public void isExternalTransactionTestIfEmpty() {
             assertFalse(new Transaction().isExternalTransaction());
         }
+
+        @Test
+        public void isExternalTransactionTestIfInternal() {
+            assertFalse(internalTransaction.isExternalTransaction());
+        }
     }
     @Nested
     class isInternalTransactionTests {
         @Test
         public void isInternalTransactionTest() {
-            assertTrue(transaction.isInternalTransaction());
+            assertTrue(internalTransaction.isInternalTransaction());
         }
 
         @Test
         public void isInternalTransactionTestIfNoReceiverId() {
-            transaction.setReceiverId(null);
-            assertFalse(transaction.isInternalTransaction());
+            internalTransaction.setReceiverId(null);
+            assertFalse(internalTransaction.isInternalTransaction());
         }
 
         @Test
         public void isInternalTransactionTestIfEmpty() {
             assertFalse(new Transaction().isInternalTransaction());
+        }
+
+        @Test
+        public void isInternalTransactionTestIfExternal() {
+            assertFalse(externalTransaction.isInternalTransaction());
         }
     }
 }

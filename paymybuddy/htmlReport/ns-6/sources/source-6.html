@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <title>Coverage Report > UserService</title>
+  <title>Coverage Report > TransactionService</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -21,15 +21,12 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">com.openclassrooms.paymybuddy.service</a>
 </div>
 
-<h1>Coverage Summary for Class: UserService (com.openclassrooms.paymybuddy.service)</h1>
+<h1>Coverage Summary for Class: TransactionService (com.openclassrooms.paymybuddy.service)</h1>
 
 <table class="coverageStats">
+
 <tr>
   <th class="name">Class</th>
-<th class="coverageStat 
-">
-  Class, %
-</th>
 <th class="coverageStat 
 ">
   Method, %
@@ -40,33 +37,46 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">UserService</td>
+  <td class="name">TransactionService</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    66,7%
   </span>
   <span class="absValue">
-    (1/1)
+    (4/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    90,2%
   </span>
   <span class="absValue">
-    (7/7)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (42/42)
+    (37/41)
   </span>
 </td>
 </tr>
-
+  <tr>
+    <td class="name">TransactionService$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (4/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,2%
+  </span>
+  <span class="absValue">
+    (37/41)
+  </span>
+</td>
+</tr>
 </table>
 
 <br/>
@@ -76,77 +86,96 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.service;
 &nbsp;
-&nbsp;import com.openclassrooms.paymybuddy.dto.UserDto;
-&nbsp;import com.openclassrooms.paymybuddy.entity.User;
-&nbsp;import com.openclassrooms.paymybuddy.repository.UserRepository;
+&nbsp;import com.openclassrooms.paymybuddy.dto.*;
+&nbsp;import com.openclassrooms.paymybuddy.entity.Commission;
+&nbsp;import com.openclassrooms.paymybuddy.entity.Currency;
+&nbsp;import com.openclassrooms.paymybuddy.entity.Transaction;
+&nbsp;import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 &nbsp;import org.springframework.beans.factory.annotation.Autowired;
-&nbsp;import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 &nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.sql.Timestamp;
+&nbsp;import java.time.Instant;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Comparator;
+&nbsp;import java.util.List;
 &nbsp;
 &nbsp;@Service
-<b class="fc">&nbsp;public class UserService {</b>
-&nbsp;    @Autowired
-&nbsp;    UserRepository userRepository;
+&nbsp;@Transactional
+<b class="fc">&nbsp;public class TransactionService {</b>
 &nbsp;
-&nbsp;    public UserDto addUser (UserDto userDto) {
-<b class="fc">&nbsp;        if(userDto == null || userDto.isEmpty())</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
-<b class="fc">&nbsp;        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();</b>
-<b class="fc">&nbsp;        String encodedPassword = passwordEncoder.encode(userDto.getPassword());</b>
-<b class="fc">&nbsp;        userDto.setPassword(encodedPassword);</b>
-<b class="fc">&nbsp;        return new UserDto(userRepository.save(new User(userDto)));</b>
+&nbsp;    @Autowired
+&nbsp;    CommissionService commissionService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    CurrencyService currencyService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    TransactionRepository transactionRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    UserService userService;
+&nbsp;
+<b class="fc">&nbsp;    private String externalToIbanDescription = &quot;to bank account&quot;;</b>
+<b class="fc">&nbsp;    private String externalFromIbanDescription = &quot;from bank account&quot;;</b>
+&nbsp;
+&nbsp;    public String getExternalToIbanDescription() {
+<b class="nc">&nbsp;        return externalToIbanDescription;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public UserDto findById (Integer id) {
+&nbsp;    public String getExternalFromIbanDescription() {
+<b class="nc">&nbsp;        return externalFromIbanDescription;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public TransactionDto findById(Integer id) {
 <b class="fc">&nbsp;        if(id==null)</b>
 <b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
-<b class="fc">&nbsp;        User user = userRepository.findById(id);</b>
-<b class="fc">&nbsp;        if(user!=null &amp;&amp; !user.isEmpty())</b>
-<b class="fc">&nbsp;            return new UserDto(user);</b>
+<b class="fc">&nbsp;        Transaction transaction = transactionRepository.findById(id);</b>
+<b class="fc">&nbsp;        if(transaction!=null &amp;&amp; !transaction.isEmpty()) {</b>
+<b class="fc">&nbsp;            if (transaction.isInternalTransaction() &amp;&amp; !transaction.isExternalTransaction())</b>
+<b class="fc">&nbsp;                return new InternalTransactionDto(transaction);</b>
+<b class="fc">&nbsp;            if (transaction.isExternalTransaction() &amp;&amp; !transaction.isInternalTransaction())</b>
+<b class="fc">&nbsp;                return new ExternalTransactionDto(transaction);</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+&nbsp;        }
 <b class="fc">&nbsp;        return null;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public UserDto findByUsername (String username) {
-<b class="fc">&nbsp;        if(username==null)</b>
+&nbsp;    public List&lt;TransactionDto&gt; findBySenderId(Integer id) {
+<b class="fc">&nbsp;        if(id==null)</b>
 <b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
-<b class="fc">&nbsp;        User user = userRepository.findByUsername(username);</b>
-<b class="fc">&nbsp;        if(user!=null &amp;&amp; !user.isEmpty())</b>
-<b class="fc">&nbsp;            return new UserDto(user);</b>
-<b class="fc">&nbsp;        return null;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    public UserDto addConnectionToUser (UserDto userDto, UserDto connection) {
-<b class="fc">&nbsp;        if (userDto == null)</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user&quot;);</b>
-<b class="fc">&nbsp;        if (connection == null || connection.isEmpty())</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid connection&quot;);</b>
-<b class="fc">&nbsp;        if (userDto.addConnection(connection)) {</b>
-<b class="fc">&nbsp;            User user = userRepository.save(new User(userDto));</b>
-<b class="fc">&nbsp;            return new UserDto(user);</b>
+<b class="fc">&nbsp;        List&lt;TransactionDto&gt; result = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        List&lt;Transaction&gt; transactions = transactionRepository.findBySenderId(id);</b>
+<b class="fc">&nbsp;        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</b>
+<b class="fc">&nbsp;            for (Transaction transaction : transactions)</b>
+<b class="fc">&nbsp;                if(transaction!=null &amp;&amp; !transaction.isEmpty()) {</b>
+<b class="fc">&nbsp;                    if (transaction.isInternalTransaction() &amp;&amp; !transaction.isExternalTransaction())</b>
+<b class="fc">&nbsp;                        result.add(new InternalTransactionDto(transaction));</b>
+<b class="fc">&nbsp;                    else if (transaction.isExternalTransaction() &amp;&amp; !transaction.isInternalTransaction())</b>
+<b class="fc">&nbsp;                        result.add(new ExternalTransactionDto(transaction));</b>
+<b class="nc">&nbsp;                    else throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+&nbsp;                }
 &nbsp;        }
-<b class="fc">&nbsp;        return null;</b>
+<b class="fc">&nbsp;        return result;</b>
 &nbsp;    }
 &nbsp;
-&nbsp;    public UserDto removeFromAccountBalance(UserDto userDto, Double amount) {
-<b class="fc">&nbsp;        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user&quot;);</b>
-<b class="fc">&nbsp;        if(amount == null || amount &lt;= 0)</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;No amount to remove&quot;);</b>
-<b class="fc">&nbsp;        if(userDto.getAccountBalance()-amount&gt;=0) {</b>
-<b class="fc">&nbsp;            userDto.setAccountBalance(userDto.getAccountBalance() - amount);</b>
-<b class="fc">&nbsp;            User user = userRepository.save(new User(userDto));</b>
-<b class="fc">&nbsp;            return new UserDto(user);</b>
+&nbsp;    public List&lt;TransactionDto&gt; findByReceiverId(Integer id) {
+<b class="fc">&nbsp;        if(id==null)</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException();</b>
+<b class="fc">&nbsp;        List&lt;TransactionDto&gt; result = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        List&lt;Transaction&gt; transactions = transactionRepository.findByReceiverId(id);</b>
+<b class="fc">&nbsp;        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</b>
+<b class="fc">&nbsp;            for (Transaction transaction : transactions)</b>
+<b class="fc">&nbsp;                if(transaction!=null &amp;&amp; !transaction.isEmpty()) {</b>
+<b class="fc">&nbsp;                    if (transaction.isInternalTransaction() &amp;&amp; !transaction.isExternalTransaction())</b>
+<b class="fc">&nbsp;                        result.add(new InternalTransactionDto(transaction));</b>
+<b class="fc">&nbsp;                    else if (transaction.isExternalTransaction() &amp;&amp; !transaction.isInternalTransaction())</b>
+<b class="fc">&nbsp;                        result.add(new ExternalTransactionDto(transaction));</b>
+<b class="nc">&nbsp;                    else throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</b>
+&nbsp;                }
 &nbsp;        }
-<b class="fc">&nbsp;        return null;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    public UserDto addToAccountBalance(UserDto userDto, Double amount) {
-<b class="fc">&nbsp;        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Invalid user&quot;);</b>
-<b class="fc">&nbsp;        if(amount == null || amount &lt;= 0)</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;No amount to add&quot;);</b>
-<b class="fc">&nbsp;        userDto.setAccountBalance(userDto.getAccountBalance()+amount);</b>
-<b class="fc">&nbsp;        return new UserDto(userRepository.save(new User(userDto)));</b>
+<b class="fc">&nbsp;        return result;</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -172,7 +201,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-09-04 18:58</div>
+    <div style="float:right;">generated on 2023-09-08 11:40</div>
 </div>
 </body>
 </html>

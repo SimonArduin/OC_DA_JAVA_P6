@@ -76,4 +76,10 @@ public abstract class TransactionDto {
 
     public abstract boolean isEmpty();
 
+    public abstract boolean isInternalTransaction();
+
+    public abstract boolean isExternalTransaction();
+
+    public abstract String getDescription();
+
 }
