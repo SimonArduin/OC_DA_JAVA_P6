@@ -3,10 +3,10 @@ package com.openclassrooms.paymybuddy.service;
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.Commission;
 import com.openclassrooms.paymybuddy.entity.Transaction;
-import com.openclassrooms.paymybuddy.repository.CurrencyRepository;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
@@ -16,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY, timeout = 60)
 public class GlobalService {
     @Autowired
     CurrencyService currencyService;
@@ -70,12 +70,9 @@ public class GlobalService {
                 return new ExternalTransactionDto(transactionRepository.save(transaction));
             }
         }
-        else if(!externalTransactionDto.isToIban()) {
+        else {
             userService.addToAccountBalance(sender, transaction.getAmount());
             return new ExternalTransactionDto(transactionRepository.save(transaction));
-        }
-        else {
-            throw new IllegalArgumentException("Invalid transaction");
         }
     }
 
@@ -83,7 +80,7 @@ public class GlobalService {
         if(userDto==null || userDto.isEmpty())
             throw new IllegalArgumentException("Invalid user");
         List<PastTransactionDto> result = new ArrayList<>();
-        List<TransactionDto> transactions = new ArrayList<>();
+        List<TransactionDto> transactions;
         transactions = transactionService.findBySenderId(userDto.getId());
         if (transactions != null && !transactions.isEmpty()) {
             for (TransactionDto transactionDto : transactions) {

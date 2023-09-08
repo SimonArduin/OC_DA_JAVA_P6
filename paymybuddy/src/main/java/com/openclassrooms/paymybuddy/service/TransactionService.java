@@ -1,46 +1,22 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.dto.*;
-import com.openclassrooms.paymybuddy.entity.Commission;
-import com.openclassrooms.paymybuddy.entity.Currency;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.MANDATORY)
 public class TransactionService {
 
     @Autowired
-    CommissionService commissionService;
-
-    @Autowired
-    CurrencyService currencyService;
-
-    @Autowired
     TransactionRepository transactionRepository;
-
-    @Autowired
-    UserService userService;
-
-    private String externalToIbanDescription = "to bank account";
-    private String externalFromIbanDescription = "from bank account";
-
-    public String getExternalToIbanDescription() {
-        return externalToIbanDescription;
-    }
-
-    public String getExternalFromIbanDescription() {
-        return externalFromIbanDescription;
-    }
 
     public TransactionDto findById(Integer id) {
         if(id==null)
