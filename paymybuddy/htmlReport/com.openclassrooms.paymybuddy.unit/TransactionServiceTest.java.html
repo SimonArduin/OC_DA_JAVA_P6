@@ -130,9 +130,170 @@ import static org.mockito.Mockito.when;
 
         @Test
         public void findByReceiverTestIfNull() {
+<<<<<<< HEAD
 <span class="pc" id="L133">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findByReceiverId(null));</span>
 <span class="fc" id="L134">            verify(transactionRepository, Mockito.times(0)).findByReceiverId(any(Integer.class));</span>
 <span class="fc" id="L135">        }</span>
+=======
+<span class="pc" id="L254">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findByReceiverId(null));</span>
+<span class="fc" id="L255">            verify(transactionRepository, Mockito.times(0)).findByReceiverId(any(Integer.class));</span>
+<span class="fc" id="L256">        }</span>
+    }
+
+    @Nested
+<span class="fc" id="L260">    class getPastTransactionsTests {</span>
+
+        @Test
+        public void getPastTransactionsTest() {
+<span class="fc" id="L264">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
+<span class="fc" id="L265">                    new PastTransactionDto(pastTransactionDto.getId(),</span>
+<span class="fc" id="L266">                            pastTransactionDto.getUsername(),</span>
+<span class="fc" id="L267">                            pastTransactionDto.getDescription(),</span>
+<span class="fc" id="L268">                            -pastTransactionDto.getAmount(),</span>
+<span class="fc" id="L269">                            pastTransactionDto.getCurrencySymbol()),</span>
+                    pastTransactionDto,
+<span class="fc" id="L271">                    new PastTransactionDto(pastTransactionDtoOther.getId(),</span>
+<span class="fc" id="L272">                            pastTransactionDto.getUsername(),</span>
+<span class="fc" id="L273">                            pastTransactionDtoOther.getDescription(),</span>
+<span class="fc" id="L274">                            -pastTransactionDtoOther.getAmount(),</span>
+<span class="fc" id="L275">                            pastTransactionDtoOther.getCurrencySymbol()),</span>
+<span class="fc" id="L276">                    new PastTransactionDto(pastTransactionDtoOther.getId(),</span>
+<span class="fc" id="L277">                            pastTransactionDto.getUsername(),</span>
+<span class="fc" id="L278">                            pastTransactionDtoOther.getDescription(),</span>
+<span class="fc" id="L279">                            pastTransactionDtoOther.getAmount(),</span>
+<span class="fc" id="L280">                            pastTransactionDtoOther.getCurrencySymbol())</span>
+            ));
+<span class="fc" id="L282">            pastTransactionDtoList.sort(Comparator.comparing(PastTransactionDto::getId).reversed());</span>
+<span class="fc" id="L283">            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));</span>
+<span class="fc" id="L284">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L285">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L286">        }</span>
+
+        @Test
+        public void getPastTransactionsTestIfSenderAndInternal() {
+<span class="fc" id="L290">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
+<span class="fc" id="L291">                    new PastTransactionDto(internalTransaction.getId(),</span>
+<span class="fc" id="L292">                            user.getUsername(),</span>
+<span class="fc" id="L293">                            internalTransaction.getDescription(),</span>
+<span class="fc" id="L294">                            -internalTransaction.getAmount(),</span>
+<span class="fc" id="L295">                            currency.getSymbol())</span>
+            ));
+<span class="fc" id="L297">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(internalTransaction)));</span>
+<span class="fc" id="L298">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L299">            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));</span>
+<span class="fc" id="L300">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L301">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L302">        }</span>
+
+        @Test
+        public void getPastTransactionsTestIfReceiverAndInternal() {
+<span class="fc" id="L306">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
+<span class="fc" id="L307">                    new PastTransactionDto(internalTransaction.getId(),</span>
+<span class="fc" id="L308">                            user.getUsername(),</span>
+<span class="fc" id="L309">                            internalTransaction.getDescription(),</span>
+<span class="fc" id="L310">                            internalTransaction.getAmount(),</span>
+<span class="fc" id="L311">                            currency.getSymbol())</span>
+            ));
+<span class="fc" id="L313">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L314">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(internalTransaction)));</span>
+<span class="fc" id="L315">            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));</span>
+<span class="fc" id="L316">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L317">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L318">        }</span>
+
+        @Test
+        public void getPastTransactionsTestIfExternalAndToIban() {
+<span class="fc" id="L322">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
+<span class="fc" id="L323">                    new PastTransactionDto(externalTransaction.getId(),</span>
+<span class="fc" id="L324">                            user.getUsername(),</span>
+<span class="fc" id="L325">                            transactionService.getExternalToIbanDescription(),</span>
+<span class="fc" id="L326">                            -externalTransaction.getAmount(),</span>
+<span class="fc" id="L327">                            currency.getSymbol())</span>
+            ));
+<span class="fc" id="L329">            externalTransaction.setToIban(true);</span>
+<span class="fc" id="L330">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(externalTransaction)));</span>
+<span class="fc" id="L331">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L332">            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));</span>
+<span class="fc" id="L333">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L334">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L335">        }</span>
+
+        @Test
+        public void getPastTransactionsTestIfExternalAndNotToIban() {
+<span class="fc" id="L339">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
+<span class="fc" id="L340">                    new PastTransactionDto(externalTransaction.getId(),</span>
+<span class="fc" id="L341">                            user.getUsername(),</span>
+<span class="fc" id="L342">                            transactionService.getExternalFromIbanDescription(),</span>
+<span class="fc" id="L343">                            externalTransaction.getAmount(),</span>
+<span class="fc" id="L344">                            currency.getSymbol())</span>
+            ));
+<span class="fc" id="L346">            externalTransaction.setToIban(false);</span>
+<span class="fc" id="L347">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(externalTransaction)));</span>
+<span class="fc" id="L348">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L349">            assertEquals(pastTransactionDtoList, transactionService.getPastTransactions(userDto));</span>
+<span class="fc" id="L350">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L351">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L352">        }</span>
+
+        @Test
+        public void getPastTransactionsTestIfEmpty() {
+<span class="pc" id="L356">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.getPastTransactions(new UserDto()));</span>
+<span class="fc" id="L357">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L358">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L359">        }</span>
+
+        @Test
+        public void getPastTransactionsTestIfNull() {
+<span class="pc" id="L363">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.getPastTransactions(null));</span>
+<span class="fc" id="L364">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L365">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L366">        }</span>
+
+        @Test
+        public void getPastTransactionsTestIfNotInDB() {
+<span class="fc" id="L370">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L371">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L372">            assertEquals(new ArrayList&lt;&gt;(), transactionService.getPastTransactions(userDto));</span>
+<span class="fc" id="L373">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L374">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L375">        }</span>
+    }
+    @Nested
+<span class="fc" id="L378">    class calculateCommissionAmountTests {</span>
+
+        @Test
+        public void calculateCommissionAmountTest() {
+<span class="fc" id="L382">            Double result = transactionService.calculateCommissionAmount(externalTransactionDto);</span>
+<span class="fc" id="L383">            assertEquals(externalTransactionDto.getAmount() * commission.getRate(), result);</span>
+<span class="fc" id="L384">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L385">        }</span>
+
+        @Test
+        public void calculateCommissionAmountTestIfInternal() {
+<span class="fc" id="L389">            Double result = transactionService.calculateCommissionAmount(internalTransactionDto);</span>
+<span class="fc" id="L390">            assertEquals(internalTransactionDto.getAmount() * commission.getRate(), result);</span>
+<span class="fc" id="L391">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L392">        }</span>
+
+        @Test
+        public void calculateCommissionAmountTestIfEmpty() {
+<span class="pc" id="L396">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.calculateCommissionAmount(new ExternalTransactionDto()));</span>
+<span class="fc" id="L397">            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L398">        }</span>
+
+        @Test
+        public void calculateCommissionAmountTestIfNull() {
+<span class="pc" id="L402">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.calculateCommissionAmount(null));</span>
+<span class="fc" id="L403">            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L404">        }</span>
+
+        @Test
+        public void calculateCommissionAmountTestIfCommissionNotFound() {
+<span class="fc" id="L408">            when(commissionService.findById(any(Integer.class))).thenReturn(null);</span>
+<span class="pc" id="L409">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.calculateCommissionAmount(externalTransactionDto));</span>
+<span class="fc" id="L410">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L411">        }</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

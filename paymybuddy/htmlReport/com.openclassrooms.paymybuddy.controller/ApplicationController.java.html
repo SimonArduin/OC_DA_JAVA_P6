@@ -4,7 +4,10 @@ import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
+<<<<<<< HEAD
 import com.openclassrooms.paymybuddy.service.GlobalService;
+=======
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,11 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+<<<<<<< HEAD
 <span class="fc" id="L20">public class ApplicationController {</span>
+=======
+<span class="fc" id="L19">public class ApplicationController {</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
 
     @Autowired
     private UserService userService;
@@ -25,48 +32,83 @@ import java.util.List;
     @Autowired
     private TransactionService transactionService;
 
+<<<<<<< HEAD
     @Autowired
     private GlobalService globalService;
 
     @GetMapping(&quot;/&quot;)
     public String viewHomePage() {
 <span class="nc" id="L33">        return &quot;index&quot;;</span>
+=======
+    @GetMapping(&quot;/&quot;)
+    public String viewHomePage() {
+<span class="nc" id="L29">        return &quot;index&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @GetMapping(&quot;register&quot;)
     public String showRegistrationForm(Model model) {
+<<<<<<< HEAD
 <span class="fc" id="L38">        model.addAttribute(&quot;user&quot;, new UserDto());</span>
 <span class="fc" id="L39">        return &quot;signup_form&quot;;</span>
+=======
+<span class="fc" id="L34">        model.addAttribute(&quot;user&quot;, new UserDto());</span>
+<span class="fc" id="L35">        return &quot;signup_form&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @PostMapping(&quot;/process_register&quot;)
     public String processRegister(UserDto userDto) {
+<<<<<<< HEAD
 <span class="fc bfc" id="L44" title="All 4 branches covered.">        if (userDto == null || userDto.isEmpty())</span>
 <span class="fc" id="L45">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
 <span class="fc" id="L46">        userService.addUser(userDto);</span>
 <span class="fc" id="L47">        return &quot;register_success&quot;;</span>
+=======
+<span class="fc bfc" id="L40" title="All 4 branches covered.">        if (userDto == null || userDto.isEmpty())</span>
+<span class="fc" id="L41">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
+<span class="fc" id="L42">        userService.addUser(userDto);</span>
+<span class="fc" id="L43">        return &quot;register_success&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @GetMapping(&quot;/profile&quot;)
     public String profile(Model model, Principal principal) {
+<<<<<<< HEAD
 <span class="fc" id="L52">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
 <span class="pc bpc" id="L53" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
 <span class="fc" id="L54">            return &quot;error&quot;;</span>
 <span class="fc" id="L55">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
 <span class="fc" id="L56">        return &quot;profile&quot;;</span>
+=======
+<span class="fc" id="L48">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L50">            return &quot;error&quot;;</span>
+<span class="fc" id="L51">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L52">        return &quot;profile&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @GetMapping(&quot;/contact&quot;)
     public String contact(Model model, Principal principal) {
+<<<<<<< HEAD
 <span class="fc" id="L61">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
 <span class="pc bpc" id="L62" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
 <span class="fc" id="L63">            return &quot;error&quot;;</span>
 <span class="fc" id="L64">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
 <span class="fc" id="L65">        return &quot;contact&quot;;</span>
+=======
+<span class="fc" id="L57">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L59">            return &quot;error&quot;;</span>
+<span class="fc" id="L60">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L61">        return &quot;contact&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @GetMapping(&quot;/add_connection&quot;)
     public String showAddConnectionForm(Model model) {
+<<<<<<< HEAD
 <span class="fc" id="L70">        UserDto connection = new UserDto();</span>
 <span class="fc" id="L71">        model.addAttribute(&quot;connection&quot;, connection);</span>
 <span class="fc" id="L72">        return &quot;add_connection_form&quot;;</span>
@@ -88,10 +130,34 @@ import java.util.List;
 <span class="fc" id="L88">            return contact(model, principal);</span>
         }
 <span class="nc" id="L90">        return &quot;error&quot;;</span>
+=======
+<span class="fc" id="L66">        UserDto connection = new UserDto();</span>
+<span class="fc" id="L67">        model.addAttribute(&quot;connection&quot;, connection);</span>
+<span class="fc" id="L68">        return &quot;add_connection_form&quot;;</span>
+    }
+    @PostMapping(&quot;/process_add_connection&quot;)
+    public String processAddConnection(UserDto connection, Model model, Principal principal) {
+<span class="fc bfc" id="L72" title="All 4 branches covered.">        if (model == null || principal == null)</span>
+<span class="fc" id="L73">            return &quot;error&quot;;</span>
+<span class="fc bfc" id="L74" title="All 4 branches covered.">        if (connection == null || connection.getUsername() == null)</span>
+<span class="fc" id="L75">            throw new IllegalArgumentException(&quot;Invalid connection to add&quot;);</span>
+<span class="fc" id="L76">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
+<span class="fc" id="L78">            return &quot;error&quot;;</span>
+<span class="fc" id="L79">        connection = userService.findByUsername((connection.getUsername()));</span>
+<span class="pc bpc" id="L80" title="2 of 4 branches missed.">        if (connection == null || connection.isEmpty())</span>
+<span class="nc" id="L81">            return &quot;error&quot;;</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if(userService.addConnectionToUser(connectedUser, connection)!=null) {</span>
+<span class="fc" id="L83">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L84">            return contact(model, principal);</span>
+        }
+<span class="nc" id="L86">        return &quot;error&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @GetMapping(&quot;/transfer&quot;)
     public String showTransferForm(Model model, Principal principal) {
+<<<<<<< HEAD
 <span class="fc" id="L95">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
 <span class="pc bpc" id="L96" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
 <span class="fc" id="L97">            return &quot;error&quot;;</span>
@@ -122,10 +188,43 @@ import java.util.List;
 <span class="fc" id="L122">            return showTransferForm(model, principal);</span>
         }
 <span class="nc" id="L124">        return &quot;error&quot;;</span>
+=======
+<span class="fc" id="L91">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L92" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L93">            return &quot;error&quot;;</span>
+<span class="fc" id="L94">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L95">        InternalTransactionDto transaction = new InternalTransactionDto();</span>
+<span class="fc" id="L96">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
+<span class="fc" id="L97">        List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="fc" id="L98">        model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="fc" id="L99">        return &quot;transfer&quot;;</span>
+    }
+    @PostMapping(&quot;/process_transfer&quot;)
+    public String processTransfer(InternalTransactionDto internalTransactionDto, Model model, Principal principal) {
+<span class="fc bfc" id="L103" title="All 4 branches covered.">        if (model == null || principal == null)</span>
+<span class="fc" id="L104">            return &quot;error&quot;;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if(internalTransactionDto == null)</span>
+<span class="fc" id="L106">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc" id="L107">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
+<span class="fc" id="L109">            return &quot;error&quot;;</span>
+<span class="fc" id="L110">        internalTransactionDto.setSenderId(connectedUser.getId());</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (internalTransactionDto.isEmpty())</span>
+<span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (transactionService.addInternalTransaction(internalTransactionDto) != null) {</span>
+<span class="fc" id="L114">            model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L115">            model.addAttribute(&quot;transaction&quot;, new InternalTransactionDto());</span>
+<span class="fc" id="L116">            List&lt;PastTransactionDto&gt; transactionList = transactionService.getPastTransactions(connectedUser);</span>
+<span class="fc" id="L117">            model.addAttribute(&quot;transactionList&quot;, transactionList);</span>
+<span class="fc" id="L118">            return showTransferForm(model, principal);</span>
+        }
+<span class="nc" id="L120">        return &quot;error&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @GetMapping(&quot;/add_transaction_from_bank_account&quot;)
     public String showAddTransactionFromBankAccountForm(Model model, Principal principal) {
+<<<<<<< HEAD
 <span class="fc" id="L129">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
 <span class="pc bpc" id="L130" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
 <span class="fc" id="L131">            return &quot;error&quot;;</span>
@@ -151,10 +250,38 @@ import java.util.List;
 <span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (globalService.addExternalTransaction(externalTransactionDto) != null)</span>
 <span class="fc" id="L152">            return profile(model, principal);</span>
 <span class="nc" id="L153">        return &quot;error&quot;;</span>
+=======
+<span class="fc" id="L125">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L126" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L127">            return &quot;error&quot;;</span>
+<span class="fc" id="L128">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L129">        ExternalTransactionDto transaction = new ExternalTransactionDto();</span>
+<span class="fc" id="L130">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
+<span class="fc" id="L131">        return &quot;add_transaction_from_bank_account&quot;;</span>
+    }
+    @PostMapping(&quot;/process_add_transaction_from_bank_account&quot;)
+    public String processAddTransactionFromBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+<span class="fc bfc" id="L135" title="All 4 branches covered.">        if (model == null || principal == null)</span>
+<span class="fc" id="L136">            return &quot;error&quot;;</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (externalTransactionDto == null)</span>
+<span class="fc" id="L138">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc" id="L139">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L140" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
+<span class="fc" id="L141">            return &quot;error&quot;;</span>
+<span class="fc" id="L142">        externalTransactionDto.setSenderId(connectedUser.getId());</span>
+<span class="fc" id="L143">        externalTransactionDto.setIban(connectedUser.getIban());</span>
+<span class="fc" id="L144">        externalTransactionDto.setToIban(false);</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (externalTransactionDto.isEmpty())</span>
+<span class="fc" id="L146">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</span>
+<span class="fc" id="L148">            return profile(model, principal);</span>
+<span class="nc" id="L149">        return &quot;error&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 
     @GetMapping(&quot;/add_transaction_to_bank_account&quot;)
     public String showAddTransactionToBankAccountForm(Model model, Principal principal) {
+<<<<<<< HEAD
 <span class="fc" id="L158">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
 <span class="pc bpc" id="L159" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
 <span class="fc" id="L160">            return &quot;error&quot;;</span>
@@ -180,6 +307,33 @@ import java.util.List;
 <span class="pc bpc" id="L180" title="1 of 2 branches missed.">        if (globalService.addExternalTransaction(externalTransactionDto) != null)</span>
 <span class="fc" id="L181">            return profile(model, principal);</span>
 <span class="nc" id="L182">        return &quot;error&quot;;</span>
+=======
+<span class="fc" id="L154">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L155" title="1 of 4 branches missed.">        if(connectedUser==null || connectedUser.isEmpty())</span>
+<span class="fc" id="L156">            return &quot;error&quot;;</span>
+<span class="fc" id="L157">        model.addAttribute(&quot;connectedUser&quot;, connectedUser);</span>
+<span class="fc" id="L158">        ExternalTransactionDto transaction = new ExternalTransactionDto();</span>
+<span class="fc" id="L159">        model.addAttribute(&quot;transaction&quot;, transaction);</span>
+<span class="fc" id="L160">        return &quot;add_transaction_to_bank_account&quot;;</span>
+    }
+    @PostMapping(&quot;/process_add_transaction_to_bank_account&quot;)
+    public String processAddTransactionToBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+<span class="fc bfc" id="L164" title="All 4 branches covered.">        if (model == null || principal == null)</span>
+<span class="fc" id="L165">            return &quot;error&quot;;</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (externalTransactionDto == null)</span>
+<span class="fc" id="L167">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc" id="L168">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
+<span class="pc bpc" id="L169" title="1 of 4 branches missed.">        if (connectedUser == null || connectedUser.isEmpty())</span>
+<span class="fc" id="L170">            return &quot;error&quot;;</span>
+<span class="fc" id="L171">        externalTransactionDto.setSenderId(connectedUser.getId());</span>
+<span class="fc" id="L172">        externalTransactionDto.setIban(connectedUser.getIban());</span>
+<span class="fc" id="L173">        externalTransactionDto.setToIban(true);</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (externalTransactionDto.isEmpty())</span>
+<span class="fc" id="L175">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (transactionService.addExternalTransaction(externalTransactionDto) != null)</span>
+<span class="fc" id="L177">            return profile(model, principal);</span>
+<span class="nc" id="L178">        return &quot;error&quot;;</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

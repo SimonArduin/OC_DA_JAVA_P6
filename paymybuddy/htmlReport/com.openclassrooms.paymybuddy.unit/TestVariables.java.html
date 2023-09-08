@@ -40,6 +40,7 @@ import java.util.List;
 
 <span class="fc" id="L41">        commission = new Commission(1, 0.1);</span>
 
+<<<<<<< HEAD
 <span class="fc" id="L43">        user = new User(1, 100.00,1,&quot;email&quot;,&quot;iban&quot;,&quot;password&quot;,1,&quot;username&quot;,new ArrayList&lt;&gt;());</span>
 <span class="fc" id="L44">        userOther = new User(2, 200.00,1,&quot;emailOtherOther&quot;,&quot;ibanOther&quot;,&quot;passwordOther&quot;,1,&quot;usernameOther&quot;,new ArrayList&lt;&gt;());</span>
 <span class="fc" id="L45">        userDto = new UserDto(user);</span>
@@ -58,5 +59,27 @@ import java.util.List;
 <span class="fc" id="L58">        pastTransactionDtoOther = new PastTransactionDto(internalTransactionDtoOther.getId(), userDtoOther.getUsername(), internalTransactionDtoOther.getDescription(), internalTransactionDtoOther.getAmount(), currency.getName());</span>
 <span class="fc" id="L59">        pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(pastTransactionDto, pastTransactionDtoOther));</span>
 <span class="fc" id="L60">    }</span>
+=======
+<span class="fc" id="L45">        user = new User(1, 100.00,1,&quot;email&quot;,&quot;iban&quot;,&quot;password&quot;,1,&quot;username&quot;,new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L46">        userOther = new User(2, 200.00,1,&quot;emailOtherOther&quot;,&quot;ibanOther&quot;,&quot;passwordOther&quot;,1,&quot;usernameOther&quot;,new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L47">        userDto = new UserDto(user);</span>
+<span class="fc" id="L48">        userDtoOther = new UserDto(userOther);</span>
+<span class="fc" id="L49">        transaction = new Transaction(user.getId(), 10.0, commission.getRate()*10.0, commission.getId(), currency.getId(), &quot;description&quot;, userDto.getIban(), userDto.getId(), 2, new Timestamp(0), false);</span>
+<span class="fc" id="L50">        transactionOther = new Transaction(userOther.getId(), 20.0, commission.getRate()*20.0, commission.getId(), 2, &quot;descriptionOther&quot;, userDtoOther.getIban(), userDtoOther.getId(), 4, new Timestamp(0), true);</span>
+<span class="fc" id="L51">        transactionList = new ArrayList&lt;&gt;(Arrays.asList(transaction, transactionOther));</span>
+<span class="fc" id="L52">        databaseTransactionDto = new DatabaseTransactionDto(transaction);</span>
+<span class="fc" id="L53">        databaseTransactionDtoOther = new DatabaseTransactionDto(transactionOther);</span>
+<span class="fc" id="L54">        databaseTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(databaseTransactionDto, databaseTransactionDtoOther));</span>
+<span class="fc" id="L55">        internalTransactionDto = new InternalTransactionDto(transaction);</span>
+<span class="fc" id="L56">        internalTransactionDtoOther = new InternalTransactionDto(transactionOther);</span>
+<span class="fc" id="L57">        externalTransactionDto = new ExternalTransactionDto(transaction);</span>
+<span class="fc" id="L58">        externalTransactionDtoOther = new ExternalTransactionDto(transactionOther);</span>
+<span class="fc" id="L59">        internalTransaction = new Transaction(internalTransactionDto);</span>
+<span class="fc" id="L60">        externalTransaction = new Transaction(externalTransactionDto);</span>
+<span class="fc" id="L61">        pastTransactionDto = new PastTransactionDto(databaseTransactionDto.getId(), userDto.getUsername(), databaseTransactionDto.getDescription(), databaseTransactionDto.getAmount(), currency.getSymbol());</span>
+<span class="fc" id="L62">        pastTransactionDtoOther = new PastTransactionDto(databaseTransactionDtoOther.getId(), userDtoOther.getUsername(), databaseTransactionDtoOther.getDescription(), databaseTransactionDtoOther.getAmount(), currency.getSymbol());</span>
+<span class="fc" id="L63">        pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(pastTransactionDto, pastTransactionDtoOther));</span>
+<span class="fc" id="L64">    }</span>
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

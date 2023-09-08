@@ -2,8 +2,6 @@ package com.openclassrooms.paymybuddy.dto;
 
 import com.openclassrooms.paymybuddy.entity.Transaction;
 
-import java.sql.Timestamp;
-
 public class InternalTransactionDto extends TransactionDto {
 
     private Integer receiverId;

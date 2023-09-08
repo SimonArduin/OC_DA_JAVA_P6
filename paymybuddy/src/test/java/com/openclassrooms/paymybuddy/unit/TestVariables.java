@@ -56,6 +56,7 @@ abstract class TestVariables {
         transactionList = new ArrayList<>(Arrays.asList(internalTransaction, externalTransaction));
         pastTransactionDto = new PastTransactionDto(internalTransactionDto.getId(), userDto.getUsername(), internalTransactionDto.getDescription(), internalTransactionDto.getAmount(), currency.getName());
         pastTransactionDtoOther = new PastTransactionDto(internalTransactionDtoOther.getId(), userDtoOther.getUsername(), internalTransactionDtoOther.getDescription(), internalTransactionDtoOther.getAmount(), currency.getName());
+
         pastTransactionDtoList = new ArrayList<>(Arrays.asList(pastTransactionDto, pastTransactionDtoOther));
     }
 }

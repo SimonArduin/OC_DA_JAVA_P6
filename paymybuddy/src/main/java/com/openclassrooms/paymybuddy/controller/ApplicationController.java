@@ -5,7 +5,6 @@ import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.service.GlobalService;
-import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,9 +20,6 @@ public class ApplicationController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private TransactionService transactionService;
 
     @Autowired
     private GlobalService globalService;

@@ -57,6 +57,7 @@ public class TransactionService {
         List<Transaction> transactions = transactionRepository.findByReceiverId(id);
         if(transactions!=null && !transactions.isEmpty()) {
             for (Transaction transaction : transactions)
+<<<<<<< HEAD
                 if(transaction!=null && !transaction.isEmpty()) {
                     if (transaction.isInternalTransaction() && !transaction.isExternalTransaction())
                         result.add(new InternalTransactionDto(transaction));
@@ -65,6 +66,54 @@ public class TransactionService {
                     else throw new IllegalArgumentException("Invalid transaction");
                 }
         }
+=======
+                result.add(new DatabaseTransactionDto(transaction));
+        }
+        return result;
+    }
+
+    public List<PastTransactionDto> getPastTransactions(UserDto userDto) {
+        if(userDto==null || userDto.isEmpty())
+            throw new IllegalArgumentException("Invalid user");
+        List<PastTransactionDto> result = new ArrayList<>();
+        for (DatabaseTransactionDto databaseTransactionDto : findBySenderId(userDto.getId())) {
+            if(databaseTransactionDto!=null && !databaseTransactionDto.isEmpty()) {
+                if(databaseTransactionDto.isInternalTransaction()) {
+                    result.add(new PastTransactionDto(databaseTransactionDto.getId(),
+                            userService.findById(databaseTransactionDto.getReceiverId()).getUsername(),
+                            databaseTransactionDto.getDescription(),
+                            -databaseTransactionDto.getAmount(),
+                            currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
+                }
+                else if (databaseTransactionDto.isExternalTransaction()) {
+                    if (databaseTransactionDto.isToIban()) {
+                        result.add(new PastTransactionDto(databaseTransactionDto.getId(),
+                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),
+                                externalToIbanDescription,
+                                -databaseTransactionDto.getAmount(),
+                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
+                    }
+                    else {
+                        result.add(new PastTransactionDto(databaseTransactionDto.getId(),
+                                userService.findById(databaseTransactionDto.getSenderId()).getUsername(),
+                                externalFromIbanDescription,
+                                databaseTransactionDto.getAmount(),
+                                currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
+                    }
+                }
+            }
+        }
+        for (DatabaseTransactionDto databaseTransactionDto : findByReceiverId(userDto.getId())) {
+            if(databaseTransactionDto!=null && !databaseTransactionDto.isEmpty() && databaseTransactionDto.isInternalTransaction()) {
+                result.add(new PastTransactionDto(databaseTransactionDto.getId(),
+                        userService.findById(databaseTransactionDto.getSenderId()).getUsername(),
+                        databaseTransactionDto.getDescription(),
+                        databaseTransactionDto.getAmount(),
+                        currencyService.findById(databaseTransactionDto.getCurrencyId()).getSymbol()));
+            }
+        }
+        result.sort(Comparator.comparing(PastTransactionDto::getId).reversed());
+>>>>>>> d5340b71596ccbbbebf9b75ecfa0455d0253513c
         return result;
     }
 }
