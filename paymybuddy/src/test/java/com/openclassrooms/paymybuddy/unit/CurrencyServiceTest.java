@@ -46,7 +46,7 @@ public class CurrencyServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(currencyRepository.findById(any(Integer.class))).thenReturn(null);
-            assertEquals(null, currencyService.findById(currency.getId()));
+            assertThrows(IllegalArgumentException.class, () -> currencyService.findById(currency.getId()));
             verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 

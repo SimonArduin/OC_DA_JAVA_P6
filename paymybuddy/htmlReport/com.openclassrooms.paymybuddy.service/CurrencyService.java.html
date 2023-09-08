@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
     CurrencyRepository currencyRepository;
     public Currency findById(Integer id) {
 <span class="fc bfc" id="L13" title="All 2 branches covered.">        if(id==null)</span>
-<span class="fc" id="L14">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L15">        return currencyRepository.findById(id);</span>
+<span class="fc" id="L14">            throw new IllegalArgumentException(&quot;Invalid id&quot;);</span>
+<span class="fc" id="L15">        Currency result = currencyRepository.findById(id);</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        if (result == null)</span>
+<span class="fc" id="L17">            throw new IllegalArgumentException(&quot;Currency not found&quot;);</span>
+<span class="fc" id="L18">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

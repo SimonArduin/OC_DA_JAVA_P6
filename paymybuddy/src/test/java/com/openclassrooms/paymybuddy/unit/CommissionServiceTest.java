@@ -47,7 +47,7 @@ public class CommissionServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(commissionRepository.findById(any(Integer.class))).thenReturn(null);
-            assertEquals(null, commissionService.findById(commission.getId()));
+            assertThrows(IllegalArgumentException.class, () -> commissionService.findById(commission.getId()));
             verify(commissionRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 

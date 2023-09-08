@@ -2,88 +2,86 @@
 
 import com.openclassrooms.paymybuddy.entity.Transaction;
 
-import java.sql.Timestamp;
-
 public class InternalTransactionDto extends TransactionDto {
 
     private Integer receiverId;
 
     private String description;
 
-<span class="fc" id="L13">    public InternalTransactionDto() {</span>
-<span class="fc" id="L14">    }</span>
+<span class="fc" id="L11">    public InternalTransactionDto() {</span>
+<span class="fc" id="L12">    }</span>
 
-<span class="fc" id="L16">    public InternalTransactionDto(Transaction transaction) {</span>
-<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (transaction == null</span>
-<span class="pc bpc" id="L18" title="1 of 2 branches missed.">                || transaction.isEmpty()</span>
-<span class="pc bpc" id="L19" title="1 of 2 branches missed.">                || !transaction.isInternalTransaction())</span>
-<span class="nc" id="L20">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L14">    public InternalTransactionDto(Transaction transaction) {</span>
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        if (transaction == null</span>
+<span class="pc bpc" id="L16" title="1 of 2 branches missed.">                || transaction.isEmpty()</span>
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">                || !transaction.isInternalTransaction())</span>
+<span class="nc" id="L18">            throw new IllegalArgumentException();</span>
         else {
-<span class="fc" id="L22">            this.id = transaction.getId();</span>
-<span class="fc" id="L23">            this.amount = transaction.getAmount();</span>
-<span class="fc" id="L24">            this.commissionId = transaction.getCommissionId();</span>
-<span class="fc" id="L25">            this.commissionAmount = transaction.getCommissionAmount();</span>
-<span class="fc" id="L26">            this.currencyId = transaction.getCurrencyId();</span>
-<span class="fc" id="L27">            this.description = transaction.getDescription();</span>
-<span class="fc" id="L28">            this.receiverId = transaction.getReceiverId();</span>
-<span class="fc" id="L29">            this.senderId = transaction.getSenderId();</span>
-<span class="fc" id="L30">            this.timestamp = transaction.getTimestamp();</span>
+<span class="fc" id="L20">            this.id = transaction.getId();</span>
+<span class="fc" id="L21">            this.amount = transaction.getAmount();</span>
+<span class="fc" id="L22">            this.commissionId = transaction.getCommissionId();</span>
+<span class="fc" id="L23">            this.commissionAmount = transaction.getCommissionAmount();</span>
+<span class="fc" id="L24">            this.currencyId = transaction.getCurrencyId();</span>
+<span class="fc" id="L25">            this.description = transaction.getDescription();</span>
+<span class="fc" id="L26">            this.receiverId = transaction.getReceiverId();</span>
+<span class="fc" id="L27">            this.senderId = transaction.getSenderId();</span>
+<span class="fc" id="L28">            this.timestamp = transaction.getTimestamp();</span>
         }
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L30">    }</span>
 
     public Integer getReceiverId() {
-<span class="fc" id="L35">        return receiverId;</span>
+<span class="fc" id="L33">        return receiverId;</span>
     }
 
     public void setReceiverId(Integer receiverId) {
-<span class="fc" id="L39">        this.receiverId = receiverId;</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L37">        this.receiverId = receiverId;</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     public String getDescription() {
-<span class="fc" id="L44">        return description;</span>
+<span class="fc" id="L42">        return description;</span>
     }
 
     public void setDescription(String description) {
-<span class="nc" id="L48">        this.description = description;</span>
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L46">        this.description = description;</span>
+<span class="nc" id="L47">    }</span>
 
     public boolean isEmpty() {
-<span class="pc bpc" id="L52" title="1 of 8 branches missed.">        return(this.amount == null</span>
+<span class="pc bpc" id="L50" title="1 of 8 branches missed.">        return(this.amount == null</span>
                 || this.commissionId == null
                 || this.senderId == null
                 || this.receiverId == null);
     }
     @Override
     public boolean equals(Object obj) {
-<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc" id="L60">            return this.isEmpty();</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc" id="L58">            return this.isEmpty();</span>
         }
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
-<span class="fc" id="L63">            return false;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
+<span class="fc" id="L61">            return false;</span>
         }
-<span class="fc" id="L65">        InternalTransactionDto objTransactionDto = (InternalTransactionDto) obj;</span>
-<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
-<span class="fc" id="L67">            return objTransactionDto.isEmpty();</span>
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        } else return this.getId().equals(objTransactionDto.getId())</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                &amp;&amp; this.getAmount().equals(objTransactionDto.getAmount())</span>
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">                &amp;&amp; this.getCommissionId().equals(objTransactionDto.getCommissionId())</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">                &amp;&amp; this.getCommissionAmount().equals(objTransactionDto.getCommissionAmount())</span>
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">                &amp;&amp; this.getCurrencyId().equals(objTransactionDto.getCurrencyId())</span>
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">                &amp;&amp; this.getDescription().equals(objTransactionDto.getDescription())</span>
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                &amp;&amp; this.getReceiverId().equals(objTransactionDto.getReceiverId())</span>
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">                &amp;&amp; this.getSenderId().equals(objTransactionDto.getSenderId())</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                &amp;&amp; this.getTimestamp().equals(objTransactionDto.getTimestamp());</span>
+<span class="fc" id="L63">        InternalTransactionDto objTransactionDto = (InternalTransactionDto) obj;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
+<span class="fc" id="L65">            return objTransactionDto.isEmpty();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        } else return this.getId().equals(objTransactionDto.getId())</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                &amp;&amp; this.getAmount().equals(objTransactionDto.getAmount())</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">                &amp;&amp; this.getCommissionId().equals(objTransactionDto.getCommissionId())</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                &amp;&amp; this.getCommissionAmount().equals(objTransactionDto.getCommissionAmount())</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">                &amp;&amp; this.getCurrencyId().equals(objTransactionDto.getCurrencyId())</span>
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">                &amp;&amp; this.getDescription().equals(objTransactionDto.getDescription())</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">                &amp;&amp; this.getReceiverId().equals(objTransactionDto.getReceiverId())</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">                &amp;&amp; this.getSenderId().equals(objTransactionDto.getSenderId())</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                &amp;&amp; this.getTimestamp().equals(objTransactionDto.getTimestamp());</span>
     }
 
     @Override
     public boolean isExternalTransaction() {
-<span class="nc" id="L81">        return false;</span>
+<span class="nc" id="L79">        return false;</span>
     }
 
     @Override
     public boolean isInternalTransaction() {
-<span class="fc" id="L86">        return true;</span>
+<span class="fc" id="L84">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

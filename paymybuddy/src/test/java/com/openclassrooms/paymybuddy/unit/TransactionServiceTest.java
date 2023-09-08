@@ -78,7 +78,7 @@ public class TransactionServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(transactionRepository.findById(any(Integer.class))).thenReturn(null);
-            assertEquals(null, transactionService.findById(internalTransaction.getId()));
+            assertThrows(IllegalArgumentException.class, () -> transactionService.findById(internalTransaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 

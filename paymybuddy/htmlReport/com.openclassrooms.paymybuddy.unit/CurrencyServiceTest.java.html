@@ -46,7 +46,7 @@ import static org.mockito.Mockito.when;
         @Test
         public void findByIdTestIfNotInDB() {
 <span class="fc" id="L48">            when(currencyRepository.findById(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L49">            assertEquals(null, currencyService.findById(currency.getId()));</span>
+<span class="pc" id="L49">            assertThrows(IllegalArgumentException.class, () -&gt; currencyService.findById(currency.getId()));</span>
 <span class="fc" id="L50">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
 <span class="fc" id="L51">        }</span>
 

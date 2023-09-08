@@ -6,73 +6,77 @@ import com.openclassrooms.paymybuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
-<span class="fc" id="L13">public class UserService {</span>
+@Transactional(propagation = Propagation.REQUIRED, timeout = 60)
+<span class="fc" id="L14">public class UserService {</span>
     @Autowired
     UserRepository userRepository;
 
     public UserDto addUser (UserDto userDto) {
-<span class="fc bfc" id="L18" title="All 4 branches covered.">        if(userDto == null || userDto.isEmpty())</span>
-<span class="fc" id="L19">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L20">        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();</span>
-<span class="fc" id="L21">        String encodedPassword = passwordEncoder.encode(userDto.getPassword());</span>
-<span class="fc" id="L22">        userDto.setPassword(encodedPassword);</span>
-<span class="fc" id="L23">        return new UserDto(userRepository.save(new User(userDto)));</span>
+<span class="fc bfc" id="L19" title="All 4 branches covered.">        if(userDto == null || userDto.isEmpty())</span>
+<span class="fc" id="L20">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L21">        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();</span>
+<span class="fc" id="L22">        String encodedPassword = passwordEncoder.encode(userDto.getPassword());</span>
+<span class="fc" id="L23">        userDto.setPassword(encodedPassword);</span>
+<span class="fc" id="L24">        return new UserDto(userRepository.save(new User(userDto)));</span>
     }
 
     public UserDto findById (Integer id) {
-<span class="fc bfc" id="L27" title="All 2 branches covered.">        if(id==null)</span>
-<span class="fc" id="L28">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L29">        User user = userRepository.findById(id);</span>
-<span class="pc bpc" id="L30" title="1 of 4 branches missed.">        if(user!=null &amp;&amp; !user.isEmpty())</span>
-<span class="fc" id="L31">            return new UserDto(user);</span>
-<span class="fc" id="L32">        return null;</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if(id==null)</span>
+<span class="fc" id="L29">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L30">        User user = userRepository.findById(id);</span>
+<span class="pc bpc" id="L31" title="1 of 4 branches missed.">        if(user==null || user.isEmpty())</span>
+<span class="fc" id="L32">            throw new IllegalArgumentException(&quot;User not found&quot;);</span>
+<span class="fc" id="L33">        return new UserDto(user);</span>
     }
 
     public UserDto findByUsername (String username) {
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        if(username==null)</span>
-<span class="fc" id="L37">            throw new IllegalArgumentException();</span>
-<span class="fc" id="L38">        User user = userRepository.findByUsername(username);</span>
-<span class="pc bpc" id="L39" title="1 of 4 branches missed.">        if(user!=null &amp;&amp; !user.isEmpty())</span>
-<span class="fc" id="L40">            return new UserDto(user);</span>
-<span class="fc" id="L41">        return null;</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if(username==null)</span>
+<span class="fc" id="L38">            throw new IllegalArgumentException(&quot;Invalid username&quot;);</span>
+<span class="fc" id="L39">        User user = userRepository.findByUsername(username);</span>
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">        if(user==null || user.isEmpty())</span>
+<span class="fc" id="L41">            throw new IllegalArgumentException(&quot;User not found&quot;);</span>
+<span class="fc" id="L42">        return new UserDto(user);</span>
     }
 
     public UserDto addConnectionToUser (UserDto userDto, UserDto connection) {
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (userDto == null)</span>
-<span class="fc" id="L46">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
-<span class="fc bfc" id="L47" title="All 4 branches covered.">        if (connection == null || connection.isEmpty())</span>
-<span class="fc" id="L48">            throw new IllegalArgumentException(&quot;Invalid connection&quot;);</span>
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (userDto.addConnection(connection)) {</span>
-<span class="fc" id="L50">            User user = userRepository.save(new User(userDto));</span>
-<span class="fc" id="L51">            return new UserDto(user);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (userDto == null)</span>
+<span class="fc" id="L47">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
+<span class="fc bfc" id="L48" title="All 4 branches covered.">        if (connection == null || connection.isEmpty())</span>
+<span class="fc" id="L49">            throw new IllegalArgumentException(&quot;Invalid connection&quot;);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (!userDto.addConnection(connection)) {</span>
+<span class="fc" id="L51">            throw new IllegalArgumentException(&quot;Could not add connection to user&quot;);</span>
         }
-<span class="fc" id="L53">        return null;</span>
+        else {
+<span class="fc" id="L54">            User user = userRepository.save(new User(userDto));</span>
+<span class="fc" id="L55">            return new UserDto(user);</span>
+        }
     }
 
     public UserDto removeFromAccountBalance(UserDto userDto, Double amount) {
-<span class="pc bpc" id="L57" title="1 of 6 branches missed.">        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))</span>
-<span class="fc" id="L58">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
-<span class="fc bfc" id="L59" title="All 4 branches covered.">        if(amount == null || amount &lt;= 0)</span>
-<span class="fc" id="L60">            throw new IllegalArgumentException(&quot;No amount to remove&quot;);</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">        if(userDto.getAccountBalance()-amount&gt;=0) {</span>
-<span class="fc" id="L62">            userDto.setAccountBalance(userDto.getAccountBalance() - amount);</span>
-<span class="fc" id="L63">            User user = userRepository.save(new User(userDto));</span>
-<span class="fc" id="L64">            return new UserDto(user);</span>
+<span class="pc bpc" id="L60" title="1 of 6 branches missed.">        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))</span>
+<span class="fc" id="L61">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
+<span class="fc bfc" id="L62" title="All 4 branches covered.">        if(amount == null || amount &lt;= 0)</span>
+<span class="fc" id="L63">            throw new IllegalArgumentException(&quot;Invalid amount&quot;);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if(userDto.getAccountBalance() &lt; amount) {</span>
+<span class="fc" id="L65">            throw new IllegalArgumentException(&quot;Not enough money on user account&quot;);</span>
         }
-<span class="fc" id="L66">        return null;</span>
+<span class="fc" id="L67">        userDto.setAccountBalance(userDto.getAccountBalance() - amount);</span>
+<span class="fc" id="L68">        User user = userRepository.save(new User(userDto));</span>
+<span class="fc" id="L69">        return new UserDto(user);</span>
     }
 
     public UserDto addToAccountBalance(UserDto userDto, Double amount) {
-<span class="pc bpc" id="L70" title="1 of 6 branches missed.">        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))</span>
-<span class="fc" id="L71">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
-<span class="fc bfc" id="L72" title="All 4 branches covered.">        if(amount == null || amount &lt;= 0)</span>
-<span class="fc" id="L73">            throw new IllegalArgumentException(&quot;No amount to add&quot;);</span>
-<span class="fc" id="L74">        userDto.setAccountBalance(userDto.getAccountBalance()+amount);</span>
-<span class="fc" id="L75">        return new UserDto(userRepository.save(new User(userDto)));</span>
+<span class="pc bpc" id="L73" title="1 of 6 branches missed.">        if(userDto==null || userDto.isEmpty() || !userDto.equals(new UserDto(userRepository.findById(userDto.getId()))))</span>
+<span class="fc" id="L74">            throw new IllegalArgumentException(&quot;Invalid user&quot;);</span>
+<span class="fc bfc" id="L75" title="All 4 branches covered.">        if(amount == null || amount &lt;= 0)</span>
+<span class="fc" id="L76">            throw new IllegalArgumentException(&quot;Invalid amount&quot;);</span>
+<span class="fc" id="L77">        userDto.setAccountBalance(userDto.getAccountBalance() + amount);</span>
+<span class="fc" id="L78">        User user = userRepository.save(new User(userDto));</span>
+<span class="fc" id="L79">        return new UserDto(user);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

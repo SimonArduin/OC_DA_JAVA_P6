@@ -106,7 +106,7 @@ import static org.mockito.Mockito.when;
 
         @Test
         public void addConnectionToUserTestIfSame() {
-<span class="fc" id="L109">            assertEquals(null, userService.addConnectionToUser(userDto, userDto));</span>
+<span class="pc" id="L109">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto, userDto));</span>
 <span class="fc" id="L110">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
 <span class="fc" id="L111">        }</span>
     }
@@ -116,14 +116,14 @@ import static org.mockito.Mockito.when;
 
         @Test
         public void findByIdTest() {
-<span class="fc" id="L119">            assertEquals(userDto, userService.findById(user.getId()));</span>
+<span class="fc" id="L119">            assertEquals(userDto, userService.findById(userDto.getId()));</span>
 <span class="fc" id="L120">            verify(userRepository, Mockito.times(1)).findById(any(Integer.class));</span>
 <span class="fc" id="L121">        }</span>
 
         @Test
         public void findByIdTestIfNotInDB() {
 <span class="fc" id="L125">            when(userRepository.findById(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L126">            assertEquals(null, userService.findById(user.getId()));</span>
+<span class="pc" id="L126">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findById(userDto.getId()));</span>
 <span class="fc" id="L127">            verify(userRepository, Mockito.times(1)).findById(any(Integer.class));</span>
 <span class="fc" id="L128">        }</span>
 
@@ -146,7 +146,7 @@ import static org.mockito.Mockito.when;
         @Test
         public void findByUsernameTestIfNotInDB() {
 <span class="fc" id="L148">            when(userRepository.findByUsername(any(String.class))).thenReturn(null);</span>
-<span class="fc" id="L149">            assertEquals(null, userService.findByUsername(user.getUsername()));</span>
+<span class="pc" id="L149">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findByUsername(user.getUsername()));</span>
 <span class="fc" id="L150">            verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));</span>
 <span class="fc" id="L151">        }</span>
 
@@ -195,7 +195,7 @@ import static org.mockito.Mockito.when;
 
         @Test
         public void removeFromAccountBalanceTestIfAmountMoreThanAccountBalance() {
-<span class="fc" id="L198">            assertEquals(null, userService.removeFromAccountBalance(userDto, user.getAccountBalance() + amount));</span>
+<span class="pc" id="L198">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, user.getAccountBalance() + amount));</span>
 <span class="fc" id="L199">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
 <span class="fc" id="L200">        }</span>
 

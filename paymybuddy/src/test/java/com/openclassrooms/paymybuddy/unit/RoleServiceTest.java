@@ -47,7 +47,7 @@ public class RoleServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(roleRepository.findById(any(Integer.class))).thenReturn(null);
-            assertEquals(null, roleService.findById(role.getId()));
+            assertThrows(IllegalArgumentException.class, () -> roleService.findById(role.getId()));
             verify(roleRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 
