@@ -5,6 +5,7 @@ import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.Transaction;
+import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import com.openclassrooms.paymybuddy.service.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -110,7 +111,7 @@ public class GlobalServiceTest extends TestVariables {
         @Test
         public void addInternalTransactionTestIfNoSenderFound() {
             when(userService.findById(internalTransactionDto.getSenderId())).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> globalService.addInternalTransaction(internalTransactionDto));
+            assertThrows(UserNotFoundException.class, () -> globalService.addInternalTransaction(internalTransactionDto));
             verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));
             verify(userService, Mockito.times(1)).findById(any(Integer.class));
             verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));
@@ -119,7 +120,7 @@ public class GlobalServiceTest extends TestVariables {
         @Test
         public void addInternalTransactionTestIfNoReceiverFound() {
             when(userService.findById(internalTransactionDto.getReceiverId())).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> globalService.addInternalTransaction(internalTransactionDto));
+            assertThrows(UserNotFoundException.class, () -> globalService.addInternalTransaction(internalTransactionDto));
             verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));
             verify(userService, Mockito.times(2)).findById(any(Integer.class));
             verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));
@@ -191,7 +192,7 @@ public class GlobalServiceTest extends TestVariables {
         @Test
         public void addExternalTransactionTestIfNoSenderFound() {
             when(userService.findById(externalTransactionDto.getSenderId())).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> globalService.addExternalTransaction(externalTransactionDto));
+            assertThrows(UserNotFoundException.class, () -> globalService.addExternalTransaction(externalTransactionDto));
             verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));
             verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));
             verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));

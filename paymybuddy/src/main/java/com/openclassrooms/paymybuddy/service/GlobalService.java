@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.service;
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.Commission;
 import com.openclassrooms.paymybuddy.entity.Transaction;
+import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,10 @@ public class GlobalService {
             throw new IllegalArgumentException("Invalid transaction");
         UserDto sender = userService.findById(internalTransactionDto.getSenderId());
         if (sender == null || sender.isEmpty())
-            throw new IllegalArgumentException("Sender not found");
+            throw new UserNotFoundException("Sender not found");
         UserDto receiver = userService.findById(internalTransactionDto.getReceiverId());
         if (receiver == null || sender.isEmpty())
-            throw new IllegalArgumentException("Receiver not found");
+            throw new UserNotFoundException("Receiver not found");
         internalTransactionDto.setCommissionAmount(calculateCommissionAmount(internalTransactionDto));
         Double fullTransactionAmount = internalTransactionDto.getAmount() + internalTransactionDto.getCommissionAmount();
         if (sender.getAccountBalance() < (fullTransactionAmount)) {
@@ -54,10 +55,10 @@ public class GlobalService {
     public ExternalTransactionDto addExternalTransaction(ExternalTransactionDto externalTransactionDto) {
         if(externalTransactionDto == null
                 || externalTransactionDto.isEmpty())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid transaction");
         UserDto sender = userService.findById(externalTransactionDto.getSenderId());
         if (sender == null || sender.isEmpty())
-            throw new IllegalArgumentException("Sender not found");
+            throw new UserNotFoundException("Sender not found");
         externalTransactionDto.setCommissionAmount(calculateCommissionAmount(externalTransactionDto));
         Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommissionAmount();
         externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));

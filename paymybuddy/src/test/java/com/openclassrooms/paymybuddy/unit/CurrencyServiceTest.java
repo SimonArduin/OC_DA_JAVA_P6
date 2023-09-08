@@ -1,6 +1,8 @@
 package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.entity.Currency;
+import com.openclassrooms.paymybuddy.exception.CurrencyNotFoundException;
+import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.CurrencyRepository;
 import com.openclassrooms.paymybuddy.service.CurrencyService;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +48,7 @@ public class CurrencyServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(currencyRepository.findById(any(Integer.class))).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> currencyService.findById(currency.getId()));
+            assertThrows(CurrencyNotFoundException.class, () -> currencyService.findById(currency.getId()));
             verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 

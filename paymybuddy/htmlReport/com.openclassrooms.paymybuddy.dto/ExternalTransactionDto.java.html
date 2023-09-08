@@ -20,7 +20,7 @@ public class ExternalTransactionDto extends TransactionDto {
 <span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (transaction == null</span>
 <span class="pc bpc" id="L21" title="1 of 2 branches missed.">                || transaction.isEmpty()</span>
 <span class="pc bpc" id="L22" title="1 of 2 branches missed.">                || !transaction.isExternalTransaction())</span>
-<span class="nc" id="L23">            throw new IllegalArgumentException();</span>
+<span class="nc" id="L23">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
         else {
 <span class="fc" id="L25">            this.id = transaction.getId();</span>
 <span class="fc" id="L26">            this.amount = transaction.getAmount();</span>

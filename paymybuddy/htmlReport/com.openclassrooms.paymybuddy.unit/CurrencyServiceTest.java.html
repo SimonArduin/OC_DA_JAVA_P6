@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurrencyServiceTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.unit</a> &gt; <span class="el_source">CurrencyServiceTest.java</span></div><h1>CurrencyServiceTest.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.entity.Currency;
+import com.openclassrooms.paymybuddy.exception.CurrencyNotFoundException;
+import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.CurrencyRepository;
 import com.openclassrooms.paymybuddy.service.CurrencyService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = CurrencyService.class)
-<span class="fc" id="L21">public class CurrencyServiceTest extends TestVariables {</span>
+<span class="fc" id="L23">public class CurrencyServiceTest extends TestVariables {</span>
     @Autowired
     CurrencyService currencyService;
 
@@ -27,34 +29,34 @@ import static org.mockito.Mockito.when;
 
     @BeforeEach
     private void setUp() {
-<span class="fc" id="L30">        initializeVariables();</span>
-<span class="fc" id="L31">        when(currencyRepository.findById(any(Integer.class))).thenReturn(currency);</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L32">        initializeVariables();</span>
+<span class="fc" id="L33">        when(currencyRepository.findById(any(Integer.class))).thenReturn(currency);</span>
+<span class="fc" id="L34">    }</span>
 
     @Test
-<span class="fc" id="L35">    void contextLoads() {}</span>
+<span class="fc" id="L37">    void contextLoads() {}</span>
 
     @Nested
-<span class="fc" id="L38">    class findByIdTests {</span>
+<span class="fc" id="L40">    class findByIdTests {</span>
 
         @Test
         public void findByIdTest() {
-<span class="fc" id="L42">            assertEquals(currency, currencyService.findById(currency.getId()));</span>
-<span class="fc" id="L43">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L44">        }</span>
+<span class="fc" id="L44">            assertEquals(currency, currencyService.findById(currency.getId()));</span>
+<span class="fc" id="L45">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L46">        }</span>
 
         @Test
         public void findByIdTestIfNotInDB() {
-<span class="fc" id="L48">            when(currencyRepository.findById(any(Integer.class))).thenReturn(null);</span>
-<span class="pc" id="L49">            assertThrows(IllegalArgumentException.class, () -&gt; currencyService.findById(currency.getId()));</span>
-<span class="fc" id="L50">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L51">        }</span>
+<span class="fc" id="L50">            when(currencyRepository.findById(any(Integer.class))).thenReturn(null);</span>
+<span class="pc" id="L51">            assertThrows(CurrencyNotFoundException.class, () -&gt; currencyService.findById(currency.getId()));</span>
+<span class="fc" id="L52">            verify(currencyRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L53">        }</span>
 
         @Test
         public void findByIdTestIfNull() {
-<span class="pc" id="L55">            assertThrows(IllegalArgumentException.class, () -&gt; currencyService.findById(null));</span>
-<span class="fc" id="L56">            verify(currencyRepository, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L57">        }</span>
+<span class="pc" id="L57">            assertThrows(IllegalArgumentException.class, () -&gt; currencyService.findById(null));</span>
+<span class="fc" id="L58">            verify(currencyRepository, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L59">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

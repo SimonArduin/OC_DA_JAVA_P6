@@ -2,6 +2,7 @@ package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.Transaction;
+import com.openclassrooms.paymybuddy.exception.TransactionNotFoundException;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,10 @@ public class TransactionService {
 
     public TransactionDto findById(Integer id) {
         if(id==null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid id");
         Transaction transaction = transactionRepository.findById(id);
         if(transaction==null || transaction.isEmpty()) {
-            throw new IllegalArgumentException("Transaction not found");
+            throw new TransactionNotFoundException("Transaction not found");
         }
         if (transaction.isInternalTransaction() && !transaction.isExternalTransaction())
             return new InternalTransactionDto(transaction);
@@ -34,7 +35,7 @@ public class TransactionService {
 
     public List<TransactionDto> findBySenderId(Integer id) {
         if(id==null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid id");
         List<TransactionDto> result = new ArrayList<>();
         List<Transaction> transactions = transactionRepository.findBySenderId(id);
         if(transactions!=null && !transactions.isEmpty()) {
@@ -52,7 +53,7 @@ public class TransactionService {
 
     public List<TransactionDto> findByReceiverId(Integer id) {
         if(id==null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid id");
         List<TransactionDto> result = new ArrayList<>();
         List<Transaction> transactions = transactionRepository.findByReceiverId(id);
         if(transactions!=null && !transactions.isEmpty()) {

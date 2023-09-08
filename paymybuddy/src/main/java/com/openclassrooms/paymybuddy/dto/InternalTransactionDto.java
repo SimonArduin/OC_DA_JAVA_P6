@@ -15,7 +15,7 @@ public class InternalTransactionDto extends TransactionDto {
         if (transaction == null
                 || transaction.isEmpty()
                 || !transaction.isInternalTransaction())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid transaction");
         else {
             this.id = transaction.getId();
             this.amount = transaction.getAmount();

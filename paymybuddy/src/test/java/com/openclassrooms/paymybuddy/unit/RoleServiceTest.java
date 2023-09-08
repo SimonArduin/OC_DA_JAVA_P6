@@ -1,6 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
-import com.openclassrooms.paymybuddy.entity.Role;
+import com.openclassrooms.paymybuddy.exception.RoleNotFoundException;
 import com.openclassrooms.paymybuddy.repository.RoleRepository;
 import com.openclassrooms.paymybuddy.service.RoleService;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ public class RoleServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(roleRepository.findById(any(Integer.class))).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> roleService.findById(role.getId()));
+            assertThrows(RoleNotFoundException.class, () -> roleService.findById(role.getId()));
             verify(roleRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 

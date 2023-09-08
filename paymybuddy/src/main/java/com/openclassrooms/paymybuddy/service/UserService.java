@@ -2,8 +2,10 @@ package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.User;
+import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,7 +19,7 @@ public class UserService {
 
     public UserDto addUser (UserDto userDto) {
         if(userDto == null || userDto.isEmpty())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid user");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         userDto.setPassword(encodedPassword);
@@ -26,10 +28,10 @@ public class UserService {
 
     public UserDto findById (Integer id) {
         if(id==null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid id");
         User user = userRepository.findById(id);
         if(user==null || user.isEmpty())
-            throw new IllegalArgumentException("User not found");
+            throw new UserNotFoundException("User not found");
         return new UserDto(user);
     }
 
@@ -38,7 +40,7 @@ public class UserService {
             throw new IllegalArgumentException("Invalid username");
         User user = userRepository.findByUsername(username);
         if(user==null || user.isEmpty())
-            throw new IllegalArgumentException("User not found");
+            throw new UserNotFoundException("User not found");
         return new UserDto(user);
     }
 

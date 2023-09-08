@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.entity.Currency;
+import com.openclassrooms.paymybuddy.exception.CurrencyNotFoundException;
 import com.openclassrooms.paymybuddy.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class CurrencyService {
             throw new IllegalArgumentException("Invalid id");
         Currency result = currencyRepository.findById(id);
         if (result == null)
-            throw new IllegalArgumentException("Currency not found");
+            throw new CurrencyNotFoundException("Currency not found");
         return result;
     }
 }

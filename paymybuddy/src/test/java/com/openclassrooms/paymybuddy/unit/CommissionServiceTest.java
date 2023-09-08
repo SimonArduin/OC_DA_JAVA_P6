@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.entity.Commission;
+import com.openclassrooms.paymybuddy.exception.CommissionNotFound;
 import com.openclassrooms.paymybuddy.repository.CommissionRepository;
 import com.openclassrooms.paymybuddy.service.CommissionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +48,7 @@ public class CommissionServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(commissionRepository.findById(any(Integer.class))).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> commissionService.findById(commission.getId()));
+            assertThrows(CommissionNotFound.class, () -> commissionService.findById(commission.getId()));
             verify(commissionRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 

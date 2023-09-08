@@ -29,7 +29,7 @@ public class UserDto {
 
     public UserDto(User user) {
         if (user == null || user.isEmpty())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid user");
         else {
             this.id = user.getId();
             this.accountBalance = user.getAccountBalance();

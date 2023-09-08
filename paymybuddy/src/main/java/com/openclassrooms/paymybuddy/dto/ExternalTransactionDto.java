@@ -20,7 +20,7 @@ public class ExternalTransactionDto extends TransactionDto {
         if (transaction == null
                 || transaction.isEmpty()
                 || !transaction.isExternalTransaction())
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid transaction");
         else {
             this.id = transaction.getId();
             this.amount = transaction.getAmount();

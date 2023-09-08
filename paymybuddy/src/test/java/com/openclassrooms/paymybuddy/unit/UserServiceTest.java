@@ -2,6 +2,7 @@ package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.User;
+import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -123,7 +124,7 @@ public class UserServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(userRepository.findById(any(Integer.class))).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> userService.findById(userDto.getId()));
+            assertThrows(UserNotFoundException.class, () -> userService.findById(userDto.getId()));
             verify(userRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 
@@ -146,7 +147,7 @@ public class UserServiceTest extends TestVariables {
         @Test
         public void findByUsernameTestIfNotInDB() {
             when(userRepository.findByUsername(any(String.class))).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> userService.findByUsername(user.getUsername()));
+            assertThrows(UserNotFoundException.class, () -> userService.findByUsername(user.getUsername()));
             verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));
         }
 

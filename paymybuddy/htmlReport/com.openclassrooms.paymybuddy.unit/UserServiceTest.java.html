@@ -2,6 +2,7 @@
 
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import com.openclassrooms.paymybuddy.entity.User;
+import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = UserService.class)
-<span class="fc" id="L22">public class UserServiceTest extends TestVariables {</span>
+<span class="fc" id="L23">public class UserServiceTest extends TestVariables {</span>
     @Autowired
     UserService userService;
 
@@ -30,225 +31,225 @@ import static org.mockito.Mockito.when;
 
     @BeforeEach
     private void setUp() {
-<span class="fc" id="L33">        initializeVariables();</span>
-<span class="fc" id="L34">        amount = internalTransaction.getAmount();</span>
+<span class="fc" id="L34">        initializeVariables();</span>
+<span class="fc" id="L35">        amount = internalTransaction.getAmount();</span>
 
-<span class="fc" id="L36">        when(userRepository.findById(any(Integer.class))).thenReturn(user);</span>
-<span class="fc" id="L37">        when(userRepository.findByUsername(any(String.class))).thenReturn(user);</span>
-<span class="fc" id="L38">        when(userRepository.save(any(User.class))).thenReturn(user);</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L37">        when(userRepository.findById(any(Integer.class))).thenReturn(user);</span>
+<span class="fc" id="L38">        when(userRepository.findByUsername(any(String.class))).thenReturn(user);</span>
+<span class="fc" id="L39">        when(userRepository.save(any(User.class))).thenReturn(user);</span>
+<span class="fc" id="L40">    }</span>
 
     @Test
-<span class="fc" id="L42">    void contextLoads() {}</span>
+<span class="fc" id="L43">    void contextLoads() {}</span>
 
     @Nested
-<span class="fc" id="L45">    class addUserTests {</span>
+<span class="fc" id="L46">    class addUserTests {</span>
 
         @Test
         public void addUserTest() {
-<span class="fc" id="L49">            assertEquals(new UserDto(user), userService.addUser(userDto));</span>
-<span class="fc" id="L50">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L51">        }</span>
+<span class="fc" id="L50">            assertEquals(new UserDto(user), userService.addUser(userDto));</span>
+<span class="fc" id="L51">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L52">        }</span>
 
         @Test
         public void addUserTestIfEmpty() {
-<span class="pc" id="L55">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addUser(new UserDto()));</span>
-<span class="fc" id="L56">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L57">        }</span>
+<span class="pc" id="L56">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addUser(new UserDto()));</span>
+<span class="fc" id="L57">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L58">        }</span>
 
         @Test
         public void addUserTestIfNull() {
-<span class="pc" id="L61">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addUser(null));</span>
-<span class="fc" id="L62">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L63">        }</span>
+<span class="pc" id="L62">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addUser(null));</span>
+<span class="fc" id="L63">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L64">        }</span>
 
         @Test
         public void addUserTestIfErrorOnSave() {
-<span class="fc" id="L67">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
-<span class="pc" id="L68">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addUser(userDto));</span>
-<span class="fc" id="L69">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L70">        }</span>
+<span class="fc" id="L68">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
+<span class="pc" id="L69">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addUser(userDto));</span>
+<span class="fc" id="L70">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L71">        }</span>
     }
 
     @Nested
-<span class="fc" id="L74">    class addConnectionToUserTests {</span>
+<span class="fc" id="L75">    class addConnectionToUserTests {</span>
 
         @Test
         public void addConnectionToUserTest() {
-<span class="fc" id="L78">            assertEquals(new UserDto(user), userService.addConnectionToUser(userDto, userDtoOther));</span>
-<span class="fc" id="L79">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L80">        }</span>
+<span class="fc" id="L79">            assertEquals(new UserDto(user), userService.addConnectionToUser(userDto, userDtoOther));</span>
+<span class="fc" id="L80">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L81">        }</span>
 
         @Test
         public void addConnectionToUserTestIfConnectionEmpty() {
-<span class="pc" id="L84">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto, new UserDto()));</span>
-<span class="fc" id="L85">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L86">        }</span>
+<span class="pc" id="L85">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto, new UserDto()));</span>
+<span class="fc" id="L86">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L87">        }</span>
 
         @Test
         public void addConnectionToUserTestIfConnectionNull() {
-<span class="pc" id="L90">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto,null));</span>
-<span class="fc" id="L91">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L92">        }</span>
+<span class="pc" id="L91">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto,null));</span>
+<span class="fc" id="L92">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L93">        }</span>
 
         @Test
         public void addConnectionToUserTestIfUserNull() {
-<span class="pc" id="L96">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(null,userDto));</span>
-<span class="fc" id="L97">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L98">        }</span>
+<span class="pc" id="L97">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(null,userDto));</span>
+<span class="fc" id="L98">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L99">        }</span>
 
         @Test
         public void addConnectionToUserTestIfErrorOnSave() {
-<span class="fc" id="L102">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
-<span class="pc" id="L103">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto, userDtoOther));</span>
-<span class="fc" id="L104">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L105">        }</span>
+<span class="fc" id="L103">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
+<span class="pc" id="L104">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto, userDtoOther));</span>
+<span class="fc" id="L105">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L106">        }</span>
 
         @Test
         public void addConnectionToUserTestIfSame() {
-<span class="pc" id="L109">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto, userDto));</span>
-<span class="fc" id="L110">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L111">        }</span>
+<span class="pc" id="L110">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addConnectionToUser(userDto, userDto));</span>
+<span class="fc" id="L111">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L112">        }</span>
     }
 
     @Nested
-<span class="fc" id="L115">    class findByIdTests {</span>
+<span class="fc" id="L116">    class findByIdTests {</span>
 
         @Test
         public void findByIdTest() {
-<span class="fc" id="L119">            assertEquals(userDto, userService.findById(userDto.getId()));</span>
-<span class="fc" id="L120">            verify(userRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L121">        }</span>
+<span class="fc" id="L120">            assertEquals(userDto, userService.findById(userDto.getId()));</span>
+<span class="fc" id="L121">            verify(userRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L122">        }</span>
 
         @Test
         public void findByIdTestIfNotInDB() {
-<span class="fc" id="L125">            when(userRepository.findById(any(Integer.class))).thenReturn(null);</span>
-<span class="pc" id="L126">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findById(userDto.getId()));</span>
-<span class="fc" id="L127">            verify(userRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L128">        }</span>
+<span class="fc" id="L126">            when(userRepository.findById(any(Integer.class))).thenReturn(null);</span>
+<span class="pc" id="L127">            assertThrows(UserNotFoundException.class, () -&gt; userService.findById(userDto.getId()));</span>
+<span class="fc" id="L128">            verify(userRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L129">        }</span>
 
         @Test
         public void findByIdTestIfNull() {
-<span class="pc" id="L132">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findById(null));</span>
-<span class="fc" id="L133">            verify(userRepository, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L134">        }</span>
+<span class="pc" id="L133">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findById(null));</span>
+<span class="fc" id="L134">            verify(userRepository, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L135">        }</span>
     }
 
     @Nested
-<span class="fc" id="L138">    class findByUsernameTests {</span>
+<span class="fc" id="L139">    class findByUsernameTests {</span>
 
         @Test
         public void findByUsernameTest() {
-<span class="fc" id="L142">            assertEquals(userDto, userService.findByUsername(user.getUsername()));</span>
-<span class="fc" id="L143">            verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));</span>
-<span class="fc" id="L144">        }</span>
+<span class="fc" id="L143">            assertEquals(userDto, userService.findByUsername(user.getUsername()));</span>
+<span class="fc" id="L144">            verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));</span>
+<span class="fc" id="L145">        }</span>
 
         @Test
         public void findByUsernameTestIfNotInDB() {
-<span class="fc" id="L148">            when(userRepository.findByUsername(any(String.class))).thenReturn(null);</span>
-<span class="pc" id="L149">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findByUsername(user.getUsername()));</span>
-<span class="fc" id="L150">            verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));</span>
-<span class="fc" id="L151">        }</span>
+<span class="fc" id="L149">            when(userRepository.findByUsername(any(String.class))).thenReturn(null);</span>
+<span class="pc" id="L150">            assertThrows(UserNotFoundException.class, () -&gt; userService.findByUsername(user.getUsername()));</span>
+<span class="fc" id="L151">            verify(userRepository, Mockito.times(1)).findByUsername(any(String.class));</span>
+<span class="fc" id="L152">        }</span>
 
         @Test
         public void findByUsernameTestIfNull() {
-<span class="pc" id="L155">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findByUsername(null));</span>
-<span class="fc" id="L156">            verify(userRepository, Mockito.times(0)).findByUsername(any(String.class));</span>
-<span class="fc" id="L157">        }</span>
+<span class="pc" id="L156">            assertThrows(IllegalArgumentException.class, () -&gt; userService.findByUsername(null));</span>
+<span class="fc" id="L157">            verify(userRepository, Mockito.times(0)).findByUsername(any(String.class));</span>
+<span class="fc" id="L158">        }</span>
     }
     
     @Nested
-<span class="fc" id="L161">    class removeFromAccountBalanceTests {</span>
+<span class="fc" id="L162">    class removeFromAccountBalanceTests {</span>
 
         @Test
         public void removeFromAccountBalanceTest() {
-<span class="fc" id="L165">            assertEquals(new UserDto(user), userService.removeFromAccountBalance(userDto, amount));</span>
-<span class="fc" id="L166">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L167">        }</span>
+<span class="fc" id="L166">            assertEquals(new UserDto(user), userService.removeFromAccountBalance(userDto, amount));</span>
+<span class="fc" id="L167">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L168">        }</span>
 
         @Test
         public void removeFromAccountBalanceTestIfUserEmpty() {
-<span class="pc" id="L171">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(new UserDto(), amount));</span>
-<span class="fc" id="L172">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L173">        }</span>
+<span class="pc" id="L172">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(new UserDto(), amount));</span>
+<span class="fc" id="L173">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L174">        }</span>
 
         @Test
         public void removeFromAccountBalanceTestIfUserNull() {
-<span class="pc" id="L177">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(null, amount));</span>
-<span class="fc" id="L178">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L179">        }</span>
+<span class="pc" id="L178">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(null, amount));</span>
+<span class="fc" id="L179">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L180">        }</span>
         @Test
         public void removeFromAccountBalanceTestIfAmountNegative() {
-<span class="pc" id="L182">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, -amount));</span>
-<span class="fc" id="L183">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L184">        }</span>
+<span class="pc" id="L183">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, -amount));</span>
+<span class="fc" id="L184">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L185">        }</span>
         @Test
         public void removeFromAccountBalanceTestIfAmountZero() {
-<span class="pc" id="L187">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, 0.0));</span>
-<span class="fc" id="L188">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L189">        }</span>
+<span class="pc" id="L188">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, 0.0));</span>
+<span class="fc" id="L189">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L190">        }</span>
         @Test
         public void removeFromAccountBalanceTestIfAmountNull() {
-<span class="pc" id="L192">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, null));</span>
-<span class="fc" id="L193">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L194">        }</span>
+<span class="pc" id="L193">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, null));</span>
+<span class="fc" id="L194">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L195">        }</span>
 
         @Test
         public void removeFromAccountBalanceTestIfAmountMoreThanAccountBalance() {
-<span class="pc" id="L198">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, user.getAccountBalance() + amount));</span>
-<span class="fc" id="L199">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L200">        }</span>
+<span class="pc" id="L199">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, user.getAccountBalance() + amount));</span>
+<span class="fc" id="L200">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L201">        }</span>
 
         @Test
         public void removeFromAccountBalanceTestIfErrorOnSave() {
-<span class="fc" id="L204">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
-<span class="pc" id="L205">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, amount));</span>
-<span class="fc" id="L206">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L207">        }</span>
+<span class="fc" id="L205">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
+<span class="pc" id="L206">            assertThrows(IllegalArgumentException.class, () -&gt; userService.removeFromAccountBalance(userDto, amount));</span>
+<span class="fc" id="L207">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L208">        }</span>
     }
 
     @Nested
-<span class="fc" id="L211">    class addToAccountBalanceTests {</span>
+<span class="fc" id="L212">    class addToAccountBalanceTests {</span>
 
         @Test
         public void addToAccountBalanceTest() {
-<span class="fc" id="L215">            assertEquals(new UserDto(user), userService.addToAccountBalance(userDto, amount));</span>
-<span class="fc" id="L216">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L217">        }</span>
+<span class="fc" id="L216">            assertEquals(new UserDto(user), userService.addToAccountBalance(userDto, amount));</span>
+<span class="fc" id="L217">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L218">        }</span>
 
         @Test
         public void addToAccountBalanceTestIfUserEmpty() {
-<span class="pc" id="L221">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(new UserDto(), amount));</span>
-<span class="fc" id="L222">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L223">        }</span>
+<span class="pc" id="L222">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(new UserDto(), amount));</span>
+<span class="fc" id="L223">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L224">        }</span>
 
         @Test
         public void addToAccountBalanceTestIfUserNull() {
-<span class="pc" id="L227">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(null, amount));</span>
-<span class="fc" id="L228">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L229">        }</span>
+<span class="pc" id="L228">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(null, amount));</span>
+<span class="fc" id="L229">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L230">        }</span>
         @Test
         public void addToAccountBalanceTestIfAmountNegative() {
-<span class="pc" id="L232">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, -amount));</span>
-<span class="fc" id="L233">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L234">        }</span>
+<span class="pc" id="L233">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, -amount));</span>
+<span class="fc" id="L234">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L235">        }</span>
         @Test
         public void addToAccountBalanceTestIfAmountZero() {
-<span class="pc" id="L237">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, 0.0));</span>
-<span class="fc" id="L238">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L239">        }</span>
+<span class="pc" id="L238">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, 0.0));</span>
+<span class="fc" id="L239">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L240">        }</span>
         @Test
         public void addToAccountBalanceTestIfAmountNull() {
-<span class="pc" id="L242">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, null));</span>
-<span class="fc" id="L243">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
-<span class="fc" id="L244">        }</span>
+<span class="pc" id="L243">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, null));</span>
+<span class="fc" id="L244">            verify(userRepository, Mockito.times(0)).save(any(User.class));</span>
+<span class="fc" id="L245">        }</span>
 
         @Test
         public void addToAccountBalanceTestIfErrorOnSave() {
-<span class="fc" id="L248">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
-<span class="pc" id="L249">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, amount));</span>
-<span class="fc" id="L250">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
-<span class="fc" id="L251">        }</span>
+<span class="fc" id="L249">            when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());</span>
+<span class="pc" id="L250">            assertThrows(IllegalArgumentException.class, () -&gt; userService.addToAccountBalance(userDto, amount));</span>
+<span class="fc" id="L251">            verify(userRepository, Mockito.times(1)).save(any(User.class));</span>
+<span class="fc" id="L252">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

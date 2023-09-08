@@ -1,11 +1,9 @@
 package com.openclassrooms.paymybuddy.unit;
 
 import com.openclassrooms.paymybuddy.entity.Transaction;
+import com.openclassrooms.paymybuddy.exception.TransactionNotFoundException;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
-import com.openclassrooms.paymybuddy.service.CommissionService;
-import com.openclassrooms.paymybuddy.service.CurrencyService;
-import com.openclassrooms.paymybuddy.service.TransactionService;
-import com.openclassrooms.paymybuddy.service.UserService;
+import com.openclassrooms.paymybuddy.service.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,7 +75,7 @@ public class TransactionServiceTest extends TestVariables {
         @Test
         public void findByIdTestIfNotInDB() {
             when(transactionRepository.findById(any(Integer.class))).thenReturn(null);
-            assertThrows(IllegalArgumentException.class, () -> transactionService.findById(internalTransaction.getId()));
+            assertThrows(TransactionNotFoundException.class, () -> transactionService.findById(internalTransaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));
         }
 
