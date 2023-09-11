@@ -69,23 +69,18 @@ public class PastTransactionDto {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
-            if (this.isEmpty())
-                return true;
-            return false;
+            return this.isEmpty();
         }
         if (obj.getClass() != this.getClass()) {
             return false;
         }
         PastTransactionDto objPastTransactionDto = (PastTransactionDto) obj;
         if (this.isEmpty()) {
-            if (objPastTransactionDto.isEmpty())
-                return true;
-        } else if (this.getId().equals(objPastTransactionDto.getId())
+            return objPastTransactionDto.isEmpty();
+        } else return this.getId().equals(objPastTransactionDto.getId())
                 && this.getAmount().equals(objPastTransactionDto.getAmount())
                 && this.getDescription().equals(objPastTransactionDto.getDescription())
                 && this.getCurrencySymbol().equals(objPastTransactionDto.getCurrencySymbol())
-                && this.getUsername().equals(objPastTransactionDto.getUsername()))
-            return true;
-        return false;
+                && this.getUsername().equals(objPastTransactionDto.getUsername());
     }
 }

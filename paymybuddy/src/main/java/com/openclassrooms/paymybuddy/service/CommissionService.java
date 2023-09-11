@@ -1,7 +1,6 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.entity.Commission;
-import com.openclassrooms.paymybuddy.entity.Currency;
 import com.openclassrooms.paymybuddy.exception.CommissionNotFound;
 import com.openclassrooms.paymybuddy.repository.CommissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;

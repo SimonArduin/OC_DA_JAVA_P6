@@ -141,18 +141,14 @@ public class UserDto {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
-            if (this.isEmpty())
-                return true;
-            return false;
+            return this.isEmpty();
         }
         if (obj.getClass() != this.getClass()) {
             return false;
         }
         UserDto objUserDto = (UserDto) obj;
         if (this.isEmpty()) {
-            if (objUserDto.isEmpty())
-                return true;
-            return false;
+            return objUserDto.isEmpty();
         } else if (this.getId().equals(objUserDto.getId())
                 && this.getAccountBalance().equals(objUserDto.getAccountBalance())
                 && this.getCurrencyId().equals(objUserDto.getCurrencyId())
@@ -165,8 +161,7 @@ public class UserDto {
                 return true;
             if (!(this.getConnections() != null && objUserDto.getConnections() != null))
                 return false;
-            if (this.getConnections().equals(objUserDto.getConnections()))
-                return true;
+            return this.getConnections().equals(objUserDto.getConnections());
         }
             return false;
     }

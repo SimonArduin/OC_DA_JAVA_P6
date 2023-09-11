@@ -2,16 +2,14 @@ package com.openclassrooms.paymybuddy.dto;
 
 import com.openclassrooms.paymybuddy.entity.Transaction;
 
-import java.sql.Timestamp;
-
 public class ExternalTransactionDto extends TransactionDto {
 
     private String iban;
 
     private boolean toIban;
 
-    private String toIbanDescription = "to bank account";
-    private String notToIbanDescription = "from bank account";
+    final String toIbanDescription = "to bank account";
+    final String notToIbanDescription = "from bank account";
 
     public ExternalTransactionDto() {
     }

@@ -72,9 +72,7 @@ public class TransactionService {
     public TransactionDto addTransaction(TransactionDto transactionDto) {
         if (transactionDto == null || transactionDto.isEmpty())
             throw new IllegalArgumentException("Invalid transaction");
-        Transaction toSave = new Transaction(transactionDto);
-        Transaction result = transactionRepository.save(toSave);
-        TransactionDto resultDto;
+        Transaction result = transactionRepository.save(new Transaction(transactionDto));
         if (result.isExternalTransaction())
             return new ExternalTransactionDto(result);
         else
