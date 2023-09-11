@@ -85,12 +85,12 @@ public class ApplicationController {
         return "transfer";
     }
     @PostMapping("/process_transfer")
-    public String processTransfer(InternalTransactionDto internalTransactionDto, Model model, Principal principal) {
-        if(internalTransactionDto == null || internalTransactionDto.isEmpty())
+    public String processTransfer(InternalTransactionDto transaction, Model model, Principal principal) {
+        if(transaction == null)
             throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());
-        internalTransactionDto.setSenderId(connectedUser.getId());
-        globalService.addInternalTransaction(internalTransactionDto);
+        transaction.setSenderId(connectedUser.getId());
+        globalService.addInternalTransaction(transaction);
         model.addAttribute("connectedUser", connectedUser);
         model.addAttribute("transaction", new InternalTransactionDto());
         List<PastTransactionDto> transactionList = globalService.getPastTransactions(connectedUser);
@@ -108,7 +108,7 @@ public class ApplicationController {
     }
     @PostMapping("/process_add_transaction_from_bank_account")
     public String processAddTransactionFromBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
-        if (externalTransactionDto == null || externalTransactionDto.isEmpty())
+        if (externalTransactionDto == null)
             throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());
         externalTransactionDto.setSenderId(connectedUser.getId());
@@ -127,7 +127,7 @@ public class ApplicationController {
     }
     @PostMapping("/process_add_transaction_to_bank_account")
     public String processAddTransactionToBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
-        if (externalTransactionDto == null || externalTransactionDto.isEmpty())
+        if (externalTransactionDto == null)
             throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());
         externalTransactionDto.setSenderId(connectedUser.getId());

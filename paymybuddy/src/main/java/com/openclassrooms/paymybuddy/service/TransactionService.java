@@ -68,4 +68,16 @@ public class TransactionService {
         }
         return result;
     }
+
+    public TransactionDto addTransaction(TransactionDto transactionDto) {
+        if (transactionDto == null || transactionDto.isEmpty())
+            throw new IllegalArgumentException("Invalid transaction");
+        Transaction toSave = new Transaction(transactionDto);
+        Transaction result = transactionRepository.save(toSave);
+        TransactionDto resultDto;
+        if (result.isExternalTransaction())
+            return new ExternalTransactionDto(result);
+        else
+            return new InternalTransactionDto(result);
+    }
 }

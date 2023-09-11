@@ -34,11 +34,12 @@ public class TransactionServiceTest extends TestVariables {
     CommissionService commissionService;
 
     @BeforeEach
-    private void setUp() {
+    public void setUp() {
         initializeVariables();
         when(transactionRepository.findById(any(Integer.class))).thenReturn(new Transaction(internalTransactionDto));
         when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(transactionList);
         when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(transactionList);
+        when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);
 
         when(userService.findById(any(Integer.class))).thenReturn(userDto);
 
@@ -129,6 +130,35 @@ public class TransactionServiceTest extends TestVariables {
         public void findByReceiverTestIfNull() {
             assertThrows(IllegalArgumentException.class, () -> transactionService.findByReceiverId(null));
             verify(transactionRepository, Mockito.times(0)).findByReceiverId(any(Integer.class));
+        }
+    }
+    @Nested
+    class addTransactionTests {
+
+        @Test
+        public void addTransactionIfInternalTest() {
+            when(transactionRepository.save(any(Transaction.class))).thenReturn(internalTransaction);
+            assertEquals(internalTransactionDto, transactionService.addTransaction(internalTransactionDto));
+            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));
+        }
+
+        @Test
+        public void addTransactionIfExternalTest() {
+            when(transactionRepository.save(any(Transaction.class))).thenReturn(externalTransaction);
+            assertEquals(externalTransactionDto, transactionService.addTransaction(externalTransactionDto));
+            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));
+        }
+
+        @Test
+        public void addTransactionTestIfNull() {
+            assertThrows(IllegalArgumentException.class, () -> transactionService.addTransaction(null));
+            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));
+        }
+
+        @Test
+        public void addTransactionTestIfEmpty() {
+            assertThrows(IllegalArgumentException.class, () -> transactionService.addTransaction(null));
+            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));
         }
     }
 }

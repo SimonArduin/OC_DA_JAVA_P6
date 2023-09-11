@@ -2,9 +2,11 @@ package com.openclassrooms.paymybuddy.entity;
 
 import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
+import com.openclassrooms.paymybuddy.dto.TransactionDto;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -61,26 +63,24 @@ public class Transaction {
         this.toIban = toIban;
     }
 
-    public Transaction(InternalTransactionDto internalTransactionDto) {
-        this.id = internalTransactionDto.getId();
-        this.amount = internalTransactionDto.getAmount();
-        this.commissionAmount = internalTransactionDto.getCommissionAmount();
-        this.currencyId = internalTransactionDto.getCurrencyId();
-        this.description = internalTransactionDto.getDescription();
-        this.receiverId = internalTransactionDto.getReceiverId();
-        this.senderId = internalTransactionDto.getSenderId();
-        this.timestamp = internalTransactionDto.getTimestamp();
-    }
-
-    public Transaction(ExternalTransactionDto externalTransactionDto) {
-        this.id = externalTransactionDto.getId();
-        this.amount = externalTransactionDto.getAmount();
-        this.commissionAmount = externalTransactionDto.getCommissionAmount();
-        this.currencyId = externalTransactionDto.getCurrencyId();
-        this.iban = externalTransactionDto.getIban();
-        this.senderId = externalTransactionDto.getSenderId();
-        this.timestamp = externalTransactionDto.getTimestamp();
-        this.toIban = externalTransactionDto.isToIban();
+    public Transaction(TransactionDto transactionDto) {
+        if(transactionDto == null) {
+            throw new IllegalArgumentException("Invalid transaction");
+        }
+        this.id = transactionDto.getId();
+        this.amount = transactionDto.getAmount();
+        this.commissionAmount = transactionDto.getCommissionAmount();
+        this.currencyId = transactionDto.getCurrencyId();
+        this.description = transactionDto.getDescription();
+        this.senderId = transactionDto.getSenderId();
+        this.timestamp = transactionDto.getTimestamp();
+        if (transactionDto.isInternalTransaction()) {
+            this.receiverId = ((InternalTransactionDto) transactionDto).getReceiverId();
+        }
+        else if (transactionDto.isExternalTransaction()) {
+            this.iban = ((ExternalTransactionDto) transactionDto).getIban();
+            this.toIban = ((ExternalTransactionDto) transactionDto).isToIban();
+        }
     }
 
     public Integer getId() {
@@ -191,27 +191,22 @@ public class Transaction {
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
-            if (this.isEmpty())
-                return true;
-            return false;
+            return this.isEmpty();
         }
-        if (obj.getClass() != this.getClass()) {
+        else if (obj.getClass() != this.getClass()) {
             return false;
         }
         Transaction objTransaction = (Transaction) obj;
-        if (objTransaction.getId() == this.getId()
-                && objTransaction.getAmount() == this.getAmount()
-                && objTransaction.getCommissionId() == this.getCommissionId()
-                && objTransaction.getCommissionAmount() == this.getCommissionAmount()
-                && objTransaction.getCurrencyId() == this.getCurrencyId()
-                && objTransaction.getDescription() == this.getDescription()
-                && objTransaction.getIban() == this.getIban()
-                && objTransaction.getReceiverId() == this.getReceiverId()
-                && objTransaction.getSenderId() == this.getSenderId()
-                && objTransaction.getTimestamp() == this.getTimestamp()
-                && objTransaction.isToIban() == this.isToIban()) {
-            return true;
-        }
-        return false;
+        return Objects.equals(objTransaction.getId(), this.getId())
+                && Objects.equals(objTransaction.getAmount(), this.getAmount())
+                && Objects.equals(objTransaction.getCommissionId(), this.getCommissionId())
+                && Objects.equals(objTransaction.getCommissionAmount(), this.getCommissionAmount())
+                && Objects.equals(objTransaction.getCurrencyId(), this.getCurrencyId())
+                && Objects.equals(objTransaction.getDescription(), this.getDescription())
+                && Objects.equals(objTransaction.getIban(), this.getIban())
+                && Objects.equals(objTransaction.getReceiverId(), this.getReceiverId())
+                && Objects.equals(objTransaction.getSenderId(), this.getSenderId())
+                && Objects.equals(objTransaction.getTimestamp(), this.getTimestamp())
+                && Objects.equals(objTransaction.isToIban(), this.isToIban());
     }
 }

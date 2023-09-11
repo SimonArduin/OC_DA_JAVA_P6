@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-@Transactional(propagation = Propagation.MANDATORY, timeout = 60)
+@Transactional(propagation = Propagation.REQUIRED, timeout = 60)
 public class GlobalService {
     @Autowired
     CurrencyService currencyService;
@@ -27,9 +27,6 @@ public class GlobalService {
     TransactionService transactionService;
     @Autowired
     UserService userService;
-
-    @Autowired
-    TransactionRepository transactionRepository;
 
     public InternalTransactionDto addInternalTransaction(InternalTransactionDto internalTransactionDto) {
         if (internalTransactionDto == null || internalTransactionDto.isEmpty())
@@ -46,15 +43,13 @@ public class GlobalService {
             throw new IllegalArgumentException("Not enough money on user account");
         }
         internalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
-        Transaction transaction = new Transaction(internalTransactionDto);
         userService.removeFromAccountBalance(sender, fullTransactionAmount);
-        userService.addToAccountBalance(receiver, transaction.getAmount());
-        return new InternalTransactionDto(transactionRepository.save(transaction));
+        userService.addToAccountBalance(receiver, internalTransactionDto.getAmount());
+        return (InternalTransactionDto) transactionService.addTransaction(internalTransactionDto);
     }
 
     public ExternalTransactionDto addExternalTransaction(ExternalTransactionDto externalTransactionDto) {
-        if(externalTransactionDto == null
-                || externalTransactionDto.isEmpty())
+        if(externalTransactionDto == null || externalTransactionDto.isEmpty())
             throw new IllegalArgumentException("Invalid transaction");
         UserDto sender = userService.findById(externalTransactionDto.getSenderId());
         if (sender == null || sender.isEmpty())
@@ -62,18 +57,17 @@ public class GlobalService {
         externalTransactionDto.setCommissionAmount(calculateCommissionAmount(externalTransactionDto));
         Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommissionAmount();
         externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
-        Transaction transaction = new Transaction(externalTransactionDto);
         if(externalTransactionDto.isToIban()) {
             if (sender.getAccountBalance() < (fullTransactionAmount)) {
                 throw new IllegalArgumentException("Not enough money on user account");
             } else {
                 userService.removeFromAccountBalance(sender, fullTransactionAmount);
-                return new ExternalTransactionDto(transactionRepository.save(transaction));
+                return (ExternalTransactionDto) transactionService.addTransaction(externalTransactionDto);
             }
         }
         else {
-            userService.addToAccountBalance(sender, transaction.getAmount());
-            return new ExternalTransactionDto(transactionRepository.save(transaction));
+            userService.addToAccountBalance(sender, externalTransactionDto.getAmount());
+            return (ExternalTransactionDto) transactionService.addTransaction(externalTransactionDto);
         }
     }
 

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalServiceTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.unit</a> &gt; <span class="el_source">GlobalServiceTest.java</span></div><h1>GlobalServiceTest.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.unit;
 
-import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
-import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
-import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
-import com.openclassrooms.paymybuddy.dto.UserDto;
+import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
@@ -16,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = GlobalService.class)
-<span class="fc" id="L32">public class GlobalServiceTest extends TestVariables {</span>
+<span class="fc" id="L25">public class GlobalServiceTest extends TestVariables {</span>
     @Autowired
     GlobalService globalService;
     
@@ -45,323 +38,303 @@ import static org.mockito.Mockito.when;
     CommissionService commissionService;
 
     @BeforeEach
-    private void setUp() {
-<span class="fc" id="L49">        initializeVariables();</span>
-<span class="fc" id="L50">        internalTransaction = new Transaction(user.getId(), 10.0, commission.getRate()*10.0, commission.getId(), currency.getId(), &quot;description&quot;, null, userDto.getId(), 2, new Timestamp(0), null);</span>
-<span class="fc" id="L51">        transactionOther = new Transaction(userOther.getId(), 20.0, commission.getRate()*20.0, commission.getId(), 2, &quot;descriptionOther&quot;, null, userDtoOther.getId(), 4, new Timestamp(0), null);</span>
-
-<span class="fc" id="L53">        when(transactionRepository.findById(any(Integer.class))).thenReturn(new Transaction(internalTransactionDto));</span>
-<span class="fc" id="L54">        when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(transactionList);</span>
-<span class="fc" id="L55">        when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(transactionList);</span>
-<span class="fc" id="L56">        when(transactionRepository.save(any(Transaction.class))).thenReturn(internalTransaction);</span>
-
-<span class="fc" id="L58">        when(transactionService.findBySenderId(any(Integer.class))).thenReturn(transactionDtoList);</span>
-<span class="fc" id="L59">        when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(transactionDtoList);</span>
+    public void setUp() {
+<span class="fc" id="L42">        initializeVariables();</span>
         
-<span class="fc" id="L61">        when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
+<span class="fc" id="L44">        when(transactionService.findBySenderId(any(Integer.class))).thenReturn(transactionDtoList);</span>
+<span class="fc" id="L45">        when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(transactionDtoList);</span>
+<span class="fc" id="L46">        when(transactionService.addTransaction(any(ExternalTransactionDto.class))).thenReturn(externalTransactionDto);</span>
+<span class="fc" id="L47">        when(transactionService.addTransaction(any(InternalTransactionDto.class))).thenReturn(internalTransactionDto);</span>
+        
+<span class="fc" id="L49">        when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
 
-<span class="fc" id="L63">        when(commissionService.findById(any(Integer.class))).thenReturn(commission);</span>
+<span class="fc" id="L51">        when(commissionService.findById(any(Integer.class))).thenReturn(commission);</span>
 
-<span class="fc" id="L65">        when(currencyService.findById(any(Integer.class))).thenReturn(currency);</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L53">        when(currencyService.findById(any(Integer.class))).thenReturn(currency);</span>
+<span class="fc" id="L54">    }</span>
 
     @Test
-<span class="fc" id="L69">    void contextLoads() {}</span>
+<span class="fc" id="L57">    void contextLoads() {}</span>
 
     @Nested
-<span class="fc" id="L72">    class addInternalTransactionTests {</span>
+<span class="fc" id="L60">    class addInternalTransactionTests {</span>
 
         @Test
         public void addInternalTransactionTest() {
-<span class="fc" id="L76">            assertEquals(new InternalTransactionDto(internalTransaction), globalService.addInternalTransaction(internalTransactionDto));</span>
-<span class="fc" id="L77">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
-<span class="fc" id="L78">            verify(userService, Mockito.times(2)).findById(any(Integer.class));</span>
-<span class="fc" id="L79">            verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L80">            verify(userService, Mockito.times(1)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L81">        }</span>
+<span class="fc" id="L64">            InternalTransactionDto expectedResult = new InternalTransactionDto(internalTransaction);</span>
+<span class="fc" id="L65">            InternalTransactionDto actualResult = globalService.addInternalTransaction(internalTransactionDto);</span>
+<span class="fc" id="L66">            actualResult.setTimestamp(expectedResult.getTimestamp());</span>
+<span class="fc" id="L67">            assertEquals(expectedResult, actualResult);</span>
+<span class="fc" id="L68">            verify(transactionService, Mockito.times(1)).addTransaction(any(InternalTransactionDto.class));</span>
+<span class="fc" id="L69">            verify(userService, Mockito.times(2)).findById(any(Integer.class));</span>
+<span class="fc" id="L70">            verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L71">            verify(userService, Mockito.times(1)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L72">        }</span>
 
         @Test
         public void addInternalTransactionTestIfEmpty() {
-<span class="pc" id="L85">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addInternalTransaction(new InternalTransactionDto()));</span>
-<span class="fc" id="L86">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
+<span class="pc" id="L76">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addInternalTransaction(new InternalTransactionDto()));</span>
+<span class="fc" id="L77">            verify(transactionService, Mockito.times(0)).addTransaction(any(InternalTransactionDto.class));</span>
+<span class="fc" id="L78">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L79">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L80">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L81">        }</span>
+
+        @Test
+        public void addInternalTransactionTestIfNull() {
+<span class="pc" id="L85">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addInternalTransaction(null));</span>
+<span class="fc" id="L86">            verify(transactionService, Mockito.times(0)).addTransaction(any(InternalTransactionDto.class));</span>
 <span class="fc" id="L87">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
 <span class="fc" id="L88">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
 <span class="fc" id="L89">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
 <span class="fc" id="L90">        }</span>
 
         @Test
-        public void addInternalTransactionTestIfNull() {
-<span class="pc" id="L94">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addInternalTransaction(null));</span>
-<span class="fc" id="L95">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L96">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L97">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L98">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L99">        }</span>
-
+        public void addInternalTransactionTestIfNoSenderFound() {
+<span class="fc" id="L94">            when(userService.findById(internalTransactionDto.getSenderId())).thenReturn(null);</span>
+<span class="pc" id="L95">            assertThrows(UserNotFoundException.class, () -&gt; globalService.addInternalTransaction(internalTransactionDto));</span>
+<span class="fc" id="L96">            verify(transactionService, Mockito.times(0)).addTransaction(any(InternalTransactionDto.class));</span>
+<span class="fc" id="L97">            verify(userService, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L98">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L99">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L100">        }</span>
         @Test
-        public void addInternalTransactionTestIfErrorOnSave() {
-<span class="fc" id="L103">            when(transactionRepository.save(any(Transaction.class))).thenThrow(new IllegalArgumentException());</span>
-<span class="pc" id="L104">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addInternalTransaction(internalTransactionDto));</span>
-<span class="fc" id="L105">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
+        public void addInternalTransactionTestIfNoReceiverFound() {
+<span class="fc" id="L103">            when(userService.findById(internalTransactionDto.getReceiverId())).thenReturn(null);</span>
+<span class="pc" id="L104">            assertThrows(UserNotFoundException.class, () -&gt; globalService.addInternalTransaction(internalTransactionDto));</span>
+<span class="fc" id="L105">            verify(transactionService, Mockito.times(0)).addTransaction(any(InternalTransactionDto.class));</span>
 <span class="fc" id="L106">            verify(userService, Mockito.times(2)).findById(any(Integer.class));</span>
-<span class="fc" id="L107">            verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L108">            verify(userService, Mockito.times(1)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L107">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L108">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
 <span class="fc" id="L109">        }</span>
 
         @Test
-        public void addInternalTransactionTestIfNoSenderFound() {
-<span class="fc" id="L113">            when(userService.findById(internalTransactionDto.getSenderId())).thenReturn(null);</span>
-<span class="pc" id="L114">            assertThrows(UserNotFoundException.class, () -&gt; globalService.addInternalTransaction(internalTransactionDto));</span>
-<span class="fc" id="L115">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L116">            verify(userService, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L117">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L118">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L119">        }</span>
-        @Test
-        public void addInternalTransactionTestIfNoReceiverFound() {
-<span class="fc" id="L122">            when(userService.findById(internalTransactionDto.getReceiverId())).thenReturn(null);</span>
-<span class="pc" id="L123">            assertThrows(UserNotFoundException.class, () -&gt; globalService.addInternalTransaction(internalTransactionDto));</span>
-<span class="fc" id="L124">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L125">            verify(userService, Mockito.times(2)).findById(any(Integer.class));</span>
-<span class="fc" id="L126">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L127">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L128">        }</span>
-
-        @Test
         public void addInternalTransactionTestIfNotEnoughOnAccount() {
-<span class="fc" id="L132">            userDto.setAccountBalance(0.00);</span>
-<span class="fc" id="L133">            when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
-<span class="pc" id="L134">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addInternalTransaction(internalTransactionDto));</span>
-<span class="fc" id="L135">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L136">            verify(userService, Mockito.times(2)).findById(any(Integer.class));</span>
-<span class="fc" id="L137">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L138">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L139">        }</span>
+<span class="fc" id="L113">            userDto.setAccountBalance(0.00);</span>
+<span class="fc" id="L114">            when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
+<span class="pc" id="L115">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addInternalTransaction(internalTransactionDto));</span>
+<span class="fc" id="L116">            verify(transactionService, Mockito.times(0)).addTransaction(any(InternalTransactionDto.class));</span>
+<span class="fc" id="L117">            verify(userService, Mockito.times(2)).findById(any(Integer.class));</span>
+<span class="fc" id="L118">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L119">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L120">        }</span>
     }
 
     @Nested
-<span class="fc" id="L143">    class addExternalTransactionTests {</span>
-        @BeforeEach
-        private void setUp() {
-<span class="fc" id="L146">            when(transactionRepository.save(any(Transaction.class))).thenReturn(externalTransaction);</span>
-<span class="fc" id="L147">        }</span>
+<span class="fc" id="L124">    class addExternalTransactionTests {</span>
 
         @Test
         public void addExternalTransactionTestIfToIban() {
-<span class="fc" id="L151">            externalTransaction.setToIban(true);</span>
-<span class="fc" id="L152">            externalTransactionDto.setToIban(true);</span>
-<span class="fc" id="L153">            when(transactionRepository.save(any(Transaction.class))).thenReturn(externalTransaction);</span>
-<span class="fc" id="L154">            assertEquals(new ExternalTransactionDto(externalTransaction), globalService.addExternalTransaction(externalTransactionDto));</span>
-<span class="fc" id="L155">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
-<span class="fc" id="L156">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L157">            verify(userService, Mockito.times(1)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L158">        }</span>
+<span class="fc" id="L128">            externalTransaction.setToIban(true);</span>
+<span class="fc" id="L129">            externalTransactionDto.setToIban(true);</span>
+<span class="fc" id="L130">            ExternalTransactionDto expectedResult = new ExternalTransactionDto(externalTransaction);</span>
+<span class="fc" id="L131">            ExternalTransactionDto actualResult = globalService.addExternalTransaction(externalTransactionDto);</span>
+<span class="fc" id="L132">            actualResult.setTimestamp(expectedResult.getTimestamp());</span>
+<span class="fc" id="L133">            assertEquals(expectedResult, actualResult);</span>
+<span class="fc" id="L134">            verify(transactionService, Mockito.times(1)).addTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L135">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L136">            verify(userService, Mockito.times(1)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L137">        }</span>
 
         @Test
         public void addExternalTransactionTestIfNotToIban() {
-<span class="fc" id="L162">            assertEquals(new ExternalTransactionDto(externalTransaction), globalService.addExternalTransaction(externalTransactionDto));</span>
-<span class="fc" id="L163">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
-<span class="fc" id="L164">            verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L165">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L166">        }</span>
+<span class="fc" id="L141">            ExternalTransactionDto expectedResult = new ExternalTransactionDto(externalTransaction);</span>
+<span class="fc" id="L142">            ExternalTransactionDto actualResult = globalService.addExternalTransaction(externalTransactionDto);</span>
+<span class="fc" id="L143">            actualResult.setTimestamp(expectedResult.getTimestamp());</span>
+<span class="fc" id="L144">            assertEquals(expectedResult, actualResult);</span>
+<span class="fc" id="L145">            verify(transactionService, Mockito.times(1)).addTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L146">            verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L147">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L148">        }</span>
 
         @Test
         public void addExternalTransactionTestIfEmpty() {
-<span class="pc" id="L170">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addExternalTransaction(new ExternalTransactionDto()));</span>
-<span class="fc" id="L171">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L172">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L173">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L174">        }</span>
+<span class="pc" id="L152">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addExternalTransaction(new ExternalTransactionDto()));</span>
+<span class="fc" id="L153">            verify(transactionService, Mockito.times(0)).addTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L154">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L155">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L156">        }</span>
 
         @Test
         public void addExternalTransactionTestIfNull() {
-<span class="pc" id="L178">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addExternalTransaction(null));</span>
-<span class="fc" id="L179">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L180">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L181">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L182">        }</span>
-
-        @Test
-        public void addExternalTransactionTestIfErrorOnSave() {
-<span class="fc" id="L186">            when(transactionRepository.save(any(Transaction.class))).thenThrow(new IllegalArgumentException());</span>
-<span class="pc" id="L187">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addExternalTransaction(externalTransactionDto));</span>
-<span class="fc" id="L188">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
-<span class="fc" id="L189">            verify(userService, Mockito.times(1)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L190">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L191">        }</span>
+<span class="pc" id="L160">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addExternalTransaction(null));</span>
+<span class="fc" id="L161">            verify(transactionService, Mockito.times(0)).addTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L162">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L163">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L164">        }</span>
         @Test
         public void addExternalTransactionTestIfNoSenderFound() {
-<span class="fc" id="L194">            when(userService.findById(externalTransactionDto.getSenderId())).thenReturn(null);</span>
-<span class="pc" id="L195">            assertThrows(UserNotFoundException.class, () -&gt; globalService.addExternalTransaction(externalTransactionDto));</span>
-<span class="fc" id="L196">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L197">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L198">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L199">        }</span>
+<span class="fc" id="L167">            when(userService.findById(externalTransactionDto.getSenderId())).thenReturn(null);</span>
+<span class="pc" id="L168">            assertThrows(UserNotFoundException.class, () -&gt; globalService.addExternalTransaction(externalTransactionDto));</span>
+<span class="fc" id="L169">            verify(transactionService, Mockito.times(0)).addTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L170">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L171">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L172">        }</span>
 
         @Test
         public void addExternalTransactionTestIfToIbanAndNotEnoughOnAccount() {
-<span class="fc" id="L203">            externalTransactionDto.setToIban(true);</span>
-<span class="fc" id="L204">            userDto.setAccountBalance(0.00);</span>
-<span class="fc" id="L205">            when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
-<span class="pc" id="L206">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addExternalTransaction(externalTransactionDto));</span>
-<span class="fc" id="L207">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L208">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L209">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
-<span class="fc" id="L210">        }</span>
+<span class="fc" id="L176">            externalTransactionDto.setToIban(true);</span>
+<span class="fc" id="L177">            userDto.setAccountBalance(0.00);</span>
+<span class="fc" id="L178">            when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
+<span class="pc" id="L179">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.addExternalTransaction(externalTransactionDto));</span>
+<span class="fc" id="L180">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
+<span class="fc" id="L181">            verify(userService, Mockito.times(0)).addToAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L182">            verify(userService, Mockito.times(0)).removeFromAccountBalance(any(UserDto.class), any(Double.class));</span>
+<span class="fc" id="L183">        }</span>
     }
 
     @Nested
-<span class="fc" id="L214">    class getPastTransactionsTests {</span>
+<span class="fc" id="L187">    class getPastTransactionsTests {</span>
 
         @Test
         public void getPastTransactionsTest() {
-<span class="fc" id="L218">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
-<span class="fc" id="L219">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
-<span class="fc" id="L220">                            userDto.getUsername(),</span>
-<span class="fc" id="L221">                            internalTransactionDto.getDescription(),</span>
-<span class="fc" id="L222">                            -internalTransactionDto.getAmount(),</span>
-<span class="fc" id="L223">                            currency.getName()),</span>
-<span class="fc" id="L224">                    new PastTransactionDto(externalTransactionDto.getId(),</span>
-<span class="fc" id="L225">                            userDto.getUsername(),</span>
-<span class="fc" id="L226">                            externalTransactionDto.getDescription(),</span>
-<span class="fc" id="L227">                            externalTransactionDto.getAmount(),</span>
-<span class="fc" id="L228">                            currency.getName()),</span>
-<span class="fc" id="L229">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
-<span class="fc" id="L230">                            userDto.getUsername(),</span>
-<span class="fc" id="L231">                            internalTransactionDto.getDescription(),</span>
-<span class="fc" id="L232">                            internalTransactionDto.getAmount(),</span>
-<span class="fc" id="L233">                            currency.getName())</span>
+<span class="fc" id="L191">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
+<span class="fc" id="L192">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
+<span class="fc" id="L193">                            userDto.getUsername(),</span>
+<span class="fc" id="L194">                            internalTransactionDto.getDescription(),</span>
+<span class="fc" id="L195">                            -internalTransactionDto.getAmount(),</span>
+<span class="fc" id="L196">                            currency.getName()),</span>
+<span class="fc" id="L197">                    new PastTransactionDto(externalTransactionDto.getId(),</span>
+<span class="fc" id="L198">                            userDto.getUsername(),</span>
+<span class="fc" id="L199">                            externalTransactionDto.getDescription(),</span>
+<span class="fc" id="L200">                            externalTransactionDto.getAmount(),</span>
+<span class="fc" id="L201">                            currency.getName()),</span>
+<span class="fc" id="L202">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
+<span class="fc" id="L203">                            userDto.getUsername(),</span>
+<span class="fc" id="L204">                            internalTransactionDto.getDescription(),</span>
+<span class="fc" id="L205">                            internalTransactionDto.getAmount(),</span>
+<span class="fc" id="L206">                            currency.getName())</span>
             ));
-<span class="fc" id="L235">            pastTransactionDtoList.sort(Comparator.comparing(PastTransactionDto::getId).reversed());</span>
-<span class="fc" id="L236">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
-<span class="fc" id="L237">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L238">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L239">        }</span>
+<span class="fc" id="L208">            pastTransactionDtoList.sort(Comparator.comparing(PastTransactionDto::getId).reversed());</span>
+<span class="fc" id="L209">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
+<span class="fc" id="L210">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L211">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L212">        }</span>
 
         @Test
         public void getPastTransactionsTestIfSenderAndInternal() {
-<span class="fc" id="L243">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
-<span class="fc" id="L244">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
-<span class="fc" id="L245">                            userDto.getUsername(),</span>
-<span class="fc" id="L246">                            internalTransactionDto.getDescription(),</span>
-<span class="fc" id="L247">                            -internalTransactionDto.getAmount(),</span>
-<span class="fc" id="L248">                            currency.getName())</span>
+<span class="fc" id="L216">            pastTransactionDtoList = new ArrayList&lt;&gt;(List.of(</span>
+<span class="fc" id="L217">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
+<span class="fc" id="L218">                            userDto.getUsername(),</span>
+<span class="fc" id="L219">                            internalTransactionDto.getDescription(),</span>
+<span class="fc" id="L220">                            -internalTransactionDto.getAmount(),</span>
+<span class="fc" id="L221">                            currency.getName())</span>
             ));
-<span class="fc" id="L250">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(internalTransactionDto)));</span>
-<span class="fc" id="L251">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L252">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
-<span class="fc" id="L253">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L254">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L255">        }</span>
+<span class="fc" id="L223">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(internalTransactionDto)));</span>
+<span class="fc" id="L224">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L225">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
+<span class="fc" id="L226">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L227">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L228">        }</span>
 
         @Test
         public void getPastTransactionsTestIfReceiverAndInternal() {
-<span class="fc" id="L259">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
-<span class="fc" id="L260">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
-<span class="fc" id="L261">                            userDto.getUsername(),</span>
-<span class="fc" id="L262">                            internalTransactionDto.getDescription(),</span>
-<span class="fc" id="L263">                            internalTransactionDto.getAmount(),</span>
-<span class="fc" id="L264">                            currency.getName())</span>
+<span class="fc" id="L232">            pastTransactionDtoList = new ArrayList&lt;&gt;(List.of(</span>
+<span class="fc" id="L233">                    new PastTransactionDto(internalTransactionDto.getId(),</span>
+<span class="fc" id="L234">                            userDto.getUsername(),</span>
+<span class="fc" id="L235">                            internalTransactionDto.getDescription(),</span>
+<span class="fc" id="L236">                            internalTransactionDto.getAmount(),</span>
+<span class="fc" id="L237">                            currency.getName())</span>
             ));
-<span class="fc" id="L266">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L267">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(internalTransactionDto)));</span>
-<span class="fc" id="L268">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
-<span class="fc" id="L269">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L270">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L271">        }</span>
+<span class="fc" id="L239">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L240">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(internalTransactionDto)));</span>
+<span class="fc" id="L241">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
+<span class="fc" id="L242">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L243">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L244">        }</span>
 
         @Test
         public void getPastTransactionsTestIfExternalAndToIban() {
-<span class="fc" id="L275">            externalTransactionDto.setToIban(true);</span>
-<span class="fc" id="L276">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
-<span class="fc" id="L277">                    new PastTransactionDto(externalTransactionDto.getId(),</span>
-<span class="fc" id="L278">                            userDto.getUsername(),</span>
-<span class="fc" id="L279">                            externalTransactionDto.getDescription(),</span>
-<span class="fc" id="L280">                            -externalTransactionDto.getAmount(),</span>
-<span class="fc" id="L281">                            currency.getName())</span>
+<span class="fc" id="L248">            externalTransactionDto.setToIban(true);</span>
+<span class="fc" id="L249">            pastTransactionDtoList = new ArrayList&lt;&gt;(List.of(</span>
+<span class="fc" id="L250">                    new PastTransactionDto(externalTransactionDto.getId(),</span>
+<span class="fc" id="L251">                            userDto.getUsername(),</span>
+<span class="fc" id="L252">                            externalTransactionDto.getDescription(),</span>
+<span class="fc" id="L253">                            -externalTransactionDto.getAmount(),</span>
+<span class="fc" id="L254">                            currency.getName())</span>
             ));
-<span class="fc" id="L283">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(externalTransactionDto)));</span>
-<span class="fc" id="L284">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L285">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
-<span class="fc" id="L286">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L287">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L288">        }</span>
+<span class="fc" id="L256">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(externalTransactionDto)));</span>
+<span class="fc" id="L257">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L258">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
+<span class="fc" id="L259">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L260">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L261">        }</span>
 
         @Test
         public void getPastTransactionsTestIfExternalAndNotToIban() {
-<span class="fc" id="L292">            externalTransactionDto.setToIban(false);</span>
-<span class="fc" id="L293">            pastTransactionDtoList = new ArrayList&lt;&gt;(Arrays.asList(</span>
-<span class="fc" id="L294">                    new PastTransactionDto(externalTransactionDto.getId(),</span>
-<span class="fc" id="L295">                            userDto.getUsername(),</span>
-<span class="fc" id="L296">                            externalTransactionDto.getDescription(),</span>
-<span class="fc" id="L297">                            externalTransactionDto.getAmount(),</span>
-<span class="fc" id="L298">                            currency.getName())</span>
+<span class="fc" id="L265">            externalTransactionDto.setToIban(false);</span>
+<span class="fc" id="L266">            pastTransactionDtoList = new ArrayList&lt;&gt;(List.of(</span>
+<span class="fc" id="L267">                    new PastTransactionDto(externalTransactionDto.getId(),</span>
+<span class="fc" id="L268">                            userDto.getUsername(),</span>
+<span class="fc" id="L269">                            externalTransactionDto.getDescription(),</span>
+<span class="fc" id="L270">                            externalTransactionDto.getAmount(),</span>
+<span class="fc" id="L271">                            currency.getName())</span>
             ));
-<span class="fc" id="L300">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(Arrays.asList(externalTransactionDto)));</span>
-<span class="fc" id="L301">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L302">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
-<span class="fc" id="L303">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L304">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
-<span class="fc" id="L305">        }</span>
+<span class="fc" id="L273">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(externalTransactionDto)));</span>
+<span class="fc" id="L274">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L275">            assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));</span>
+<span class="fc" id="L276">            verify(userService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L277">            verify(currencyService, Mockito.times(pastTransactionDtoList.size())).findById(any(Integer.class));</span>
+<span class="fc" id="L278">        }</span>
 
         @Test
         public void getPastTransactionsTestIfEmpty() {
-<span class="pc" id="L309">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.getPastTransactions(new UserDto()));</span>
-<span class="fc" id="L310">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L311">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L312">        }</span>
+<span class="pc" id="L282">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.getPastTransactions(new UserDto()));</span>
+<span class="fc" id="L283">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L284">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L285">        }</span>
 
         @Test
         public void getPastTransactionsTestIfNull() {
-<span class="pc" id="L316">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.getPastTransactions(null));</span>
-<span class="fc" id="L317">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L318">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L319">        }</span>
+<span class="pc" id="L289">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.getPastTransactions(null));</span>
+<span class="fc" id="L290">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L291">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L292">        }</span>
 
         @Test
         public void getPastTransactionsTestIfNotInDB() {
-<span class="fc" id="L323">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L324">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L325">            assertEquals(new ArrayList&lt;&gt;(), globalService.getPastTransactions(userDto));</span>
-<span class="fc" id="L326">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L327">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L328">        }</span>
+<span class="fc" id="L296">            when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L297">            when(transactionService.findBySenderId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L298">            assertEquals(new ArrayList&lt;&gt;(), globalService.getPastTransactions(userDto));</span>
+<span class="fc" id="L299">            verify(userService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L300">            verify(currencyService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L301">        }</span>
     }
     @Nested
-<span class="fc" id="L331">    class calculateCommissionAmountTests {</span>
+<span class="fc" id="L304">    class calculateCommissionAmountTests {</span>
 
         @Test
         public void calculateCommissionAmountTest() {
-<span class="fc" id="L335">            Double result = globalService.calculateCommissionAmount(externalTransactionDto);</span>
-<span class="fc" id="L336">            assertEquals(externalTransactionDto.getAmount() * commission.getRate(), result);</span>
-<span class="fc" id="L337">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L338">        }</span>
+<span class="fc" id="L308">            Double result = globalService.calculateCommissionAmount(externalTransactionDto);</span>
+<span class="fc" id="L309">            assertEquals(externalTransactionDto.getAmount() * commission.getRate(), result);</span>
+<span class="fc" id="L310">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L311">        }</span>
 
         @Test
         public void calculateCommissionAmountTestIfInternal() {
-<span class="fc" id="L342">            Double result = globalService.calculateCommissionAmount(internalTransactionDto);</span>
-<span class="fc" id="L343">            assertEquals(internalTransactionDto.getAmount() * commission.getRate(), result);</span>
-<span class="fc" id="L344">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L345">        }</span>
+<span class="fc" id="L315">            Double result = globalService.calculateCommissionAmount(internalTransactionDto);</span>
+<span class="fc" id="L316">            assertEquals(internalTransactionDto.getAmount() * commission.getRate(), result);</span>
+<span class="fc" id="L317">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L318">        }</span>
 
         @Test
         public void calculateCommissionAmountTestIfEmpty() {
-<span class="pc" id="L349">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.calculateCommissionAmount(new ExternalTransactionDto()));</span>
-<span class="fc" id="L350">            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L351">        }</span>
+<span class="pc" id="L322">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.calculateCommissionAmount(new ExternalTransactionDto()));</span>
+<span class="fc" id="L323">            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L324">        }</span>
 
         @Test
         public void calculateCommissionAmountTestIfNull() {
-<span class="pc" id="L355">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.calculateCommissionAmount(null));</span>
-<span class="fc" id="L356">            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L357">        }</span>
+<span class="pc" id="L328">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.calculateCommissionAmount(null));</span>
+<span class="fc" id="L329">            verify(commissionService, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L330">        }</span>
 
         @Test
         public void calculateCommissionAmountTestIfCommissionNotFound() {
-<span class="fc" id="L361">            when(commissionService.findById(any(Integer.class))).thenReturn(null);</span>
-<span class="pc" id="L362">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.calculateCommissionAmount(externalTransactionDto));</span>
-<span class="fc" id="L363">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L364">        }</span>
+<span class="fc" id="L334">            when(commissionService.findById(any(Integer.class))).thenReturn(null);</span>
+<span class="pc" id="L335">            assertThrows(IllegalArgumentException.class, () -&gt; globalService.calculateCommissionAmount(externalTransactionDto));</span>
+<span class="fc" id="L336">            verify(commissionService, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L337">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

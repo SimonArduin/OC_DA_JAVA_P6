@@ -167,86 +167,64 @@ import static org.mockito.Mockito.when;
 <span class="fc" id="L167">		}</span>
 
 		@Test
-		public void processTransferTestIfTransactionEmpty() {
-<span class="pc" id="L171">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processTransfer(new InternalTransactionDto(), model, principal));</span>
+		public void processTransferTestIfTransactionNull() {
+<span class="pc" id="L171">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processTransfer(null, model, principal));</span>
 <span class="fc" id="L172">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
 <span class="fc" id="L173">			verify(globalService, Mockito.times(0)).addInternalTransaction(any(InternalTransactionDto.class));</span>
 <span class="fc" id="L174">			verify(globalService, Mockito.times(0)).getPastTransactions(any(UserDto.class));</span>
 <span class="fc" id="L175">		}</span>
-
-		@Test
-		public void processTransferTestIfTransactionNull() {
-<span class="pc" id="L179">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processTransfer(null, model, principal));</span>
-<span class="fc" id="L180">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
-<span class="fc" id="L181">			verify(globalService, Mockito.times(0)).addInternalTransaction(any(InternalTransactionDto.class));</span>
-<span class="fc" id="L182">			verify(globalService, Mockito.times(0)).getPastTransactions(any(UserDto.class));</span>
-<span class="fc" id="L183">		}</span>
 	}
 
 	@Nested
-<span class="fc" id="L187">	class showAddTransactionFromBankAccountFormTests {</span>
+<span class="fc" id="L179">	class showAddTransactionFromBankAccountFormTests {</span>
 		@Test
 		public void showAddTransactionFromBankAccountFormTest() {
-<span class="fc" id="L190">			assertEquals(&quot;add_transaction_from_bank_account&quot;, applicationController.showAddTransactionFromBankAccountForm(model, principal));</span>
-<span class="fc" id="L191">			verify(userService, Mockito.times(1)).findByUsername(any(String.class));</span>
-<span class="fc" id="L192">		}</span>
+<span class="fc" id="L182">			assertEquals(&quot;add_transaction_from_bank_account&quot;, applicationController.showAddTransactionFromBankAccountForm(model, principal));</span>
+<span class="fc" id="L183">			verify(userService, Mockito.times(1)).findByUsername(any(String.class));</span>
+<span class="fc" id="L184">		}</span>
 	}
 
 	@Nested
-<span class="fc" id="L196">	class processAddTransactionFromBankAccountFormTests {</span>
+<span class="fc" id="L188">	class processAddTransactionFromBankAccountFormTests {</span>
 		@Test
 		public void processAddTransactionFromBankAccountFormTest() {
-<span class="fc" id="L199">			assertEquals(&quot;profile&quot;, applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));</span>
-<span class="fc" id="L200">			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));</span>
-<span class="fc" id="L201">			verify(globalService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
-<span class="fc" id="L202">		}</span>
-
-		@Test
-		public void processAddTransactionFromBankAccountFormTestIfTransactionEmpty() {
-<span class="pc" id="L206">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processAddTransactionFromBankAccountForm(new ExternalTransactionDto(), model, principal));</span>
-<span class="fc" id="L207">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
-<span class="fc" id="L208">			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
-<span class="fc" id="L209">		}</span>
+<span class="fc" id="L191">			assertEquals(&quot;profile&quot;, applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));</span>
+<span class="fc" id="L192">			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));</span>
+<span class="fc" id="L193">			verify(globalService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L194">		}</span>
 
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfTransactionNull() {
-<span class="pc" id="L213">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processAddTransactionFromBankAccountForm(null, model, principal));</span>
-<span class="fc" id="L214">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
-<span class="fc" id="L215">			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
-<span class="fc" id="L216">		}</span>
+<span class="pc" id="L198">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processAddTransactionFromBankAccountForm(null, model, principal));</span>
+<span class="fc" id="L199">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
+<span class="fc" id="L200">			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L201">		}</span>
 	}
 
 	@Nested
-<span class="fc" id="L220">	class showAddTransactionToBankAccountFormTests {</span>
+<span class="fc" id="L205">	class showAddTransactionToBankAccountFormTests {</span>
 		@Test
 		public void showAddTransactionToBankAccountFormTest() {
-<span class="fc" id="L223">			assertEquals(&quot;add_transaction_to_bank_account&quot;, applicationController.showAddTransactionToBankAccountForm(model, principal));</span>
-<span class="fc" id="L224">			verify(userService, Mockito.times(1)).findByUsername(any(String.class));</span>
-<span class="fc" id="L225">		}</span>
+<span class="fc" id="L208">			assertEquals(&quot;add_transaction_to_bank_account&quot;, applicationController.showAddTransactionToBankAccountForm(model, principal));</span>
+<span class="fc" id="L209">			verify(userService, Mockito.times(1)).findByUsername(any(String.class));</span>
+<span class="fc" id="L210">		}</span>
 	}
 
 	@Nested
-<span class="fc" id="L229">	class processAddTransactionToBankAccountFormTests {</span>
+<span class="fc" id="L214">	class processAddTransactionToBankAccountFormTests {</span>
 		@Test
 		public void processAddTransactionToBankAccountFormTest() {
-<span class="fc" id="L232">			assertEquals(&quot;profile&quot;, applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));</span>
-<span class="fc" id="L233">			verify(userService, Mockito.times(1 + 1)).findByUsername(any(String.class));</span>
-<span class="fc" id="L234">			verify(globalService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
-<span class="fc" id="L235">		}</span>
-
-		@Test
-		public void processAddTransactionToBankAccountFormTestIfTransactionEmpty() {
-<span class="pc" id="L239">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processAddTransactionToBankAccountForm(new ExternalTransactionDto(), model, principal));</span>
-<span class="fc" id="L240">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
-<span class="fc" id="L241">			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
-<span class="fc" id="L242">		}</span>
+<span class="fc" id="L217">			assertEquals(&quot;profile&quot;, applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));</span>
+<span class="fc" id="L218">			verify(userService, Mockito.times(1 + 1)).findByUsername(any(String.class));</span>
+<span class="fc" id="L219">			verify(globalService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L220">		}</span>
 
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfTransactionNull() {
-<span class="pc" id="L246">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processAddTransactionToBankAccountForm(null, model, principal));</span>
-<span class="fc" id="L247">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
-<span class="fc" id="L248">			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
-<span class="fc" id="L249">		}</span>
+<span class="pc" id="L224">			assertThrows(IllegalArgumentException.class, () -&gt; applicationController.processAddTransactionToBankAccountForm(null, model, principal));</span>
+<span class="fc" id="L225">			verify(userService, Mockito.times(0)).findByUsername(any(String.class));</span>
+<span class="fc" id="L226">			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));</span>
+<span class="fc" id="L227">		}</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

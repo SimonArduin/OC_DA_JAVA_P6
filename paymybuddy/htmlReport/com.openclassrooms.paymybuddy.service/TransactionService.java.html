@@ -68,5 +68,17 @@ import java.util.List;
         }
 <span class="fc" id="L69">        return result;</span>
     }
+
+    public TransactionDto addTransaction(TransactionDto transactionDto) {
+<span class="pc bpc" id="L73" title="1 of 4 branches missed.">        if (transactionDto == null || transactionDto.isEmpty())</span>
+<span class="fc" id="L74">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+<span class="fc" id="L75">        Transaction toSave = new Transaction(transactionDto);</span>
+<span class="fc" id="L76">        Transaction result = transactionRepository.save(toSave);</span>
+        TransactionDto resultDto;
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (result.isExternalTransaction())</span>
+<span class="fc" id="L79">            return new ExternalTransactionDto(result);</span>
+        else
+<span class="fc" id="L81">            return new InternalTransactionDto(result);</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

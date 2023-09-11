@@ -2,9 +2,11 @@
 
 import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
+import com.openclassrooms.paymybuddy.dto.TransactionDto;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -20,11 +22,11 @@ public class Transaction {
     @Column(name = &quot;commission_amount&quot;, nullable = false)
     private Double commissionAmount;
 
-<span class="fc" id="L23">    @Column(name = &quot;commission_id&quot;, nullable = false)</span>
-<span class="fc" id="L24">    private Integer commissionId = 1;</span>
+<span class="fc" id="L25">    @Column(name = &quot;commission_id&quot;, nullable = false)</span>
+<span class="fc" id="L26">    private Integer commissionId = 1;</span>
 
-<span class="fc" id="L26">    @Column(name = &quot;currency_id&quot;, nullable = false)</span>
-<span class="fc" id="L27">    private Integer currencyId = 1;</span>
+<span class="fc" id="L28">    @Column(name = &quot;currency_id&quot;, nullable = false)</span>
+<span class="fc" id="L29">    private Integer currencyId = 1;</span>
 
     @Column
     private String description;
@@ -44,43 +46,41 @@ public class Transaction {
     @Column(name = &quot;to_iban&quot;)
     private Boolean toIban;
 
-<span class="fc" id="L47">    public Transaction() {</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L49">    public Transaction() {</span>
+<span class="fc" id="L50">    }</span>
 
-<span class="fc" id="L50">    public Transaction(Integer id, Double amount, Double commissionAmount, Integer commissionId, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, Boolean toIban) {</span>
-<span class="fc" id="L51">        this.id = id;</span>
-<span class="fc" id="L52">        this.amount = amount;</span>
-<span class="fc" id="L53">        this.commissionAmount = commissionAmount;</span>
-<span class="fc" id="L54">        this.commissionId = commissionId;</span>
-<span class="fc" id="L55">        this.currencyId = currencyId;</span>
-<span class="fc" id="L56">        this.description = description;</span>
-<span class="fc" id="L57">        this.iban = iban;</span>
-<span class="fc" id="L58">        this.receiverId = receiverId;</span>
-<span class="fc" id="L59">        this.senderId = senderId;</span>
-<span class="fc" id="L60">        this.timestamp = timestamp;</span>
-<span class="fc" id="L61">        this.toIban = toIban;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L52">    public Transaction(Integer id, Double amount, Double commissionAmount, Integer commissionId, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, Boolean toIban) {</span>
+<span class="fc" id="L53">        this.id = id;</span>
+<span class="fc" id="L54">        this.amount = amount;</span>
+<span class="fc" id="L55">        this.commissionAmount = commissionAmount;</span>
+<span class="fc" id="L56">        this.commissionId = commissionId;</span>
+<span class="fc" id="L57">        this.currencyId = currencyId;</span>
+<span class="fc" id="L58">        this.description = description;</span>
+<span class="fc" id="L59">        this.iban = iban;</span>
+<span class="fc" id="L60">        this.receiverId = receiverId;</span>
+<span class="fc" id="L61">        this.senderId = senderId;</span>
+<span class="fc" id="L62">        this.timestamp = timestamp;</span>
+<span class="fc" id="L63">        this.toIban = toIban;</span>
+<span class="fc" id="L64">    }</span>
 
-<span class="fc" id="L64">    public Transaction(InternalTransactionDto internalTransactionDto) {</span>
-<span class="fc" id="L65">        this.id = internalTransactionDto.getId();</span>
-<span class="fc" id="L66">        this.amount = internalTransactionDto.getAmount();</span>
-<span class="fc" id="L67">        this.commissionAmount = internalTransactionDto.getCommissionAmount();</span>
-<span class="fc" id="L68">        this.currencyId = internalTransactionDto.getCurrencyId();</span>
-<span class="fc" id="L69">        this.description = internalTransactionDto.getDescription();</span>
-<span class="fc" id="L70">        this.receiverId = internalTransactionDto.getReceiverId();</span>
-<span class="fc" id="L71">        this.senderId = internalTransactionDto.getSenderId();</span>
-<span class="fc" id="L72">        this.timestamp = internalTransactionDto.getTimestamp();</span>
-<span class="fc" id="L73">    }</span>
-
-<span class="fc" id="L75">    public Transaction(ExternalTransactionDto externalTransactionDto) {</span>
-<span class="fc" id="L76">        this.id = externalTransactionDto.getId();</span>
-<span class="fc" id="L77">        this.amount = externalTransactionDto.getAmount();</span>
-<span class="fc" id="L78">        this.commissionAmount = externalTransactionDto.getCommissionAmount();</span>
-<span class="fc" id="L79">        this.currencyId = externalTransactionDto.getCurrencyId();</span>
-<span class="fc" id="L80">        this.iban = externalTransactionDto.getIban();</span>
-<span class="fc" id="L81">        this.senderId = externalTransactionDto.getSenderId();</span>
-<span class="fc" id="L82">        this.timestamp = externalTransactionDto.getTimestamp();</span>
-<span class="fc" id="L83">        this.toIban = externalTransactionDto.isToIban();</span>
+<span class="fc" id="L66">    public Transaction(TransactionDto transactionDto) {</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">        if(transactionDto == null) {</span>
+<span class="nc" id="L68">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+        }
+<span class="fc" id="L70">        this.id = transactionDto.getId();</span>
+<span class="fc" id="L71">        this.amount = transactionDto.getAmount();</span>
+<span class="fc" id="L72">        this.commissionAmount = transactionDto.getCommissionAmount();</span>
+<span class="fc" id="L73">        this.currencyId = transactionDto.getCurrencyId();</span>
+<span class="fc" id="L74">        this.description = transactionDto.getDescription();</span>
+<span class="fc" id="L75">        this.senderId = transactionDto.getSenderId();</span>
+<span class="fc" id="L76">        this.timestamp = transactionDto.getTimestamp();</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (transactionDto.isInternalTransaction()) {</span>
+<span class="fc" id="L78">            this.receiverId = ((InternalTransactionDto) transactionDto).getReceiverId();</span>
+        }
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">        else if (transactionDto.isExternalTransaction()) {</span>
+<span class="fc" id="L81">            this.iban = ((ExternalTransactionDto) transactionDto).getIban();</span>
+<span class="fc" id="L82">            this.toIban = ((ExternalTransactionDto) transactionDto).isToIban();</span>
+        }
 <span class="fc" id="L84">    }</span>
 
     public Integer getId() {
@@ -191,28 +191,23 @@ public class Transaction {
     @Override
     public boolean equals(Object obj) {
 <span class="fc bfc" id="L193" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc bfc" id="L194" title="All 2 branches covered.">            if (this.isEmpty())</span>
-<span class="fc" id="L195">                return true;</span>
-<span class="fc" id="L196">            return false;</span>
+<span class="fc" id="L194">            return this.isEmpty();</span>
         }
-<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
-<span class="fc" id="L199">            return false;</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        else if (obj.getClass() != this.getClass()) {</span>
+<span class="fc" id="L197">            return false;</span>
         }
-<span class="fc" id="L201">        Transaction objTransaction = (Transaction) obj;</span>
-<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (objTransaction.getId() == this.getId()</span>
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getAmount() == this.getAmount()</span>
-<span class="pc bpc" id="L204" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCommissionId() == this.getCommissionId()</span>
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCommissionAmount() == this.getCommissionAmount()</span>
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getCurrencyId() == this.getCurrencyId()</span>
-<span class="pc bpc" id="L207" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getDescription() == this.getDescription()</span>
-<span class="pc bpc" id="L208" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getIban() == this.getIban()</span>
-<span class="pc bpc" id="L209" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getReceiverId() == this.getReceiverId()</span>
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getSenderId() == this.getSenderId()</span>
-<span class="pc bpc" id="L211" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.getTimestamp() == this.getTimestamp()</span>
-<span class="pc bpc" id="L212" title="1 of 2 branches missed.">                &amp;&amp; objTransaction.isToIban() == this.isToIban()) {</span>
-<span class="fc" id="L213">            return true;</span>
-        }
-<span class="fc" id="L215">        return false;</span>
+<span class="fc" id="L199">        Transaction objTransaction = (Transaction) obj;</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        return Objects.equals(objTransaction.getId(), this.getId())</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getAmount(), this.getAmount())</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getCommissionId(), this.getCommissionId())</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getCommissionAmount(), this.getCommissionAmount())</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getCurrencyId(), this.getCurrencyId())</span>
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getDescription(), this.getDescription())</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getIban(), this.getIban())</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getReceiverId(), this.getReceiverId())</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getSenderId(), this.getSenderId())</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.getTimestamp(), this.getTimestamp())</span>
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objTransaction.isToIban(), this.isToIban());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
