@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -88,46 +89,60 @@ public class TransactionServiceTest extends TestVariables {
     }
 
     @Nested
-    class findBySenderTests {
+    class findBySenderIdTests {
 
         @Test
-        public void findBySenderTest() {
+        public void findBySenderIdTest() {
             assertEquals(transactionDtoList, transactionService.findBySenderId(internalTransaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));
         }
 
         @Test
-        public void findBySenderTestIfNotInDB() {
+        public void findBySenderIdTestIfNotInDB() {
             when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);
             assertEquals(new ArrayList<>(), transactionService.findBySenderId(internalTransaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));
         }
 
         @Test
-        public void findBySenderTestIfNull() {
+        public void findBySenderIdTestIfInvalidTransaction() {
+            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(List.of(transaction)));
+            assertThrows(IllegalArgumentException.class, () -> transactionService.findBySenderId(internalTransaction.getId()));
+            verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));
+        }
+
+        @Test
+        public void findBySenderIdTestIfNull() {
             assertThrows(IllegalArgumentException.class, () -> transactionService.findBySenderId(null));
             verify(transactionRepository, Mockito.times(0)).findBySenderId(any(Integer.class));
         }
     }
 
     @Nested
-    class findByReceiverTests {
+    class findByReceiverIdTests {
 
         @Test
-        public void findByReceiverTest() {
+        public void findByReceiverIdTest() {
             assertEquals(transactionDtoList, transactionService.findByReceiverId(internalTransaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));
         }
 
         @Test
-        public void findByReceiverTestIfNotInDB() {
+        public void findByReceiverIdTestIfNotInDB() {
             when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);
             assertEquals(new ArrayList<>(), transactionService.findByReceiverId(internalTransaction.getId()));
             verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));
         }
 
         @Test
-        public void findByReceiverTestIfNull() {
+        public void findByReceiverIdTestIfInvalidTransaction() {
+            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList<>(List.of(transaction)));
+            assertThrows(IllegalArgumentException.class, () -> transactionService.findByReceiverId(internalTransaction.getId()));
+            verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));
+        }
+
+        @Test
+        public void findByReceiverIdTestIfNull() {
             assertThrows(IllegalArgumentException.class, () -> transactionService.findByReceiverId(null));
             verify(transactionRepository, Mockito.times(0)).findByReceiverId(any(Integer.class));
         }

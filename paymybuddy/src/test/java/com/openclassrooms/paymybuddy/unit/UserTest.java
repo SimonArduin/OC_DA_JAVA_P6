@@ -35,6 +35,11 @@ public class UserTest extends TestVariables {
             assertFalse(user.addConnection(null));
         }
         @Test
+        public void addConnectionIfNoExistingConnectionsTest() {
+            user.setConnections(null);
+            assertTrue(user.addConnection(userOther));
+        }
+        @Test
         public void addConnectionTestIfAlreadyInConnections() {
             user.setConnections(new ArrayList<User>(Arrays.asList(userOther)));
             assertFalse(user.addConnection(userOther));
@@ -72,6 +77,17 @@ public class UserTest extends TestVariables {
 
             @Test
             public void equalsTestIfDifferentUser() {
+                assertFalse(user.equals(userOther));
+            }
+            @Test
+            public void equalsTestIfNoConnections() {
+                user.setConnections(null);
+                assertTrue(user.equals(user));
+            }
+            @Test
+            public void equalsTestIfOtherNoConnections() {
+                userOther = new User(userDto);
+                userOther.setConnections(null);
                 assertFalse(user.equals(userOther));
             }
         }

@@ -141,34 +141,29 @@ public class UserDto {
     @Override
     public boolean equals(Object obj) {
 <span class="fc bfc" id="L143" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc bfc" id="L144" title="All 2 branches covered.">            if (this.isEmpty())</span>
-<span class="fc" id="L145">                return true;</span>
-<span class="fc" id="L146">            return false;</span>
+<span class="fc" id="L144">            return this.isEmpty();</span>
         }
-<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
-<span class="fc" id="L149">            return false;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
+<span class="fc" id="L147">            return false;</span>
         }
-<span class="fc" id="L151">        UserDto objUserDto = (UserDto) obj;</span>
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">            if (objUserDto.isEmpty())</span>
-<span class="fc" id="L154">                return true;</span>
-<span class="fc" id="L155">            return false;</span>
-<span class="fc bfc" id="L156" title="All 2 branches covered.">        } else if (this.getId().equals(objUserDto.getId())</span>
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">                &amp;&amp; this.getAccountBalance().equals(objUserDto.getAccountBalance())</span>
-<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                &amp;&amp; this.getCurrencyId().equals(objUserDto.getCurrencyId())</span>
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                &amp;&amp; this.getEmail().equals(objUserDto.getEmail())</span>
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">                &amp;&amp; this.getIban().equals(objUserDto.getIban())</span>
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">                &amp;&amp; this.getPassword().equals(objUserDto.getPassword())</span>
-<span class="pc bpc" id="L162" title="1 of 2 branches missed.">                &amp;&amp; this.getRoleId().equals(objUserDto.getRoleId())</span>
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">                &amp;&amp; this.getUsername().equals(objUserDto.getUsername())) {</span>
-<span class="pc bpc" id="L164" title="3 of 4 branches missed.">            if (this.getConnections() == null &amp;&amp; objUserDto.getConnections() == null)</span>
-<span class="nc" id="L165">                return true;</span>
-<span class="pc bpc" id="L166" title="2 of 4 branches missed.">            if (!(this.getConnections() != null &amp;&amp; objUserDto.getConnections() != null))</span>
-<span class="nc" id="L167">                return false;</span>
-<span class="pc bpc" id="L168" title="1 of 2 branches missed.">            if (this.getConnections().equals(objUserDto.getConnections()))</span>
-<span class="fc" id="L169">                return true;</span>
+<span class="fc" id="L149">        UserDto objUserDto = (UserDto) obj;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (this.isEmpty()) {</span>
+<span class="fc" id="L151">            return objUserDto.isEmpty();</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        } else if (this.getId().equals(objUserDto.getId())</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">                &amp;&amp; this.getAccountBalance().equals(objUserDto.getAccountBalance())</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">                &amp;&amp; this.getCurrencyId().equals(objUserDto.getCurrencyId())</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">                &amp;&amp; this.getEmail().equals(objUserDto.getEmail())</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">                &amp;&amp; this.getIban().equals(objUserDto.getIban())</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">                &amp;&amp; this.getPassword().equals(objUserDto.getPassword())</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                &amp;&amp; this.getRoleId().equals(objUserDto.getRoleId())</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                &amp;&amp; this.getUsername().equals(objUserDto.getUsername())) {</span>
+<span class="pc bpc" id="L160" title="3 of 4 branches missed.">            if (this.getConnections() == null &amp;&amp; objUserDto.getConnections() == null)</span>
+<span class="nc" id="L161">                return true;</span>
+<span class="pc bpc" id="L162" title="2 of 4 branches missed.">            if (!(this.getConnections() != null &amp;&amp; objUserDto.getConnections() != null))</span>
+<span class="nc" id="L163">                return false;</span>
+<span class="fc" id="L164">            return this.getConnections().equals(objUserDto.getConnections());</span>
         }
-<span class="fc" id="L171">            return false;</span>
+<span class="fc" id="L166">            return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
