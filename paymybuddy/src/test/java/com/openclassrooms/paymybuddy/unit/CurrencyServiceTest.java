@@ -1,8 +1,7 @@
 package com.openclassrooms.paymybuddy.unit;
 
-import com.openclassrooms.paymybuddy.entity.Currency;
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.exception.CurrencyNotFoundException;
-import com.openclassrooms.paymybuddy.exception.UserNotFoundException;
 import com.openclassrooms.paymybuddy.repository.CurrencyRepository;
 import com.openclassrooms.paymybuddy.service.CurrencyService;
 import org.junit.jupiter.api.BeforeEach;

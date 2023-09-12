@@ -1,4 +1,4 @@
-package com.openclassrooms.paymybuddy.unit;
+package com.openclassrooms.paymybuddy;
 
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.*;
@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-abstract class TestVariables {
+public abstract class TestVariables {
 
-    Role role;
+    protected Role role;
     protected Currency currency;
     protected Commission commission;
     protected User user;

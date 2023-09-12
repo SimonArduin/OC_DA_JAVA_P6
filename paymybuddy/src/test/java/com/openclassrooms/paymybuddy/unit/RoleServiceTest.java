@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.exception.RoleNotFoundException;
 import com.openclassrooms.paymybuddy.repository.RoleRepository;
 import com.openclassrooms.paymybuddy.service.RoleService;

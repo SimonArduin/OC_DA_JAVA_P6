@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,14 +30,14 @@ public class ApplicationController {
         return "index";
     }
 
-    @GetMapping("register")
+    @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserDto());
         return "signup_form";
     }
 
     @PostMapping("/process_register")
-    public String processRegister(UserDto userDto) {
+    public String processRegister(@RequestBody UserDto userDto) {
         if (userDto == null || userDto.isEmpty())
             throw new IllegalArgumentException("Invalid user");
         userService.addUser(userDto);

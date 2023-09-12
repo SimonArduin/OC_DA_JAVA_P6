@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.exception.UserNotFoundException;

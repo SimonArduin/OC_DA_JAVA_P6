@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = Transaction.class)
-public class TransactionTest extends TestVariables{
+public class TransactionTest extends TestVariables {
     @BeforeEach
     private void setUp() {
         initializeVariables();

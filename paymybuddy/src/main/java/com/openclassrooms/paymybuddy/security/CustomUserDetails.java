@@ -47,8 +47,4 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    public String getUsernameInASentence() {
-        return "this user has " + user.getUsername() + "for username";
-    }
 }

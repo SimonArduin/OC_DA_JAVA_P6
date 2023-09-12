@@ -1,6 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
-import com.openclassrooms.paymybuddy.entity.Commission;
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.exception.CommissionNotFound;
 import com.openclassrooms.paymybuddy.repository.CommissionRepository;
 import com.openclassrooms.paymybuddy.service.CommissionService;

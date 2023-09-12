@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.unit;
 
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.controller.ApplicationController;
 import com.openclassrooms.paymybuddy.dto.*;
 import com.openclassrooms.paymybuddy.service.GlobalService;
