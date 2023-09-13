@@ -37,7 +37,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/process_register")
-    public String processRegister(@RequestBody UserDto userDto) {
+    public String processRegister(UserDto userDto) {
         if (userDto == null || userDto.isEmpty())
             throw new IllegalArgumentException("Invalid user");
         userService.addUser(userDto);

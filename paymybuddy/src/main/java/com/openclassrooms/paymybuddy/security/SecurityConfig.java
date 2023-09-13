@@ -47,7 +47,6 @@ public class SecurityConfig {
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select username, password, enabled from user where username=?")
                 .authoritiesByUsernameQuery("select username, name from user join role on user.role_id=role.id where username=?")
-//                .authoritiesByUsernameQuery("select username, role from users where username=?")
         ;
     }
 
@@ -55,8 +54,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests( auth -> {
-                    auth.requestMatchers("/","register","/process_register").permitAll();
-                    auth.requestMatchers("/users").authenticated();
+                    auth.requestMatchers("/","/register","/process_register","/error").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(withDefaults())

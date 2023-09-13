@@ -127,8 +127,7 @@ public class UserDto {
     }
 
     public boolean isEmpty() {
-        return (this.id == null
-                || this.accountBalance == null
+        return (this.accountBalance == null
                 || this.currencyId == null
                 || this.email == null
                 || this.iban == null

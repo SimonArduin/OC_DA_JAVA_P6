@@ -17,11 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class ControllerIT extends TestVariables {
+public class ControllerIT extends TestVariables {;
 
     @Inject
     private MockMvc mockMvc;
@@ -54,62 +55,79 @@ public class ControllerIT extends TestVariables {
     @Nested
     class showRegistrationFormTests {
 
+        String getMapping = "/register";
+        String viewName = "signup_form";
+
         @WithMockUser
         @Test
         public void showRegistrationFormTest() throws Exception {
-            mockMvc.perform(get("/register").with(csrf()))
-                    .andExpect(status().is2xxSuccessful());
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
         }
         @Test
         public void showRegistrationFormTestIfNotAuthenticated() throws Exception {
-            mockMvc.perform(get("/register").with(csrf()))
-                    .andExpect(status().is3xxRedirection());
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
         }
     }
 
     @Nested
     class processRegisterTests {
 
+        String getMapping = "/process_register";
+        String viewName = "register_success";
+
         @WithMockUser("user01")
         @Test
         public void processRegisterTest() throws Exception {
-            mockMvc.perform(post("/process_register").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_JSON)
                             .content(new ObjectMapper().writeValueAsString(userDto)))
-                    .andExpect(status().is2xxSuccessful());
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
         }
 
         @Test
         public void processRegisterTestIfNotAuthenticated() throws Exception {
-            mockMvc.perform(post("/process_register").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
                             .content(new ObjectMapper().writeValueAsString(userDto)))
-                    .andExpect(status().is2xxSuccessful());
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
         }
 
         @Test
         public void processRegisterTestIfEmpty() throws Exception {
-            mockMvc.perform(post("/process_register").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            mockMvc.perform(post(getMapping)
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
                             .content(new ObjectMapper().writeValueAsString(new UserDto())))
                     .andExpect(status().is4xxClientError());
         }
         @Test
         public void processRegisterTestIfNull() throws Exception {
-            mockMvc.perform(post("/process_register").with(csrf()))
+            mockMvc.perform(post(getMapping).with(csrf()))
                     .andExpect(status().is4xxClientError());
         }
     }
 
     @Nested
     class profileTests {
+
+        String getMapping = "/profile";
+        String viewName = "profile";
+        
         @WithMockUser("user01")
         @Test
         public void profileTest() throws Exception {
-            mockMvc.perform(get("/profile").with(csrf()))
-                    .andExpect(status().is2xxSuccessful());
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
         }
 
         @Test
         public void profileTestIfNotAuthenticated() throws Exception {
-            mockMvc.perform(get("/profile").with(csrf()))
+            mockMvc.perform(get(getMapping).with(csrf()))
                     .andExpect(status().is3xxRedirection());
         }
 
@@ -118,18 +136,42 @@ public class ControllerIT extends TestVariables {
     @Nested
     class contactTests {
 
+        String getMapping = "/contact";
+        String viewName = "contact";
+
         @WithMockUser("user01")
         @Test
         public void contactTest() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void contactTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is3xxRedirection());
         }
     }
 
     @Nested
     class showAddConnectionFormTests {
 
+        String getMapping = "/add_connection";
+        String viewName = "add_connection_form";
+
         @WithMockUser("user01")
         @Test
         public void showAddConnectionFormTest() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void showAddConnectionFormTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is3xxRedirection());
         }
     }
 
@@ -156,9 +198,21 @@ public class ControllerIT extends TestVariables {
     @Nested
     class showTransferFormTests {
 
+        String getMapping = "/transfer";
+        String viewName = "transfer";
+
         @WithMockUser("user01")
         @Test
         public void showTransferFormTest() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void showTransferFormTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is3xxRedirection());
         }
     }
 
@@ -179,9 +233,21 @@ public class ControllerIT extends TestVariables {
     @Nested
     class showAddTransactionFromBankAccountFormTests {
 
+        String getMapping = "/add_transaction_from_bank_account";
+        String viewName = "add_transaction_from_bank_account";
+
         @WithMockUser("user01")
         @Test
         public void showAddTransactionFromBankAccountFormTest() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void showAddTransactionFromBankAccountFormTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is3xxRedirection());
         }
     }
 
@@ -204,9 +270,21 @@ public class ControllerIT extends TestVariables {
     @Nested
     class showAddTransactionToBankAccountFormTests {
 
+        String getMapping = "/add_transaction_to_bank_account";
+        String viewName = "add_transaction_to_bank_account";
+
         @WithMockUser("user01")
         @Test
         public void showAddTransactionToBankAccountFormTest() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void showAddTransactionToBankAccountFormTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(get(getMapping).with(csrf()))
+                    .andExpect(status().is3xxRedirection());
         }
     }
 
