@@ -108,12 +108,6 @@ public class UserDtoTest extends TestVariables {
         }
 
         @Test
-        public void isEmptyTestIfNoId() {
-            userDto.setId(null);
-            assertTrue(userDto.isEmpty());
-        }
-
-        @Test
         public void isEmptyTestIfNoAccountBalance() {
             userDto.setAccountBalance(null);
             assertTrue(userDto.isEmpty());
@@ -132,14 +126,32 @@ public class UserDtoTest extends TestVariables {
         }
 
         @Test
+        public void isEmptyTestIfEmailEmpty() {
+            userDto.setEmail("");
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
         public void isEmptyTestIfNoIban() {
             userDto.setIban(null);
             assertTrue(userDto.isEmpty());
         }
 
         @Test
+        public void isEmptyTestIfIbanEmpty() {
+            userDto.setIban("");
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
         public void isEmptyTestIfNoPassword() {
             userDto.setPassword(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfPasswordEmpty() {
+            userDto.setPassword("");
             assertTrue(userDto.isEmpty());
         }
 
@@ -152,6 +164,12 @@ public class UserDtoTest extends TestVariables {
         @Test
         public void isEmptyTestIfNoUsername() {
             userDto.setUsername(null);
+            assertTrue(userDto.isEmpty());
+        }
+
+        @Test
+        public void isEmptyTestIfUsernameEmpty() {
+            userDto.setUsername("");
             assertTrue(userDto.isEmpty());
         }
 

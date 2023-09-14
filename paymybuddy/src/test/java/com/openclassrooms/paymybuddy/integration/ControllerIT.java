@@ -1,12 +1,14 @@
 package com.openclassrooms.paymybuddy.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openclassrooms.paymybuddy.Application;
 import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.dto.UserDto;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -78,12 +80,19 @@ public class ControllerIT extends TestVariables {;
 
         String getMapping = "/process_register";
         String viewName = "register_success";
+        /*
+        String form = "username="+userDto.getUsername()
+                +"&email="+userDto.getEmail()
+                +"&password="+userDto.getPassword()
+                +"&iban="+userDto.getIban();
+        */
+        String form = "username=username&email=email&password=password&iban=iban";
 
         @WithMockUser("user01")
         @Test
         public void processRegisterTest() throws Exception {
-            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_JSON)
-                            .content(new ObjectMapper().writeValueAsString(userDto)))
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(view().name(viewName));
         }
@@ -91,7 +100,7 @@ public class ControllerIT extends TestVariables {;
         @Test
         public void processRegisterTestIfNotAuthenticated() throws Exception {
             mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                            .content(new ObjectMapper().writeValueAsString(userDto)))
+                            .content(form))
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(view().name(viewName));
         }
@@ -100,8 +109,8 @@ public class ControllerIT extends TestVariables {;
         public void processRegisterTestIfEmpty() throws Exception {
             mockMvc.perform(post(getMapping)
                             .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(new ObjectMapper().writeValueAsString(new UserDto())))
+                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content("username=&email=&password=&iban="))
                     .andExpect(status().is4xxClientError());
         }
         @Test
@@ -178,20 +187,42 @@ public class ControllerIT extends TestVariables {;
     @Nested
     class processAddConnectionTests {
 
+        String getMapping = "/process_add_connection";
+        String viewName = "contact";
+
+        String form = "username=user02";
+
         @WithMockUser("user01")
         @Test
         public void processAddConnectionTest() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void processAddConnectionTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is3xxRedirection());
         }
 
         @WithMockUser("user01")
         @Test
-        public void processAddConnectionTestIfConnectionNull() throws Exception {
+        public void processAddConnectionTestIfEmpty() throws Exception {
+            mockMvc.perform(post(getMapping)
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content("username="))
+                    .andExpect(status().is4xxClientError());
         }
 
         @WithMockUser("user01")
         @Test
-        public void processAddConnectionTestIfConnectionEmpty() throws Exception {
-            
+        public void processAddConnectionTestIfNull() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()))
+                    .andExpect(status().is4xxClientError());
         }
     }
 
@@ -219,14 +250,42 @@ public class ControllerIT extends TestVariables {;
     @Nested
     class processTransferTests {
 
+        String getMapping = "/process_transfer";
+        String viewName = "transfer";
+
+        String form = "amount=10&receiverId=16&description=description";
+
         @WithMockUser("user01")
         @Test
         public void processTransferTest() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void processTransferTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is3xxRedirection());
         }
 
         @WithMockUser("user01")
         @Test
-        public void processTransferTestIfTransactionNull() throws Exception {
+        public void processTransferTestIfEmpty() throws Exception {
+            mockMvc.perform(post(getMapping)
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content("amount=&receiverId=&description="))
+                    .andExpect(status().is4xxClientError());
+        }
+
+        @WithMockUser("user01")
+        @Test
+        public void processTransferTestIfNull() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()))
+                    .andExpect(status().is4xxClientError());
         }
     }
 
@@ -254,16 +313,42 @@ public class ControllerIT extends TestVariables {;
     @Nested
     class processAddTransactionFromBankAccountFormTests {
 
+        String getMapping = "/process_add_transaction_from_bank_account";
+        String viewName = "profile";
+
+        String form = "amount=10";
+
         @WithMockUser("user01")
         @Test
         public void processAddTransactionFromBankAccountFormTest() throws Exception {
-            
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void processAddTransactionFromBankAccountFormTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is3xxRedirection());
         }
 
         @WithMockUser("user01")
         @Test
-        public void processAddTransactionFromBankAccountFormTestIfTransactionNull() throws Exception {
-            
+        public void processAddTransactionFromBankAccountFormTestIfEmpty() throws Exception {
+            mockMvc.perform(post(getMapping)
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content("amount="))
+                    .andExpect(status().is4xxClientError());
+        }
+
+        @WithMockUser("user01")
+        @Test
+        public void processAddTransactionFromBankAccountFormTestIfNull() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()))
+                    .andExpect(status().is4xxClientError());
         }
     }
 
@@ -291,16 +376,42 @@ public class ControllerIT extends TestVariables {;
     @Nested
     class processAddTransactionToBankAccountFormTests {
 
+        String getMapping = "/process_add_transaction_to_bank_account";
+        String viewName = "profile";
+
+        String form = "amount=10";
+
         @WithMockUser("user01")
         @Test
         public void processAddTransactionToBankAccountFormTest() throws Exception {
-            
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(view().name(viewName));
+        }
+
+        @Test
+        public void processAddTransactionToBankAccountFormTestIfNotAuthenticated() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content(form))
+                    .andExpect(status().is3xxRedirection());
         }
 
         @WithMockUser("user01")
         @Test
-        public void processAddTransactionToBankAccountFormTestIfTransactionNull() throws Exception {
-            
+        public void processAddTransactionToBankAccountFormTestIfEmpty() throws Exception {
+            mockMvc.perform(post(getMapping)
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                            .content("amount="))
+                    .andExpect(status().is4xxClientError());
+        }
+
+        @WithMockUser("user01")
+        @Test
+        public void processAddTransactionToBankAccountFormTestIfNull() throws Exception {
+            mockMvc.perform(post(getMapping).with(csrf()))
+                    .andExpect(status().is4xxClientError());
         }
     }
 }
