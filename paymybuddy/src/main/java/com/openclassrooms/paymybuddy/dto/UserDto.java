@@ -130,14 +130,14 @@ public class UserDto {
         return (this.accountBalance == null
                 || this.currencyId == null
                 || this.email == null
-                || this.email == ""
+                || this.email.isEmpty()
                 || this.iban == null
-                || this.iban == ""
+                || this.iban.isEmpty()
                 || this.password == null
-                || this.password == ""
+                || this.password.isEmpty()
                 || this.roleId == null
                 || this.username == null
-                || this.username == ""
+                || this.username.isEmpty()
                 || this.connections == null);
     }
 

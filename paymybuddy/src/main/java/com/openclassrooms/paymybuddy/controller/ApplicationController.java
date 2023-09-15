@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.Principal;
 import java.util.List;
@@ -108,7 +107,7 @@ public class ApplicationController {
         return "add_transaction_from_bank_account";
     }
     @PostMapping("/process_add_transaction_from_bank_account")
-    public String processAddTransactionFromBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+    public String processAddTransactionFromBankAccount(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
         if (externalTransactionDto == null)
             throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());
@@ -127,7 +126,7 @@ public class ApplicationController {
         return "add_transaction_to_bank_account";
     }
     @PostMapping("/process_add_transaction_to_bank_account")
-    public String processAddTransactionToBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+    public String processAddTransactionToBankAccount(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
         if (externalTransactionDto == null)
             throw new IllegalArgumentException("Invalid transaction");
         UserDto connectedUser = userService.findByUsername(principal.getName());

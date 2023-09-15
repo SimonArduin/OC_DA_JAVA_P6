@@ -29,20 +29,24 @@ public class GlobalService {
     public InternalTransactionDto addInternalTransaction(InternalTransactionDto internalTransactionDto) {
         if (internalTransactionDto == null || internalTransactionDto.isEmpty())
             throw new IllegalArgumentException("Invalid transaction");
+
         UserDto sender = userService.findById(internalTransactionDto.getSenderId());
         if (sender == null || sender.isEmpty())
             throw new UserNotFoundException("Sender not found");
+
         UserDto receiver = userService.findById(internalTransactionDto.getReceiverId());
         if (receiver == null || sender.isEmpty())
             throw new UserNotFoundException("Receiver not found");
+
         internalTransactionDto.setCommissionAmount(calculateCommissionAmount(internalTransactionDto));
         Double fullTransactionAmount = internalTransactionDto.getAmount() + internalTransactionDto.getCommissionAmount();
-        if (sender.getAccountBalance() < (fullTransactionAmount)) {
+        if (sender.getAccountBalance() < fullTransactionAmount)
             throw new IllegalArgumentException("Not enough money on user account");
-        }
+
         internalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
         userService.removeFromAccountBalance(sender, fullTransactionAmount);
         userService.addToAccountBalance(receiver, internalTransactionDto.getAmount());
+
         return (InternalTransactionDto) transactionService.addTransaction(internalTransactionDto);
     }
 
@@ -56,7 +60,7 @@ public class GlobalService {
         Double fullTransactionAmount = externalTransactionDto.getAmount() + externalTransactionDto.getCommissionAmount();
         externalTransactionDto.setTimestamp(new Timestamp(Instant.now().toEpochMilli()));
         if(externalTransactionDto.isToIban()) {
-            if (sender.getAccountBalance() < (fullTransactionAmount)) {
+            if (sender.getAccountBalance() < fullTransactionAmount) {
                 throw new IllegalArgumentException("Not enough money on user account");
             } else {
                 userService.removeFromAccountBalance(sender, fullTransactionAmount);

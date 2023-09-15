@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionServiceTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.unit</a> &gt; <span class="el_source">TransactionServiceTest.java</span></div><h1>TransactionServiceTest.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.unit;
 
+import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.entity.Transaction;
 import com.openclassrooms.paymybuddy.exception.TransactionNotFoundException;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = TransactionService.class)
-<span class="fc" id="L24">public class TransactionServiceTest extends TestVariables {</span>
+<span class="fc" id="L25">public class TransactionServiceTest extends TestVariables {</span>
     @Autowired
     TransactionService transactionService;
 
@@ -36,145 +37,145 @@ import static org.mockito.Mockito.when;
 
     @BeforeEach
     public void setUp() {
-<span class="fc" id="L39">        initializeVariables();</span>
-<span class="fc" id="L40">        when(transactionRepository.findById(any(Integer.class))).thenReturn(new Transaction(internalTransactionDto));</span>
-<span class="fc" id="L41">        when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(transactionList);</span>
-<span class="fc" id="L42">        when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(transactionList);</span>
-<span class="fc" id="L43">        when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);</span>
+<span class="fc" id="L40">        initializeVariables();</span>
+<span class="fc" id="L41">        when(transactionRepository.findById(any(Integer.class))).thenReturn(new Transaction(internalTransactionDto));</span>
+<span class="fc" id="L42">        when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(transactionList);</span>
+<span class="fc" id="L43">        when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(transactionList);</span>
+<span class="fc" id="L44">        when(transactionRepository.save(any(Transaction.class))).thenReturn(transaction);</span>
 
-<span class="fc" id="L45">        when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
+<span class="fc" id="L46">        when(userService.findById(any(Integer.class))).thenReturn(userDto);</span>
 
-<span class="fc" id="L47">        when(commissionService.findById(any(Integer.class))).thenReturn(commission);</span>
+<span class="fc" id="L48">        when(commissionService.findById(any(Integer.class))).thenReturn(commission);</span>
 
-<span class="fc" id="L49">        when(currencyService.findById(any(Integer.class))).thenReturn(currency);</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L50">        when(currencyService.findById(any(Integer.class))).thenReturn(currency);</span>
+<span class="fc" id="L51">    }</span>
 
     @Test
-<span class="fc" id="L53">    void contextLoads() {}</span>
+<span class="fc" id="L54">    void contextLoads() {}</span>
     @Nested
-<span class="fc" id="L55">    class findByIdTests {</span>
+<span class="fc" id="L56">    class findByIdTests {</span>
 
         @Test
         public void findByIdTestIfInternalTransaction() {
-<span class="fc" id="L59">            assertEquals(internalTransactionDto, transactionService.findById(internalTransaction.getId()));</span>
-<span class="fc" id="L60">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L61">        }</span>
+<span class="fc" id="L60">            assertEquals(internalTransactionDto, transactionService.findById(internalTransaction.getId()));</span>
+<span class="fc" id="L61">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L62">        }</span>
 
         @Test
         public void findByIdTestIfExternalTransaction() {
-<span class="fc" id="L65">            when(transactionRepository.findById(any(Integer.class))).thenReturn(new Transaction(externalTransactionDto));</span>
-<span class="fc" id="L66">            assertEquals(externalTransactionDto, transactionService.findById(internalTransaction.getId()));</span>
-<span class="fc" id="L67">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L68">        }</span>
+<span class="fc" id="L66">            when(transactionRepository.findById(any(Integer.class))).thenReturn(new Transaction(externalTransactionDto));</span>
+<span class="fc" id="L67">            assertEquals(externalTransactionDto, transactionService.findById(internalTransaction.getId()));</span>
+<span class="fc" id="L68">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L69">        }</span>
 
         @Test
         public void findByIdTestIfInvalidTransaction() {
-<span class="fc" id="L72">            when(transactionRepository.findById(any(Integer.class))).thenReturn(transaction);</span>
-<span class="pc" id="L73">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findById(internalTransaction.getId()));</span>
-<span class="fc" id="L74">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L75">        }</span>
+<span class="fc" id="L73">            when(transactionRepository.findById(any(Integer.class))).thenReturn(transaction);</span>
+<span class="pc" id="L74">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findById(internalTransaction.getId()));</span>
+<span class="fc" id="L75">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L76">        }</span>
 
         @Test
         public void findByIdTestIfNotInDB() {
-<span class="fc" id="L79">            when(transactionRepository.findById(any(Integer.class))).thenReturn(null);</span>
-<span class="pc" id="L80">            assertThrows(TransactionNotFoundException.class, () -&gt; transactionService.findById(internalTransaction.getId()));</span>
-<span class="fc" id="L81">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
-<span class="fc" id="L82">        }</span>
+<span class="fc" id="L80">            when(transactionRepository.findById(any(Integer.class))).thenReturn(null);</span>
+<span class="pc" id="L81">            assertThrows(TransactionNotFoundException.class, () -&gt; transactionService.findById(internalTransaction.getId()));</span>
+<span class="fc" id="L82">            verify(transactionRepository, Mockito.times(1)).findById(any(Integer.class));</span>
+<span class="fc" id="L83">        }</span>
 
         @Test
         public void findByIdTestIfNull() {
-<span class="pc" id="L86">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findById(null));</span>
-<span class="fc" id="L87">            verify(transactionRepository, Mockito.times(0)).findById(any(Integer.class));</span>
-<span class="fc" id="L88">        }</span>
+<span class="pc" id="L87">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findById(null));</span>
+<span class="fc" id="L88">            verify(transactionRepository, Mockito.times(0)).findById(any(Integer.class));</span>
+<span class="fc" id="L89">        }</span>
     }
 
     @Nested
-<span class="fc" id="L92">    class findBySenderIdTests {</span>
+<span class="fc" id="L93">    class findBySenderIdTests {</span>
 
         @Test
         public void findBySenderIdTest() {
-<span class="fc" id="L96">            assertEquals(transactionDtoList, transactionService.findBySenderId(internalTransaction.getId()));</span>
-<span class="fc" id="L97">            verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));</span>
-<span class="fc" id="L98">        }</span>
+<span class="fc" id="L97">            assertEquals(transactionDtoList, transactionService.findBySenderId(internalTransaction.getId()));</span>
+<span class="fc" id="L98">            verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));</span>
+<span class="fc" id="L99">        }</span>
 
         @Test
         public void findBySenderIdTestIfNotInDB() {
-<span class="fc" id="L102">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L103">            assertEquals(new ArrayList&lt;&gt;(), transactionService.findBySenderId(internalTransaction.getId()));</span>
-<span class="fc" id="L104">            verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));</span>
-<span class="fc" id="L105">        }</span>
+<span class="fc" id="L103">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L104">            assertEquals(new ArrayList&lt;&gt;(), transactionService.findBySenderId(internalTransaction.getId()));</span>
+<span class="fc" id="L105">            verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));</span>
+<span class="fc" id="L106">        }</span>
 
         @Test
         public void findBySenderIdTestIfInvalidTransaction() {
-<span class="fc" id="L109">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(transaction)));</span>
-<span class="pc" id="L110">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findBySenderId(internalTransaction.getId()));</span>
-<span class="fc" id="L111">            verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));</span>
-<span class="fc" id="L112">        }</span>
+<span class="fc" id="L110">            when(transactionRepository.findBySenderId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(transaction)));</span>
+<span class="pc" id="L111">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findBySenderId(internalTransaction.getId()));</span>
+<span class="fc" id="L112">            verify(transactionRepository, Mockito.times(1)).findBySenderId(any(Integer.class));</span>
+<span class="fc" id="L113">        }</span>
 
         @Test
         public void findBySenderIdTestIfNull() {
-<span class="pc" id="L116">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findBySenderId(null));</span>
-<span class="fc" id="L117">            verify(transactionRepository, Mockito.times(0)).findBySenderId(any(Integer.class));</span>
-<span class="fc" id="L118">        }</span>
+<span class="pc" id="L117">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findBySenderId(null));</span>
+<span class="fc" id="L118">            verify(transactionRepository, Mockito.times(0)).findBySenderId(any(Integer.class));</span>
+<span class="fc" id="L119">        }</span>
     }
 
     @Nested
-<span class="fc" id="L122">    class findByReceiverIdTests {</span>
+<span class="fc" id="L123">    class findByReceiverIdTests {</span>
 
         @Test
         public void findByReceiverIdTest() {
-<span class="fc" id="L126">            assertEquals(transactionDtoList, transactionService.findByReceiverId(internalTransaction.getId()));</span>
-<span class="fc" id="L127">            verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));</span>
-<span class="fc" id="L128">        }</span>
+<span class="fc" id="L127">            assertEquals(transactionDtoList, transactionService.findByReceiverId(internalTransaction.getId()));</span>
+<span class="fc" id="L128">            verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));</span>
+<span class="fc" id="L129">        }</span>
 
         @Test
         public void findByReceiverIdTestIfNotInDB() {
-<span class="fc" id="L132">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
-<span class="fc" id="L133">            assertEquals(new ArrayList&lt;&gt;(), transactionService.findByReceiverId(internalTransaction.getId()));</span>
-<span class="fc" id="L134">            verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));</span>
-<span class="fc" id="L135">        }</span>
+<span class="fc" id="L133">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(null);</span>
+<span class="fc" id="L134">            assertEquals(new ArrayList&lt;&gt;(), transactionService.findByReceiverId(internalTransaction.getId()));</span>
+<span class="fc" id="L135">            verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));</span>
+<span class="fc" id="L136">        }</span>
 
         @Test
         public void findByReceiverIdTestIfInvalidTransaction() {
-<span class="fc" id="L139">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(transaction)));</span>
-<span class="pc" id="L140">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findByReceiverId(internalTransaction.getId()));</span>
-<span class="fc" id="L141">            verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));</span>
-<span class="fc" id="L142">        }</span>
+<span class="fc" id="L140">            when(transactionRepository.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList&lt;&gt;(List.of(transaction)));</span>
+<span class="pc" id="L141">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findByReceiverId(internalTransaction.getId()));</span>
+<span class="fc" id="L142">            verify(transactionRepository, Mockito.times(1)).findByReceiverId(any(Integer.class));</span>
+<span class="fc" id="L143">        }</span>
 
         @Test
         public void findByReceiverIdTestIfNull() {
-<span class="pc" id="L146">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findByReceiverId(null));</span>
-<span class="fc" id="L147">            verify(transactionRepository, Mockito.times(0)).findByReceiverId(any(Integer.class));</span>
-<span class="fc" id="L148">        }</span>
+<span class="pc" id="L147">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.findByReceiverId(null));</span>
+<span class="fc" id="L148">            verify(transactionRepository, Mockito.times(0)).findByReceiverId(any(Integer.class));</span>
+<span class="fc" id="L149">        }</span>
     }
     @Nested
-<span class="fc" id="L151">    class addTransactionTests {</span>
+<span class="fc" id="L152">    class addTransactionTests {</span>
 
         @Test
         public void addTransactionIfInternalTest() {
-<span class="fc" id="L155">            when(transactionRepository.save(any(Transaction.class))).thenReturn(internalTransaction);</span>
-<span class="fc" id="L156">            assertEquals(internalTransactionDto, transactionService.addTransaction(internalTransactionDto));</span>
-<span class="fc" id="L157">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
-<span class="fc" id="L158">        }</span>
+<span class="fc" id="L156">            when(transactionRepository.save(any(Transaction.class))).thenReturn(internalTransaction);</span>
+<span class="fc" id="L157">            assertEquals(internalTransactionDto, transactionService.addTransaction(internalTransactionDto));</span>
+<span class="fc" id="L158">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
+<span class="fc" id="L159">        }</span>
 
         @Test
         public void addTransactionIfExternalTest() {
-<span class="fc" id="L162">            when(transactionRepository.save(any(Transaction.class))).thenReturn(externalTransaction);</span>
-<span class="fc" id="L163">            assertEquals(externalTransactionDto, transactionService.addTransaction(externalTransactionDto));</span>
-<span class="fc" id="L164">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
-<span class="fc" id="L165">        }</span>
+<span class="fc" id="L163">            when(transactionRepository.save(any(Transaction.class))).thenReturn(externalTransaction);</span>
+<span class="fc" id="L164">            assertEquals(externalTransactionDto, transactionService.addTransaction(externalTransactionDto));</span>
+<span class="fc" id="L165">            verify(transactionRepository, Mockito.times(1)).save(any(Transaction.class));</span>
+<span class="fc" id="L166">        }</span>
 
         @Test
         public void addTransactionTestIfNull() {
-<span class="pc" id="L169">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.addTransaction(null));</span>
-<span class="fc" id="L170">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L171">        }</span>
+<span class="pc" id="L170">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.addTransaction(null));</span>
+<span class="fc" id="L171">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
+<span class="fc" id="L172">        }</span>
 
         @Test
         public void addTransactionTestIfEmpty() {
-<span class="pc" id="L175">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.addTransaction(null));</span>
-<span class="fc" id="L176">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
-<span class="fc" id="L177">        }</span>
+<span class="pc" id="L176">            assertThrows(IllegalArgumentException.class, () -&gt; transactionService.addTransaction(null));</span>
+<span class="fc" id="L177">            verify(transactionRepository, Mockito.times(0)).save(any(Transaction.class));</span>
+<span class="fc" id="L178">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

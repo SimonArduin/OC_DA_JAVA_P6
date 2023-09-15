@@ -2,6 +2,7 @@
 
 import com.openclassrooms.paymybuddy.TestVariables;
 import jakarta.inject.Inject;
+import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,396 +22,392 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-<span class="fc" id="L23">public class ControllerIT extends TestVariables {;</span>
+<span class="fc" id="L25">public class ControllerIT extends TestVariables {;</span>
 
     @Inject
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
-<span class="fc" id="L30">        initializeVariables();</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L32">        initializeVariables();</span>
+<span class="fc" id="L33">    }</span>
 
     @Test
     void contextLoads() {
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L37">    }</span>
     @Nested
-<span class="fc" id="L37">    class viewHomePageTests {</span>
+<span class="fc" id="L39">    class viewHomePageTests {</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void viewHomePageTest() throws Exception {
-<span class="fc" id="L42">            mockMvc.perform(get(&quot;/&quot;).with(csrf()))</span>
-<span class="fc" id="L43">                    .andExpect(status().is2xxSuccessful());</span>
-<span class="fc" id="L44">        }</span>
+<span class="fc" id="L44">            mockMvc.perform(get(&quot;/&quot;).with(csrf()))</span>
+<span class="fc" id="L45">                    .andExpect(status().is2xxSuccessful());</span>
+<span class="fc" id="L46">        }</span>
         @Test
         public void viewHomePageTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L47">            mockMvc.perform(get(&quot;/&quot;).with(csrf()))</span>
-<span class="fc" id="L48">                    .andExpect(status().is2xxSuccessful());</span>
-<span class="fc" id="L49">        }</span>
+<span class="fc" id="L49">            mockMvc.perform(get(&quot;/&quot;).with(csrf()))</span>
+<span class="fc" id="L50">                    .andExpect(status().is2xxSuccessful());</span>
+<span class="fc" id="L51">        }</span>
     }
 
 
     @Nested
-<span class="fc" id="L54">    class showRegistrationFormTests {</span>
+<span class="fc" id="L56">    class showRegistrationFormTests {</span>
 
-<span class="fc" id="L56">        String getMapping = &quot;/register&quot;;</span>
-<span class="fc" id="L57">        String viewName = &quot;signup_form&quot;;</span>
+<span class="fc" id="L58">        String getMapping = &quot;/register&quot;;</span>
+<span class="fc" id="L59">        String viewName = &quot;signup_form&quot;;</span>
 
         @WithMockUser
         @Test
         public void showRegistrationFormTest() throws Exception {
-<span class="fc" id="L62">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L63">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L64">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L65">        }</span>
+<span class="fc" id="L64">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L65">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L66">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L67">        }</span>
         @Test
         public void showRegistrationFormTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L68">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L69">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L70">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L71">        }</span>
+<span class="fc" id="L70">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L71">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L72">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L73">        }</span>
     }
 
     @Nested
-<span class="fc" id="L75">    class processRegisterTests {</span>
+<span class="fc" id="L77">    class processRegisterTests {</span>
 
-<span class="fc" id="L77">        String getMapping = &quot;/process_register&quot;;</span>
-<span class="fc" id="L78">        String viewName = &quot;register_success&quot;;</span>
-/*
-        String form = &quot;username=&quot;+userDto.getUsername()
-                +&quot;&amp;email=&quot;+userDto.getEmail()
-                +&quot;&amp;password=&quot;+userDto.getPassword()
-                +&quot;&amp;iban=&quot;+userDto.getIban();
-*/
+<span class="fc" id="L79">        String getMapping = &quot;/process_register&quot;;</span>
+<span class="fc" id="L80">        String viewName = &quot;register_success&quot;;</span>
 
-<span class="fc" id="L86">        String form = &quot;username=username&amp;email=email&amp;password=password&amp;iban=iban&quot;;</span>
+<span class="fc" id="L82">        String form = &quot;username=username&quot;</span>
+                +&quot;&amp;email=email&quot;
+                +&quot;&amp;password=password&quot;
+                +&quot;&amp;iban=iban&quot;;
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processRegisterTest() throws Exception {
-<span class="fc" id="L91">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L92">                            .content(form))</span>
-<span class="fc" id="L93">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L94">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L95">        }</span>
+<span class="fc" id="L90">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L91">                            .content(form))</span>
+<span class="fc" id="L92">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L93">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L94">        }</span>
 
         @Test
         public void processRegisterTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L99">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L100">                            .content(form))</span>
-<span class="fc" id="L101">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L102">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L103">        }</span>
+<span class="fc" id="L98">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L99">                            .content(form))</span>
+<span class="fc" id="L100">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L101">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L102">        }</span>
 
         @Test
         public void processRegisterTestIfEmpty() throws Exception {
-<span class="pc" id="L107">            mockMvc.perform(post(getMapping)</span>
-<span class="fc" id="L108">                            .with(csrf())</span>
-<span class="fc" id="L109">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L110">                            .content(&quot;username=&amp;email=&amp;password=&amp;iban=&quot;))</span>
-<span class="nc" id="L111">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L112">        }</span>
+<span class="pc" id="L106">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping)</span>
+<span class="fc" id="L107">                    .with(csrf())</span>
+<span class="fc" id="L108">                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L109">                    .content(&quot;username=&amp;email=&amp;password=&amp;iban=&quot;)));</span>
+<span class="fc" id="L110">        }</span>
         @Test
         public void processRegisterTestIfNull() throws Exception {
-<span class="nc" id="L115">            mockMvc.perform(post(getMapping).with(csrf()))</span>
-<span class="nc" id="L116">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L117">        }</span>
+<span class="pc" id="L113">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping).with(csrf()))</span>
+<span class="nc" id="L114">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L115">        }</span>
     }
 
     @Nested
-<span class="fc" id="L121">    class profileTests {</span>
+<span class="fc" id="L119">    class profileTests {</span>
 
-<span class="fc" id="L123">        String getMapping = &quot;/profile&quot;;</span>
-<span class="fc" id="L124">        String viewName = &quot;profile&quot;;</span>
-        
+<span class="fc" id="L121">        String getMapping = &quot;/profile&quot;;</span>
+<span class="fc" id="L122">        String viewName = &quot;profile&quot;;</span>
+
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void profileTest() throws Exception {
-<span class="fc" id="L129">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L130">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L131">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L132">        }</span>
+<span class="fc" id="L127">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L128">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L129">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L130">        }</span>
 
         @Test
         public void profileTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L136">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L137">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L138">        }</span>
+<span class="fc" id="L134">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L135">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L136">        }</span>
 
     }
 
     @Nested
-<span class="fc" id="L143">    class contactTests {</span>
+<span class="fc" id="L141">    class contactTests {</span>
 
-<span class="fc" id="L145">        String getMapping = &quot;/contact&quot;;</span>
-<span class="fc" id="L146">        String viewName = &quot;contact&quot;;</span>
+<span class="fc" id="L143">        String getMapping = &quot;/contact&quot;;</span>
+<span class="fc" id="L144">        String viewName = &quot;contact&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void contactTest() throws Exception {
-<span class="fc" id="L151">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L152">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L153">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L154">        }</span>
+<span class="fc" id="L149">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L150">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L151">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L152">        }</span>
 
         @Test
         public void contactTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L158">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L159">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L160">        }</span>
+<span class="fc" id="L156">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L157">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L158">        }</span>
     }
 
     @Nested
-<span class="fc" id="L164">    class showAddConnectionFormTests {</span>
+<span class="fc" id="L162">    class showAddConnectionFormTests {</span>
 
-<span class="fc" id="L166">        String getMapping = &quot;/add_connection&quot;;</span>
-<span class="fc" id="L167">        String viewName = &quot;add_connection_form&quot;;</span>
+<span class="fc" id="L164">        String getMapping = &quot;/add_connection&quot;;</span>
+<span class="fc" id="L165">        String viewName = &quot;add_connection_form&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void showAddConnectionFormTest() throws Exception {
-<span class="fc" id="L172">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L173">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L174">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L175">        }</span>
+<span class="fc" id="L170">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L171">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L172">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L173">        }</span>
 
         @Test
         public void showAddConnectionFormTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L179">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L180">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L181">        }</span>
+<span class="fc" id="L177">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L178">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L179">        }</span>
     }
 
     @Nested
-<span class="fc" id="L185">    class processAddConnectionTests {</span>
+<span class="fc" id="L183">    class processAddConnectionTests {</span>
 
-<span class="fc" id="L187">        String getMapping = &quot;/process_add_connection&quot;;</span>
-<span class="fc" id="L188">        String viewName = &quot;contact&quot;;</span>
+<span class="fc" id="L185">        String getMapping = &quot;/process_add_connection&quot;;</span>
+<span class="fc" id="L186">        String viewName = &quot;contact&quot;;</span>
 
-<span class="fc" id="L190">        String form = &quot;username=user02&quot;;</span>
+<span class="fc" id="L188">        String form = &quot;username=user02&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddConnectionTest() throws Exception {
-<span class="fc" id="L195">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L196">                            .content(form))</span>
-<span class="fc" id="L197">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L198">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L199">        }</span>
+<span class="fc" id="L193">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L194">                            .content(form))</span>
+<span class="fc" id="L195">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L196">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L197">        }</span>
 
         @Test
         public void processAddConnectionTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L203">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L204">                            .content(form))</span>
-<span class="fc" id="L205">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L206">        }</span>
+<span class="fc" id="L201">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L202">                            .content(form))</span>
+<span class="fc" id="L203">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L204">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddConnectionTestIfEmpty() throws Exception {
-<span class="pc" id="L211">            mockMvc.perform(post(getMapping)</span>
-<span class="fc" id="L212">                            .with(csrf())</span>
-<span class="fc" id="L213">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L214">                            .content(&quot;username=&quot;))</span>
-<span class="nc" id="L215">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L216">        }</span>
+<span class="pc" id="L209">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping)</span>
+<span class="fc" id="L210">                            .with(csrf())</span>
+<span class="fc" id="L211">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L212">                            .content(&quot;username=&quot;))</span>
+<span class="nc" id="L213">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L214">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddConnectionTestIfNull() throws Exception {
-<span class="nc" id="L221">            mockMvc.perform(post(getMapping).with(csrf()))</span>
-<span class="nc" id="L222">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L223">        }</span>
+<span class="pc" id="L219">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping).with(csrf()))</span>
+<span class="nc" id="L220">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L221">        }</span>
     }
 
     @Nested
-<span class="fc" id="L227">    class showTransferFormTests {</span>
+<span class="fc" id="L225">    class showTransferFormTests {</span>
 
-<span class="fc" id="L229">        String getMapping = &quot;/transfer&quot;;</span>
-<span class="fc" id="L230">        String viewName = &quot;transfer&quot;;</span>
+<span class="fc" id="L227">        String getMapping = &quot;/transfer&quot;;</span>
+<span class="fc" id="L228">        String viewName = &quot;transfer&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void showTransferFormTest() throws Exception {
-<span class="fc" id="L235">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L236">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L237">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L238">        }</span>
+<span class="fc" id="L233">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L234">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L235">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L236">        }</span>
 
         @Test
         public void showTransferFormTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L242">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L243">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L244">        }</span>
+<span class="fc" id="L240">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L241">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L242">        }</span>
     }
 
     @Nested
-<span class="fc" id="L248">    class processTransferTests {</span>
+<span class="fc" id="L246">    class processTransferTests {</span>
 
-<span class="fc" id="L250">        String getMapping = &quot;/process_transfer&quot;;</span>
-<span class="fc" id="L251">        String viewName = &quot;transfer&quot;;</span>
+<span class="fc" id="L248">        String getMapping = &quot;/process_transfer&quot;;</span>
+<span class="fc" id="L249">        String viewName = &quot;transfer&quot;;</span>
 
-<span class="fc" id="L253">        String form = &quot;amount=10&amp;receiverId=16&amp;description=description&quot;;</span>
+<span class="fc" id="L251">        String form = &quot;amount=10&amp;receiverId=16&amp;description=description&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processTransferTest() throws Exception {
-<span class="fc" id="L258">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L259">                            .content(form))</span>
-<span class="fc" id="L260">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L261">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L262">        }</span>
+<span class="fc" id="L256">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L257">                            .content(form))</span>
+<span class="fc" id="L258">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L259">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L260">        }</span>
 
         @Test
         public void processTransferTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L266">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L267">                            .content(form))</span>
-<span class="fc" id="L268">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L269">        }</span>
+<span class="fc" id="L264">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L265">                            .content(form))</span>
+<span class="fc" id="L266">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L267">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processTransferTestIfEmpty() throws Exception {
-<span class="pc" id="L274">            mockMvc.perform(post(getMapping)</span>
-<span class="fc" id="L275">                            .with(csrf())</span>
-<span class="fc" id="L276">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L277">                            .content(&quot;amount=&amp;receiverId=&amp;description=&quot;))</span>
-<span class="nc" id="L278">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L279">        }</span>
+<span class="pc" id="L272">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping)</span>
+<span class="fc" id="L273">                            .with(csrf())</span>
+<span class="fc" id="L274">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L275">                            .content(&quot;amount=&amp;receiverId=&amp;description=&quot;))</span>
+<span class="nc" id="L276">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L277">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processTransferTestIfNull() throws Exception {
-<span class="nc" id="L284">            mockMvc.perform(post(getMapping).with(csrf()))</span>
-<span class="nc" id="L285">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L286">        }</span>
+<span class="pc" id="L282">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping).with(csrf()))</span>
+<span class="nc" id="L283">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L284">        }</span>
     }
 
     @Nested
-<span class="fc" id="L290">    class showAddTransactionFromBankAccountFormTests {</span>
+<span class="fc" id="L288">    class showAddTransactionFromBankAccountFormTests {</span>
 
-<span class="fc" id="L292">        String getMapping = &quot;/add_transaction_from_bank_account&quot;;</span>
-<span class="fc" id="L293">        String viewName = &quot;add_transaction_from_bank_account&quot;;</span>
+<span class="fc" id="L290">        String getMapping = &quot;/add_transaction_from_bank_account&quot;;</span>
+<span class="fc" id="L291">        String viewName = &quot;add_transaction_from_bank_account&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void showAddTransactionFromBankAccountFormTest() throws Exception {
-<span class="fc" id="L298">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L299">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L300">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L301">        }</span>
+<span class="fc" id="L296">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L297">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L298">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L299">        }</span>
 
         @Test
         public void showAddTransactionFromBankAccountFormTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L305">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L306">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L307">        }</span>
+<span class="fc" id="L303">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L304">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L305">        }</span>
     }
 
     @Nested
-<span class="fc" id="L311">    class processAddTransactionFromBankAccountFormTests {</span>
+<span class="fc" id="L309">    class processAddTransactionFromBankAccountFormTests {</span>
 
-<span class="fc" id="L313">        String getMapping = &quot;/process_add_transaction_from_bank_account&quot;;</span>
-<span class="fc" id="L314">        String viewName = &quot;profile&quot;;</span>
+<span class="fc" id="L311">        String getMapping = &quot;/process_add_transaction_from_bank_account&quot;;</span>
+<span class="fc" id="L312">        String viewName = &quot;profile&quot;;</span>
 
-<span class="fc" id="L316">        String form = &quot;amount=10&quot;;</span>
+<span class="fc" id="L314">        String form = &quot;amount=10&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddTransactionFromBankAccountFormTest() throws Exception {
-<span class="fc" id="L321">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L322">                            .content(form))</span>
-<span class="fc" id="L323">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L324">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L325">        }</span>
+<span class="fc" id="L319">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L320">                            .content(form))</span>
+<span class="fc" id="L321">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L322">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L323">        }</span>
 
         @Test
         public void processAddTransactionFromBankAccountFormTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L329">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L330">                            .content(form))</span>
-<span class="fc" id="L331">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L332">        }</span>
+<span class="fc" id="L327">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L328">                            .content(form))</span>
+<span class="fc" id="L329">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L330">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddTransactionFromBankAccountFormTestIfEmpty() throws Exception {
-<span class="pc" id="L337">            mockMvc.perform(post(getMapping)</span>
-<span class="fc" id="L338">                            .with(csrf())</span>
-<span class="fc" id="L339">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L340">                            .content(&quot;amount=&quot;))</span>
-<span class="nc" id="L341">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L342">        }</span>
+<span class="pc" id="L335">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping)</span>
+<span class="fc" id="L336">                            .with(csrf())</span>
+<span class="fc" id="L337">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L338">                            .content(&quot;amount=&quot;))</span>
+<span class="nc" id="L339">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L340">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddTransactionFromBankAccountFormTestIfNull() throws Exception {
-<span class="nc" id="L347">            mockMvc.perform(post(getMapping).with(csrf()))</span>
-<span class="nc" id="L348">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L349">        }</span>
+<span class="pc" id="L345">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping).with(csrf()))</span>
+<span class="nc" id="L346">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L347">        }</span>
     }
 
     @Nested
-<span class="fc" id="L353">    class showAddTransactionToBankAccountFormTests {</span>
+<span class="fc" id="L351">    class showAddTransactionToBankAccountFormTests {</span>
 
-<span class="fc" id="L355">        String getMapping = &quot;/add_transaction_to_bank_account&quot;;</span>
-<span class="fc" id="L356">        String viewName = &quot;add_transaction_to_bank_account&quot;;</span>
+<span class="fc" id="L353">        String getMapping = &quot;/add_transaction_to_bank_account&quot;;</span>
+<span class="fc" id="L354">        String viewName = &quot;add_transaction_to_bank_account&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void showAddTransactionToBankAccountFormTest() throws Exception {
-<span class="fc" id="L361">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L362">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L363">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L364">        }</span>
+<span class="fc" id="L359">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L360">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L361">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L362">        }</span>
 
         @Test
         public void showAddTransactionToBankAccountFormTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L368">            mockMvc.perform(get(getMapping).with(csrf()))</span>
-<span class="fc" id="L369">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L370">        }</span>
+<span class="fc" id="L366">            mockMvc.perform(get(getMapping).with(csrf()))</span>
+<span class="fc" id="L367">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L368">        }</span>
     }
 
     @Nested
-<span class="fc" id="L374">    class processAddTransactionToBankAccountFormTests {</span>
+<span class="fc" id="L372">    class processAddTransactionToBankAccountFormTests {</span>
 
-<span class="fc" id="L376">        String getMapping = &quot;/process_add_transaction_to_bank_account&quot;;</span>
-<span class="fc" id="L377">        String viewName = &quot;profile&quot;;</span>
+<span class="fc" id="L374">        String getMapping = &quot;/process_add_transaction_to_bank_account&quot;;</span>
+<span class="fc" id="L375">        String viewName = &quot;profile&quot;;</span>
 
-<span class="fc" id="L379">        String form = &quot;amount=10&quot;;</span>
+<span class="fc" id="L377">        String form = &quot;amount=10&quot;;</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddTransactionToBankAccountFormTest() throws Exception {
-<span class="fc" id="L384">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L385">                            .content(form))</span>
-<span class="fc" id="L386">                    .andExpect(status().is2xxSuccessful())</span>
-<span class="fc" id="L387">                    .andExpect(view().name(viewName));</span>
-<span class="fc" id="L388">        }</span>
+<span class="fc" id="L382">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L383">                            .content(form))</span>
+<span class="fc" id="L384">                    .andExpect(status().is2xxSuccessful())</span>
+<span class="fc" id="L385">                    .andExpect(view().name(viewName));</span>
+<span class="fc" id="L386">        }</span>
 
         @Test
         public void processAddTransactionToBankAccountFormTestIfNotAuthenticated() throws Exception {
-<span class="fc" id="L392">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L393">                            .content(form))</span>
-<span class="fc" id="L394">                    .andExpect(status().is3xxRedirection());</span>
-<span class="fc" id="L395">        }</span>
+<span class="fc" id="L390">            mockMvc.perform(post(getMapping).with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L391">                            .content(form))</span>
+<span class="fc" id="L392">                    .andExpect(status().is3xxRedirection());</span>
+<span class="fc" id="L393">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddTransactionToBankAccountFormTestIfEmpty() throws Exception {
-<span class="pc" id="L400">            mockMvc.perform(post(getMapping)</span>
-<span class="fc" id="L401">                            .with(csrf())</span>
-<span class="fc" id="L402">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
-<span class="fc" id="L403">                            .content(&quot;amount=&quot;))</span>
-<span class="nc" id="L404">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L405">        }</span>
+<span class="pc" id="L398">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping)</span>
+<span class="fc" id="L399">                            .with(csrf())</span>
+<span class="fc" id="L400">                            .contentType(MediaType.APPLICATION_FORM_URLENCODED)</span>
+<span class="fc" id="L401">                            .content(&quot;amount=&quot;))</span>
+<span class="nc" id="L402">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L403">        }</span>
 
         @WithMockUser(&quot;user01&quot;)
         @Test
         public void processAddTransactionToBankAccountFormTestIfNull() throws Exception {
-<span class="nc" id="L410">            mockMvc.perform(post(getMapping).with(csrf()))</span>
-<span class="nc" id="L411">                    .andExpect(status().is4xxClientError());</span>
-<span class="nc" id="L412">        }</span>
+<span class="pc" id="L408">            assertThrows(ServletException.class, () -&gt; mockMvc.perform(post(getMapping).with(csrf()))</span>
+<span class="nc" id="L409">                    .andExpect(status().is4xxClientError()));</span>
+<span class="fc" id="L410">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

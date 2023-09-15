@@ -189,14 +189,14 @@ class ApplicationControllerTest extends TestVariables {
 	class processAddTransactionFromBankAccountFormTests {
 		@Test
 		public void processAddTransactionFromBankAccountFormTest() {
-			assertEquals("profile", applicationController.processAddTransactionFromBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("profile", applicationController.processAddTransactionFromBankAccount(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(globalService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionFromBankAccountFormTestIfTransactionNull() {
-			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionFromBankAccountForm(null, model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionFromBankAccount(null, model, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
@@ -215,14 +215,14 @@ class ApplicationControllerTest extends TestVariables {
 	class processAddTransactionToBankAccountFormTests {
 		@Test
 		public void processAddTransactionToBankAccountFormTest() {
-			assertEquals("profile", applicationController.processAddTransactionToBankAccountForm(externalTransactionDto, model, principal));
+			assertEquals("profile", applicationController.processAddTransactionToBankAccount(externalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1 + 1)).findByUsername(any(String.class));
 			verify(globalService, Mockito.times(1)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}
 
 		@Test
 		public void processAddTransactionToBankAccountFormTestIfTransactionNull() {
-			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionToBankAccountForm(null, model, principal));
+			assertThrows(IllegalArgumentException.class, () -> applicationController.processAddTransactionToBankAccount(null, model, principal));
 			verify(userService, Mockito.times(0)).findByUsername(any(String.class));
 			verify(globalService, Mockito.times(0)).addExternalTransaction(any(ExternalTransactionDto.class));
 		}

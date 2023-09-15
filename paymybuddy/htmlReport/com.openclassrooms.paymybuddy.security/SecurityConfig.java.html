@@ -47,20 +47,18 @@ import static org.springframework.security.config.Customizer.withDefaults;
 <span class="fc" id="L47">                .dataSource(dataSource)</span>
 <span class="fc" id="L48">                .usersByUsernameQuery(&quot;select username, password, enabled from user where username=?&quot;)</span>
 <span class="fc" id="L49">                .authoritiesByUsernameQuery(&quot;select username, name from user join role on user.role_id=role.id where username=?&quot;)</span>
-//                .authoritiesByUsernameQuery(&quot;select username, role from users where username=?&quot;)
         ;
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L51">    }</span>
 
     @Bean
     SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-<span class="fc" id="L56">        return http</span>
-<span class="fc" id="L57">                .authorizeHttpRequests( auth -&gt; {</span>
-<span class="fc" id="L58">                    auth.requestMatchers(&quot;/&quot;,&quot;register&quot;,&quot;/process_register&quot;).permitAll();</span>
-<span class="fc" id="L59">                    auth.requestMatchers(&quot;/users&quot;).authenticated();</span>
-<span class="fc" id="L60">                    auth.anyRequest().authenticated();</span>
-<span class="fc" id="L61">                })</span>
-<span class="fc" id="L62">                .formLogin(withDefaults())</span>
-<span class="fc" id="L63">                .build();</span>
+<span class="fc" id="L55">        return http</span>
+<span class="fc" id="L56">                .authorizeHttpRequests( auth -&gt; {</span>
+<span class="fc" id="L57">                    auth.requestMatchers(&quot;/&quot;,&quot;/register&quot;,&quot;/process_register&quot;,&quot;/error&quot;).permitAll();</span>
+<span class="fc" id="L58">                    auth.anyRequest().authenticated();</span>
+<span class="fc" id="L59">                })</span>
+<span class="fc" id="L60">                .formLogin(withDefaults())</span>
+<span class="fc" id="L61">                .build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

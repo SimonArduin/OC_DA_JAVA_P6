@@ -29,7 +29,7 @@ import java.util.List;
 <span class="fc" id="L29">        return &quot;index&quot;;</span>
     }
 
-    @GetMapping(&quot;register&quot;)
+    @GetMapping(&quot;/register&quot;)
     public String showRegistrationForm(Model model) {
 <span class="fc" id="L34">        model.addAttribute(&quot;user&quot;, new UserDto());</span>
 <span class="fc" id="L35">        return &quot;signup_form&quot;;</span>
@@ -107,7 +107,7 @@ import java.util.List;
 <span class="fc" id="L107">        return &quot;add_transaction_from_bank_account&quot;;</span>
     }
     @PostMapping(&quot;/process_add_transaction_from_bank_account&quot;)
-    public String processAddTransactionFromBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+    public String processAddTransactionFromBankAccount(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
 <span class="fc bfc" id="L111" title="All 2 branches covered.">        if (externalTransactionDto == null)</span>
 <span class="fc" id="L112">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
 <span class="fc" id="L113">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>
@@ -126,7 +126,7 @@ import java.util.List;
 <span class="fc" id="L126">        return &quot;add_transaction_to_bank_account&quot;;</span>
     }
     @PostMapping(&quot;/process_add_transaction_to_bank_account&quot;)
-    public String processAddTransactionToBankAccountForm(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
+    public String processAddTransactionToBankAccount(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
 <span class="fc bfc" id="L130" title="All 2 branches covered.">        if (externalTransactionDto == null)</span>
 <span class="fc" id="L131">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
 <span class="fc" id="L132">        UserDto connectedUser = userService.findByUsername(principal.getName());</span>

@@ -56,7 +56,7 @@ import java.util.List;
 <span class="fc" id="L56">            throw new IllegalArgumentException(&quot;Invalid id&quot;);</span>
 <span class="fc" id="L57">        List&lt;TransactionDto&gt; result = new ArrayList&lt;&gt;();</span>
 <span class="fc" id="L58">        List&lt;Transaction&gt; transactions = transactionRepository.findByReceiverId(id);</span>
-<span class="pc bpc" id="L59" title="1 of 4 branches missed.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
 <span class="fc bfc" id="L60" title="All 2 branches covered.">            for (Transaction transaction : transactions)</span>
 <span class="pc bpc" id="L61" title="2 of 4 branches missed.">                if(transaction!=null &amp;&amp; !transaction.isEmpty()) {</span>
 <span class="fc bfc" id="L62" title="All 4 branches covered.">                    if (transaction.isInternalTransaction() &amp;&amp; !transaction.isExternalTransaction())</span>
