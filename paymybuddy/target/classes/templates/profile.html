@@ -46,7 +46,7 @@
             <tr>
                 <td th:text="${connectedUser.username}">Username</td>
                 <td th:text="${connectedUser.email}">Email</td>
-                <td th:text="${#numbers.formatDecimal(connectedUser.accountBalance, 0, 2)}">Account balance</td>
+                <td th:text="${#numbers.formatDecimal(connectedUser.accountBalance, 0, 2)}+${currency.symbol}">Account balance</td>
             </tr>
             </tbody>
         </table>

@@ -4,6 +4,8 @@ import com.openclassrooms.paymybuddy.dto.PastTransactionDto;
 import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
 import com.openclassrooms.paymybuddy.dto.UserDto;
+import com.openclassrooms.paymybuddy.entity.Currency;
+import com.openclassrooms.paymybuddy.service.CurrencyService;
 import com.openclassrooms.paymybuddy.service.GlobalService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class ApplicationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CurrencyService currencyService;
 
     @Autowired
     private GlobalService globalService;
@@ -47,6 +52,8 @@ public class ApplicationController {
     public String profile(Model model, Principal principal) {
         UserDto connectedUser = userService.findByUsername(principal.getName());
         model.addAttribute("connectedUser", connectedUser);
+        Currency currency = currencyService.findById(connectedUser.getCurrencyId());
+        model.addAttribute("currency", currency);
         return "profile";
     }
 

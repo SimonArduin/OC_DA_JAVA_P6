@@ -87,20 +87,20 @@ public class GlobalService {
                                 userService.findById(((InternalTransactionDto) transactionDto).getReceiverId()).getUsername(),
                                 transactionDto.getDescription(),
                                 -transactionDto.getAmount(),
-                                currencyService.findById(transactionDto.getCurrencyId()).getName()));
+                                currencyService.findById(transactionDto.getCurrencyId()).getSymbol()));
                     } else if (transactionDto.isExternalTransaction()) {
                         if (((ExternalTransactionDto) transactionDto).isToIban()) {
                             result.add(new PastTransactionDto(transactionDto.getId(),
                                     userService.findById(transactionDto.getSenderId()).getUsername(),
                                     transactionDto.getDescription(),
                                     -transactionDto.getAmount(),
-                                    currencyService.findById(transactionDto.getCurrencyId()).getName()));
+                                    currencyService.findById(transactionDto.getCurrencyId()).getSymbol()));
                         } else {
                             result.add(new PastTransactionDto(transactionDto.getId(),
                                     userService.findById(transactionDto.getSenderId()).getUsername(),
                                     transactionDto.getDescription(),
                                     transactionDto.getAmount(),
-                                    currencyService.findById(transactionDto.getCurrencyId()).getName()));
+                                    currencyService.findById(transactionDto.getCurrencyId()).getSymbol()));
                         }
                     }
                 }
@@ -114,7 +114,7 @@ public class GlobalService {
                             userService.findById(transactionDto.getSenderId()).getUsername(),
                             transactionDto.getDescription(),
                             transactionDto.getAmount(),
-                            currencyService.findById(transactionDto.getCurrencyId()).getName()));
+                            currencyService.findById(transactionDto.getCurrencyId()).getSymbol()));
                 }
             }
         }
