@@ -70,6 +70,7 @@ public class ApplicationController {
         model.addAttribute("connection", connection);
         return "add_connection_form";
     }
+
     @PostMapping("/process_add_connection")
     public String processAddConnection(UserDto connection, Model model, Principal principal) {
         if (connection == null || connection.getUsername() == null)
@@ -91,6 +92,7 @@ public class ApplicationController {
         model.addAttribute("transactionList", transactionList);
         return "transfer";
     }
+
     @PostMapping("/process_transfer")
     public String processTransfer(InternalTransactionDto transaction, Model model, Principal principal) {
         if(transaction == null)
@@ -113,6 +115,7 @@ public class ApplicationController {
         model.addAttribute("transaction", transaction);
         return "add_transaction_from_bank_account";
     }
+
     @PostMapping("/process_add_transaction_from_bank_account")
     public String processAddTransactionFromBankAccount(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
         if (externalTransactionDto == null)
@@ -132,6 +135,7 @@ public class ApplicationController {
         model.addAttribute("transaction", transaction);
         return "add_transaction_to_bank_account";
     }
+
     @PostMapping("/process_add_transaction_to_bank_account")
     public String processAddTransactionToBankAccount(ExternalTransactionDto externalTransactionDto, Model model, Principal principal) {
         if (externalTransactionDto == null)
