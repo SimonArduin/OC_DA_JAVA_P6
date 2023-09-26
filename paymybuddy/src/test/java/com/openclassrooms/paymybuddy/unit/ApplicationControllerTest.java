@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.unit;
 import com.openclassrooms.paymybuddy.TestVariables;
 import com.openclassrooms.paymybuddy.controller.ApplicationController;
 import com.openclassrooms.paymybuddy.dto.*;
+import com.openclassrooms.paymybuddy.service.CurrencyService;
 import com.openclassrooms.paymybuddy.service.GlobalService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,9 @@ class ApplicationControllerTest extends TestVariables {
 	private UserService userService;
 
 	@MockBean
+	private CurrencyService currencyService;
+
+	@MockBean
 	private GlobalService globalService;
 
 	@BeforeEach
@@ -51,6 +55,9 @@ class ApplicationControllerTest extends TestVariables {
 		when(userService.findByUsername(any(String.class))).thenReturn(userDto);
 		when(userService.addUser(any(UserDto.class))).thenReturn(userDto);
 		when(userService.addConnectionToUser(any(UserDto.class), any(UserDto.class))).thenReturn(userDto);
+
+		when(currencyService.findById(any(Integer.class))).thenReturn(currency);
+
 		when(globalService.getPastTransactions(userDto)).thenReturn(pastTransactionDtoList);
 		when(globalService.addInternalTransaction(any(InternalTransactionDto.class))).thenReturn(internalTransactionDto);
 		when(globalService.addExternalTransaction(any(ExternalTransactionDto.class))).thenReturn(externalTransactionDto);

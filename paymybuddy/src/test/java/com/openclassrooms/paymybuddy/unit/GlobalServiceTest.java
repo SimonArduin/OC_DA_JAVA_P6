@@ -194,17 +194,17 @@ public class GlobalServiceTest extends TestVariables {
                             userDto.getUsername(),
                             internalTransactionDto.getDescription(),
                             -internalTransactionDto.getAmount(),
-                            currency.getName()),
+                            currency.getSymbol()),
                     new PastTransactionDto(externalTransactionDto.getId(),
                             userDto.getUsername(),
                             externalTransactionDto.getDescription(),
                             externalTransactionDto.getAmount(),
-                            currency.getName()),
+                            currency.getSymbol()),
                     new PastTransactionDto(internalTransactionDto.getId(),
                             userDto.getUsername(),
                             internalTransactionDto.getDescription(),
                             internalTransactionDto.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             pastTransactionDtoList.sort(Comparator.comparing(PastTransactionDto::getId).reversed());
             assertEquals(pastTransactionDtoList, globalService.getPastTransactions(userDto));
@@ -219,7 +219,7 @@ public class GlobalServiceTest extends TestVariables {
                             userDto.getUsername(),
                             internalTransactionDto.getDescription(),
                             -internalTransactionDto.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(List.of(internalTransactionDto)));
             when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);
@@ -235,7 +235,7 @@ public class GlobalServiceTest extends TestVariables {
                             userDto.getUsername(),
                             internalTransactionDto.getDescription(),
                             internalTransactionDto.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             when(transactionService.findBySenderId(any(Integer.class))).thenReturn(null);
             when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(new ArrayList<>(List.of(internalTransactionDto)));
@@ -252,7 +252,7 @@ public class GlobalServiceTest extends TestVariables {
                             userDto.getUsername(),
                             externalTransactionDto.getDescription(),
                             -externalTransactionDto.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(List.of(externalTransactionDto)));
             when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);
@@ -269,7 +269,7 @@ public class GlobalServiceTest extends TestVariables {
                             userDto.getUsername(),
                             externalTransactionDto.getDescription(),
                             externalTransactionDto.getAmount(),
-                            currency.getName())
+                            currency.getSymbol())
             ));
             when(transactionService.findBySenderId(any(Integer.class))).thenReturn(new ArrayList<>(List.of(externalTransactionDto)));
             when(transactionService.findByReceiverId(any(Integer.class))).thenReturn(null);
