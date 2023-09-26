@@ -7,9 +7,18 @@ L'application a été construite avec le framework Spring, et en utilisant les m
 - Spring Security pour l'authentification 
 - Thymeleaf pour l'affichage de pages web
 - JDBC et JPA pour la communication avec une base de données
+***
+# SCREENSHOTS
 
-##DIAGRAMME DE CLASSES UML
+### PROFILE PAGE
+![PROFILE](Screenshots/Screenshot_profile.png)
+
+### TRANSFER PAGE
+![TRANSFER](Screenshots/Screenshot_transfer.png)
+***
+# DOCUMENTATION
+### DIAGRAMME DE CLASSE UML
 ![UML](UML.png)
 
-##MODELE PHYSIQUE DE DONNEES
+### MODELE PHYSIQUE DE DONNEES
 ![MPD](MPD.png)
