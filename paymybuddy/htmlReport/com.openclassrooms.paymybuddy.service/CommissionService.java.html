@@ -8,15 +8,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 <span class="fc" id="L10">public class CommissionService {</span>
+
     @Autowired
     CommissionRepository commissionRepository;
+
     public Commission findById(Integer id) {
-<span class="fc bfc" id="L14" title="All 2 branches covered.">        if(id==null)</span>
-<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;Invalid id&quot;);</span>
-<span class="fc" id="L16">        Commission result = commissionRepository.findById(id);</span>
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (result == null)</span>
-<span class="fc" id="L18">            throw new CommissionNotFound(&quot;Commission not found&quot;);</span>
-<span class="fc" id="L19">        return result;</span>
+
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if(id == null)</span>
+<span class="fc" id="L18">            throw new IllegalArgumentException(&quot;Invalid id&quot;);</span>
+
+<span class="fc" id="L20">        Commission result = commissionRepository.findById(id);</span>
+
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if(result == null)</span>
+<span class="fc" id="L23">            throw new CommissionNotFound(&quot;Commission not found&quot;);</span>
+
+<span class="fc" id="L25">        return result;</span>
+
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

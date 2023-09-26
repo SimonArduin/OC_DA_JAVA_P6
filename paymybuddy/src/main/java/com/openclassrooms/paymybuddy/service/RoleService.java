@@ -8,14 +8,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoleService {
+
     @Autowired
     RoleRepository roleRepository;
+
     public Role findById(Integer id) {
-        if(id==null)
+
+        if(id == null)
             throw new IllegalArgumentException("Invalid id");
+
         Role result = roleRepository.findById(id);
-        if (result == null)
+
+        if(result == null)
             throw new RoleNotFoundException("Role not found");
+
         return result;
+
     }
 }

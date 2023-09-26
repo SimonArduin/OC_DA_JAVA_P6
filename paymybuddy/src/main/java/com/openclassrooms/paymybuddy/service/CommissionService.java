@@ -8,14 +8,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CommissionService {
+
     @Autowired
     CommissionRepository commissionRepository;
+
     public Commission findById(Integer id) {
-        if(id==null)
+
+        if(id == null)
             throw new IllegalArgumentException("Invalid id");
+
         Commission result = commissionRepository.findById(id);
-        if (result == null)
+
+        if(result == null)
             throw new CommissionNotFound("Commission not found");
+
         return result;
+
     }
 }

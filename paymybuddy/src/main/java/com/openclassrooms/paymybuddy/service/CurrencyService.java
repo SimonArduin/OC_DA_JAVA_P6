@@ -8,14 +8,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CurrencyService {
+
     @Autowired
     CurrencyRepository currencyRepository;
+
     public Currency findById(Integer id) {
-        if(id==null)
+
+        if(id == null)
             throw new IllegalArgumentException("Invalid id");
+
         Currency result = currencyRepository.findById(id);
-        if (result == null)
+
+        if(result == null)
             throw new CurrencyNotFoundException("Currency not found");
+
         return result;
     }
 }

@@ -171,7 +171,7 @@ class ApplicationControllerTest extends TestVariables {
 			assertEquals("transfer", applicationController.processTransfer(internalTransactionDto, model, principal));
 			verify(userService, Mockito.times(1+1)).findByUsername(any(String.class));
 			verify(globalService, Mockito.times(1)).addInternalTransaction(any(InternalTransactionDto.class));
-			verify(globalService, Mockito.times(1+1)).getPastTransactions(any(UserDto.class));
+			verify(globalService, Mockito.times(1)).getPastTransactions(any(UserDto.class));
 		}
 
 		@Test
