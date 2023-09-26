@@ -20,5 +20,8 @@ L'application a été construite avec le framework Spring, et en utilisant les m
 ### DIAGRAMME DE CLASSE UML
 ![UML](UML.png)
 
+### ENTITES
+![UML_BDD](UML_BDD.png)
+
 ### MODELE PHYSIQUE DE DONNEES
 ![MPD](MPD.png)
