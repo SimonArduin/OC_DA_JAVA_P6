@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.entity</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.entity;
+
+import com.openclassrooms.paymybuddy.dto.UserDto;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Entity
+@Table
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+<span class="fc" id="L18">    @Column(name = &quot;account_balance&quot;, nullable = false)</span>
+<span class="fc" id="L19">    private Double accountBalance = 0.0;</span>
+
+<span class="fc" id="L21">    @Column(name = &quot;currency_id&quot;, nullable = false)</span>
+<span class="fc" id="L22">    private Integer currencyId = 1;</span>
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
+
+    @Column(nullable = false)
+    private String iban;
+
+    @Column(nullable = false, length = 100)
+    private String password;
+
+<span class="fc" id="L33">    @Column(name = &quot;role_id&quot;, nullable = false)</span>
+<span class="fc" id="L34">    private Integer roleId = 1;</span>
+
+    @Column(nullable = false, unique = true, length = 100)
+    private String username;
+
+<span class="fc" id="L39">    @ManyToMany</span>
+    @JoinTable(
+            name = &quot;user_user&quot;,
+            joinColumns = @JoinColumn(name = &quot;user_1_id&quot;),
+            inverseJoinColumns = @JoinColumn(name = &quot;user_2_id&quot;)
+    )
+    private List&lt;User&gt; connections = new ArrayList&lt;&gt;();
+
+<span class="fc" id="L47">    public User() {</span>
+<span class="fc" id="L48">    }</span>
+
+<span class="fc" id="L50">    public User(Integer id, Double accountBalance, Integer currencyId, String email, String iban, String password, Integer roleId, String username, List&lt;User&gt; connections) {</span>
+<span class="fc" id="L51">        this.id = id;</span>
+<span class="fc" id="L52">        this.accountBalance = accountBalance;</span>
+<span class="fc" id="L53">        this.currencyId = currencyId;</span>
+<span class="fc" id="L54">        this.email = email;</span>
+<span class="fc" id="L55">        this.iban = iban;</span>
+<span class="fc" id="L56">        this.password = password;</span>
+<span class="fc" id="L57">        this.roleId = roleId;</span>
+<span class="fc" id="L58">        this.username = username;</span>
+<span class="fc" id="L59">        this.connections = connections;</span>
+<span class="fc" id="L60">    }</span>
+
+<span class="fc" id="L62">    public User(UserDto userDto) {</span>
+<span class="fc" id="L63">        this.id = userDto.getId();</span>
+<span class="fc" id="L64">        this.accountBalance = userDto.getAccountBalance();</span>
+<span class="fc" id="L65">        this.currencyId = userDto.getCurrencyId();</span>
+<span class="fc" id="L66">        this.email = userDto.getEmail();</span>
+<span class="fc" id="L67">        this.iban = userDto.getIban();</span>
+<span class="fc" id="L68">        this.password = userDto.getPassword();</span>
+<span class="fc" id="L69">        this.roleId = userDto.getRoleId();</span>
+<span class="fc" id="L70">        this.username = userDto.getUsername();</span>
+<span class="fc" id="L71">        this.connections = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L72" title="1 of 4 branches missed.">        if(userDto.getConnections() != null &amp;&amp; !userDto.getConnections().isEmpty())</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            for(UserDto connection : userDto.getConnections())</span>
+<span class="fc" id="L74">                this.connections.add(new User(connection));</span>
+<span class="fc" id="L75">    }</span>
+
+    public Integer getId() {
+<span class="fc" id="L78">        return id;</span>
+    }
+
+    public void setId(Integer id) {
+<span class="nc" id="L82">        this.id = id;</span>
+<span class="nc" id="L83">    }</span>
+
+    public Double getAccountBalance() {
+<span class="fc" id="L86">        return accountBalance;</span>
+    }
+
+    public void setAccountBalance(Double accountBalance) {
+<span class="nc" id="L90">        this.accountBalance = accountBalance;</span>
+<span class="nc" id="L91">    }</span>
+
+    public Integer getCurrencyId() {
+<span class="fc" id="L94">        return currencyId;</span>
+    }
+
+    public void setCurrencyId(Integer currencyId) {
+<span class="nc" id="L98">        this.currencyId = currencyId;</span>
+<span class="nc" id="L99">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L102">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L106">        this.email = email;</span>
+<span class="fc" id="L107">    }</span>
+
+    public String getIban() {
+<span class="fc" id="L110">        return iban;</span>
+    }
+
+    public void setIban(String iban) {
+<span class="nc" id="L114">        this.iban = iban;</span>
+<span class="nc" id="L115">    }</span>
+
+    public String getPassword() {
+<span class="fc" id="L118">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="fc" id="L122">        this.password = password;</span>
+<span class="fc" id="L123">    }</span>
+
+    public Integer getRoleId() {
+<span class="fc" id="L126">        return roleId;</span>
+    }
+
+    public void setRoleId(Integer roleId) {
+<span class="nc" id="L130">        this.roleId = roleId;</span>
+<span class="nc" id="L131">    }</span>
+
+    public String getUsername() {
+<span class="fc" id="L134">        return username;</span>
+    }
+
+    public void setUsername(String username) {
+<span class="fc" id="L138">        this.username = username;</span>
+<span class="fc" id="L139">    }</span>
+
+    public List&lt;User&gt; getConnections() {
+<span class="fc" id="L142">        return connections;</span>
+    }
+
+    public void setConnections(List&lt;User&gt; connections) {
+<span class="fc" id="L146">        this.connections = connections;</span>
+<span class="fc" id="L147">    }</span>
+
+    public boolean addConnection(User connection) {
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if(this.connections==null)</span>
+<span class="fc" id="L151">            this.connections = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L152" title="All 8 branches covered.">        if(connection!=null &amp;&amp; !connection.isEmpty() &amp;&amp; !this.equals(connection) &amp;&amp; !this.connections.contains(connection))</span>
+<span class="fc" id="L153">            return this.connections.add(connection);</span>
+<span class="fc" id="L154">        return false;</span>
+    }
+
+    public boolean isEmpty() {
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        return (this.getUsername() == null</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">                || this.getPassword() == null</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                || this.getEmail() == null);</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc" id="L166">            return this.isEmpty();</span>
+        }
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (obj.getClass() != this.getClass()) {</span>
+<span class="fc" id="L169">            return false;</span>
+        }
+<span class="fc" id="L171">        User objUser = (User) obj;</span>
+<span class="fc bfc" id="L172" title="All 4 branches covered.">        if(objUser.isEmpty() &amp;&amp; this.isEmpty())</span>
+<span class="fc" id="L173">            return true;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (Objects.equals(objUser.getId(), this.getId())</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objUser.getAccountBalance(), this.getAccountBalance())</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objUser.getCurrencyId(), this.getCurrencyId())</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objUser.getEmail(), this.getEmail())</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objUser.getIban(), this.getIban())</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objUser.getPassword(), this.getPassword())</span>
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objUser.getRoleId(), this.getRoleId())</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">                &amp;&amp; Objects.equals(objUser.getUsername(), this.getUsername())) {</span>
+<span class="fc bfc" id="L182" title="All 4 branches covered.">            if (objUser.getConnections() == null &amp;&amp; this.getConnections() == null) {</span>
+<span class="fc" id="L183">                return true;</span>
+            }
+<span class="pc bpc" id="L185" title="1 of 4 branches missed.">            if (!(objUser.getConnections() != null &amp;&amp; this.getConnections() != null)) {</span>
+<span class="fc" id="L186">                return false;</span>
+            }
+<span class="fc" id="L188">            return objUser.getConnections().equals(this.getConnections());</span>
+        }
+<span class="fc" id="L190">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransactionService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">java in paymybuddy Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.openclassrooms.paymybuddy.service</a> &gt; <span class="el_source">TransactionService.java</span></div><h1>TransactionService.java</h1><pre class="source lang-java linenums">package com.openclassrooms.paymybuddy.service;
+
+import com.openclassrooms.paymybuddy.dto.*;
+import com.openclassrooms.paymybuddy.entity.Transaction;
+import com.openclassrooms.paymybuddy.exception.TransactionNotFoundException;
+import com.openclassrooms.paymybuddy.repository.TransactionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@Transactional(propagation = Propagation.MANDATORY)
+<span class="fc" id="L17">public class TransactionService {</span>
+
+    @Autowired
+    TransactionRepository transactionRepository;
+
+    public TransactionDto findById(Integer id) {
+
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if(id==null)</span>
+<span class="fc" id="L25">            throw new IllegalArgumentException(&quot;Invalid id&quot;);</span>
+
+<span class="fc" id="L27">        Transaction transaction = transactionRepository.findById(id);</span>
+
+<span class="pc bpc" id="L29" title="1 of 4 branches missed.">        if(transaction==null || transaction.isEmpty())</span>
+<span class="fc" id="L30">            throw new TransactionNotFoundException(&quot;Transaction not found&quot;);</span>
+
+<span class="fc bfc" id="L32" title="All 4 branches covered.">        if (transaction.isInternalTransaction() &amp;&amp; !transaction.isExternalTransaction())</span>
+<span class="fc" id="L33">            return new InternalTransactionDto(transaction);</span>
+
+<span class="pc bpc" id="L35" title="1 of 4 branches missed.">        else if (transaction.isExternalTransaction() &amp;&amp; !transaction.isInternalTransaction())</span>
+<span class="fc" id="L36">            return new ExternalTransactionDto(transaction);</span>
+
+<span class="fc" id="L38">        throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+
+    }
+
+    public List&lt;TransactionDto&gt; findBySenderId(Integer id) {
+
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if(id==null)</span>
+<span class="fc" id="L45">            throw new IllegalArgumentException(&quot;Invalid id&quot;);</span>
+
+<span class="fc" id="L47">        List&lt;TransactionDto&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L48">        List&lt;Transaction&gt; transactions = transactionRepository.findBySenderId(id);</span>
+
+<span class="pc bpc" id="L50" title="1 of 4 branches missed.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            for (Transaction transaction : transactions)</span>
+<span class="pc bpc" id="L52" title="2 of 4 branches missed.">                if(transaction!=null &amp;&amp; !transaction.isEmpty()) {</span>
+<span class="fc bfc" id="L53" title="All 4 branches covered.">                    if (transaction.isInternalTransaction() &amp;&amp; !transaction.isExternalTransaction())</span>
+<span class="fc" id="L54">                        result.add(new InternalTransactionDto(transaction));</span>
+
+<span class="pc bpc" id="L56" title="1 of 4 branches missed.">                    else if (transaction.isExternalTransaction() &amp;&amp; !transaction.isInternalTransaction())</span>
+<span class="fc" id="L57">                        result.add(new ExternalTransactionDto(transaction));</span>
+
+<span class="fc" id="L59">                    else throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+
+                }
+
+        }
+
+<span class="fc" id="L65">        return result;</span>
+
+    }
+
+    public List&lt;TransactionDto&gt; findByReceiverId(Integer id) {
+
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if(id==null)</span>
+<span class="fc" id="L72">            throw new IllegalArgumentException(&quot;Invalid id&quot;);</span>
+
+<span class="fc" id="L74">        List&lt;TransactionDto&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L75">        List&lt;Transaction&gt; transactions = transactionRepository.findByReceiverId(id);</span>
+
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">        if(transactions!=null &amp;&amp; !transactions.isEmpty()) {</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            for (Transaction transaction : transactions)</span>
+<span class="pc bpc" id="L79" title="2 of 4 branches missed.">                if(transaction!=null &amp;&amp; !transaction.isEmpty()) {</span>
+<span class="fc bfc" id="L80" title="All 4 branches covered.">                    if (transaction.isInternalTransaction() &amp;&amp; !transaction.isExternalTransaction())</span>
+<span class="fc" id="L81">                        result.add(new InternalTransactionDto(transaction));</span>
+
+<span class="pc bpc" id="L83" title="1 of 4 branches missed.">                    else if (transaction.isExternalTransaction() &amp;&amp; !transaction.isInternalTransaction())</span>
+<span class="fc" id="L84">                        result.add(new ExternalTransactionDto(transaction));</span>
+
+<span class="fc" id="L86">                    else throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+
+                }
+
+        }
+
+<span class="fc" id="L92">        return result;</span>
+
+    }
+
+    public TransactionDto addTransaction(TransactionDto transactionDto) {
+
+<span class="pc bpc" id="L98" title="1 of 4 branches missed.">        if (transactionDto == null || transactionDto.isEmpty())</span>
+<span class="fc" id="L99">            throw new IllegalArgumentException(&quot;Invalid transaction&quot;);</span>
+
+<span class="fc" id="L101">        Transaction result = transactionRepository.save(new Transaction(transactionDto));</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (result.isExternalTransaction())</span>
+<span class="fc" id="L104">            return new ExternalTransactionDto(result);</span>
+
+        else
+<span class="fc" id="L107">            return new InternalTransactionDto(result);</span>
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,333 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Transaction</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.paymybuddy.entity</a>
+</div>
+
+<h1>Coverage Summary for Class: Transaction (com.openclassrooms.paymybuddy.entity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Transaction</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,7%
+  </span>
+  <span class="absValue">
+    (26/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95%
+  </span>
+  <span class="absValue">
+    (76/80)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Transaction$HibernateInstantiator$PKumnY70</td>
+  </tr>
+  <tr>
+    <td class="name">Transaction$HibernateProxy$rIyWko1V</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    86,7%
+  </span>
+  <span class="absValue">
+    (26/30)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95%
+  </span>
+  <span class="absValue">
+    (76/80)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.entity;
+&nbsp;
+&nbsp;import com.openclassrooms.paymybuddy.dto.ExternalTransactionDto;
+&nbsp;import com.openclassrooms.paymybuddy.dto.InternalTransactionDto;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.sql.Timestamp;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table
+&nbsp;public class Transaction {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Integer id;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Double amount;
+&nbsp;
+&nbsp;    @Column(name = &quot;commission_amount&quot;, nullable = false)
+&nbsp;    private Double commissionAmount;
+&nbsp;
+<b class="fc">&nbsp;    @Column(name = &quot;commission_id&quot;, nullable = false)</b>
+<b class="fc">&nbsp;    private Integer commissionId = 1;</b>
+&nbsp;
+<b class="fc">&nbsp;    @Column(name = &quot;currency_id&quot;, nullable = false)</b>
+<b class="fc">&nbsp;    private Integer currencyId = 1;</b>
+&nbsp;
+&nbsp;    @Column
+&nbsp;    private String description;
+&nbsp;
+&nbsp;    @Column(length = 34)
+&nbsp;    private String iban;
+&nbsp;
+&nbsp;    @Column(name = &quot;receiver_id&quot;)
+&nbsp;    private Integer receiverId;
+&nbsp;
+&nbsp;    @Column(name = &quot;sender_id&quot;, nullable = false)
+&nbsp;    private Integer senderId;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private Timestamp timestamp;
+&nbsp;
+&nbsp;    @Column(name = &quot;to_iban&quot;)
+&nbsp;    private Boolean toIban;
+&nbsp;
+<b class="fc">&nbsp;    public Transaction() {</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Transaction(Integer id, Double amount, Double commissionAmount, Integer commissionId, Integer currencyId, String description, String iban, Integer receiverId, Integer senderId, Timestamp timestamp, Boolean toIban) {</b>
+<b class="fc">&nbsp;        this.id = id;</b>
+<b class="fc">&nbsp;        this.amount = amount;</b>
+<b class="fc">&nbsp;        this.commissionAmount = commissionAmount;</b>
+<b class="fc">&nbsp;        this.commissionId = commissionId;</b>
+<b class="fc">&nbsp;        this.currencyId = currencyId;</b>
+<b class="fc">&nbsp;        this.description = description;</b>
+<b class="fc">&nbsp;        this.iban = iban;</b>
+<b class="fc">&nbsp;        this.receiverId = receiverId;</b>
+<b class="fc">&nbsp;        this.senderId = senderId;</b>
+<b class="fc">&nbsp;        this.timestamp = timestamp;</b>
+<b class="fc">&nbsp;        this.toIban = toIban;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Transaction(InternalTransactionDto internalTransactionDto) {</b>
+<b class="fc">&nbsp;        this.id = internalTransactionDto.getId();</b>
+<b class="fc">&nbsp;        this.amount = internalTransactionDto.getAmount();</b>
+<b class="fc">&nbsp;        this.commissionAmount = internalTransactionDto.getCommissionAmount();</b>
+<b class="fc">&nbsp;        this.currencyId = internalTransactionDto.getCurrencyId();</b>
+<b class="fc">&nbsp;        this.description = internalTransactionDto.getDescription();</b>
+<b class="fc">&nbsp;        this.receiverId = internalTransactionDto.getReceiverId();</b>
+<b class="fc">&nbsp;        this.senderId = internalTransactionDto.getSenderId();</b>
+<b class="fc">&nbsp;        this.timestamp = internalTransactionDto.getTimestamp();</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public Transaction(ExternalTransactionDto externalTransactionDto) {</b>
+<b class="fc">&nbsp;        this.id = externalTransactionDto.getId();</b>
+<b class="fc">&nbsp;        this.amount = externalTransactionDto.getAmount();</b>
+<b class="fc">&nbsp;        this.commissionAmount = externalTransactionDto.getCommissionAmount();</b>
+<b class="fc">&nbsp;        this.currencyId = externalTransactionDto.getCurrencyId();</b>
+<b class="fc">&nbsp;        this.iban = externalTransactionDto.getIban();</b>
+<b class="fc">&nbsp;        this.senderId = externalTransactionDto.getSenderId();</b>
+<b class="fc">&nbsp;        this.timestamp = externalTransactionDto.getTimestamp();</b>
+<b class="fc">&nbsp;        this.toIban = externalTransactionDto.isToIban();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Double getAmount() {
+<b class="fc">&nbsp;        return amount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAmount(Double amount) {
+<b class="fc">&nbsp;        this.amount = amount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Double getCommissionAmount() {
+<b class="fc">&nbsp;        return commissionAmount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCommissionAmount(Double commissionAmount) {
+<b class="nc">&nbsp;        this.commissionAmount = commissionAmount;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCommissionId() {
+<b class="fc">&nbsp;        return commissionId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCommissionId(Integer commissionId) {
+<b class="nc">&nbsp;        this.commissionId = commissionId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCurrencyId() {
+<b class="fc">&nbsp;        return currencyId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCurrencyId(Integer currencyId) {
+<b class="fc">&nbsp;        this.currencyId = currencyId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getDescription() {
+<b class="fc">&nbsp;        return description;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDescription(String description) {
+<b class="nc">&nbsp;        this.description = description;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getIban() {
+<b class="fc">&nbsp;        return iban;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setIban(String iban) {
+<b class="fc">&nbsp;        this.iban = iban;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getReceiverId() {
+<b class="fc">&nbsp;        return receiverId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setReceiverId(Integer receiverId) {
+<b class="fc">&nbsp;        this.receiverId = receiverId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getSenderId() {
+<b class="fc">&nbsp;        return senderId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSenderId(Integer senderId) {
+<b class="fc">&nbsp;        this.senderId = senderId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Timestamp getTimestamp() {
+<b class="fc">&nbsp;        return timestamp;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setTimestamp(Timestamp timestamp) {
+<b class="fc">&nbsp;        this.timestamp = timestamp;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Boolean isToIban() {
+<b class="fc">&nbsp;        return toIban;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setToIban(Boolean toIban) {
+<b class="fc">&nbsp;        this.toIban = toIban;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Boolean isEmpty() {
+<b class="fc">&nbsp;        return(this.amount == null</b>
+&nbsp;                || this.commissionId == null
+&nbsp;                || this.senderId == null
+&nbsp;                || this.currencyId == null
+&nbsp;                || this.timestamp == null);
+&nbsp;    }
+&nbsp;
+&nbsp;    public Boolean isExternalTransaction() {
+<b class="fc">&nbsp;        return!(this.iban == null</b>
+&nbsp;                || this.toIban == null);
+&nbsp;    }
+&nbsp;
+&nbsp;    public Boolean isInternalTransaction() {
+<b class="fc">&nbsp;        return!(this.receiverId == null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object obj) {
+<b class="fc">&nbsp;        if (obj == null) {</b>
+<b class="fc">&nbsp;            if (this.isEmpty())</b>
+<b class="fc">&nbsp;                return true;</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (obj.getClass() != this.getClass()) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Transaction objTransaction = (Transaction) obj;</b>
+<b class="fc">&nbsp;        if (objTransaction.getId() == this.getId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getAmount() == this.getAmount()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getCommissionId() == this.getCommissionId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getCommissionAmount() == this.getCommissionAmount()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getCurrencyId() == this.getCurrencyId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getDescription() == this.getDescription()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getIban() == this.getIban()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getReceiverId() == this.getReceiverId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getSenderId() == this.getSenderId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.getTimestamp() == this.getTimestamp()</b>
+<b class="fc">&nbsp;                &amp;&amp; objTransaction.isToIban() == this.isToIban()) {</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-09-08 11:40</div>
+</div>
+</body>
+</html>

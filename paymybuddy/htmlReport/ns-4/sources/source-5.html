@@ -1,0 +1,308 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > User</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.openclassrooms.paymybuddy.entity</a>
+</div>
+
+<h1>Coverage Summary for Class: User (com.openclassrooms.paymybuddy.entity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">User</td>
+<td class="coverageStat">
+  <span class="percent">
+    79,2%
+  </span>
+  <span class="absValue">
+    (19/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,1%
+  </span>
+  <span class="absValue">
+    (73/81)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">User$HibernateInstantiator$CgBzbphn</td>
+  </tr>
+  <tr>
+    <td class="name">User$HibernateProxy$Tv3Hb7Eh</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    79,2%
+  </span>
+  <span class="absValue">
+    (19/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90,1%
+  </span>
+  <span class="absValue">
+    (73/81)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.openclassrooms.paymybuddy.entity;
+&nbsp;
+&nbsp;import com.openclassrooms.paymybuddy.dto.UserDto;
+&nbsp;import jakarta.persistence.*;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table
+&nbsp;public class User {
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy = GenerationType.IDENTITY)
+&nbsp;    private Integer id;
+&nbsp;
+<b class="fc">&nbsp;    @Column(name = &quot;account_balance&quot;, nullable = false)</b>
+<b class="fc">&nbsp;    private Double accountBalance = 0.0;</b>
+&nbsp;
+<b class="fc">&nbsp;    @Column(name = &quot;currency_id&quot;, nullable = false)</b>
+<b class="fc">&nbsp;    private Integer currencyId = 1;</b>
+&nbsp;
+&nbsp;    @Column(nullable = false, unique = true, length = 100)
+&nbsp;    private String email;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    private String iban;
+&nbsp;
+&nbsp;    @Column(nullable = false, length = 100)
+&nbsp;    private String password;
+&nbsp;
+<b class="fc">&nbsp;    @Column(name = &quot;role_id&quot;, nullable = false)</b>
+<b class="fc">&nbsp;    private Integer roleId = 1;</b>
+&nbsp;
+&nbsp;    @Column(nullable = false, unique = true, length = 100)
+&nbsp;    private String username;
+&nbsp;
+<b class="fc">&nbsp;    @ManyToMany</b>
+&nbsp;    @JoinTable(
+&nbsp;            name = &quot;user_user&quot;,
+&nbsp;            joinColumns = @JoinColumn(name = &quot;user_1_id&quot;),
+&nbsp;            inverseJoinColumns = @JoinColumn(name = &quot;user_2_id&quot;)
+&nbsp;    )
+&nbsp;    private List&lt;User&gt; connections = new ArrayList&lt;&gt;();
+&nbsp;
+<b class="fc">&nbsp;    public User() {</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public User(Integer id, Double accountBalance, Integer currencyId, String email, String iban, String password, Integer roleId, String username, List&lt;User&gt; connections) {</b>
+<b class="fc">&nbsp;        this.id = id;</b>
+<b class="fc">&nbsp;        this.accountBalance = accountBalance;</b>
+<b class="fc">&nbsp;        this.currencyId = currencyId;</b>
+<b class="fc">&nbsp;        this.email = email;</b>
+<b class="fc">&nbsp;        this.iban = iban;</b>
+<b class="fc">&nbsp;        this.password = password;</b>
+<b class="fc">&nbsp;        this.roleId = roleId;</b>
+<b class="fc">&nbsp;        this.username = username;</b>
+<b class="fc">&nbsp;        this.connections = connections;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public User(UserDto userDto) {</b>
+<b class="fc">&nbsp;        this.id = userDto.getId();</b>
+<b class="fc">&nbsp;        this.accountBalance = userDto.getAccountBalance();</b>
+<b class="fc">&nbsp;        this.currencyId = userDto.getCurrencyId();</b>
+<b class="fc">&nbsp;        this.email = userDto.getEmail();</b>
+<b class="fc">&nbsp;        this.iban = userDto.getIban();</b>
+<b class="fc">&nbsp;        this.password = userDto.getPassword();</b>
+<b class="fc">&nbsp;        this.roleId = userDto.getRoleId();</b>
+<b class="fc">&nbsp;        this.username = userDto.getUsername();</b>
+<b class="fc">&nbsp;        this.connections = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        if(userDto.getConnections() != null &amp;&amp; !userDto.getConnections().isEmpty())</b>
+<b class="fc">&nbsp;            for(UserDto connection : userDto.getConnections())</b>
+<b class="fc">&nbsp;                this.connections.add(new User(connection));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setId(Integer id) {
+<b class="nc">&nbsp;        this.id = id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Double getAccountBalance() {
+<b class="fc">&nbsp;        return accountBalance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setAccountBalance(Double accountBalance) {
+<b class="nc">&nbsp;        this.accountBalance = accountBalance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getCurrencyId() {
+<b class="fc">&nbsp;        return currencyId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCurrencyId(Integer currencyId) {
+<b class="nc">&nbsp;        this.currencyId = currencyId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getEmail() {
+<b class="fc">&nbsp;        return email;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setEmail(String email) {
+<b class="fc">&nbsp;        this.email = email;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getIban() {
+<b class="fc">&nbsp;        return iban;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setIban(String iban) {
+<b class="nc">&nbsp;        this.iban = iban;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getPassword() {
+<b class="fc">&nbsp;        return password;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setPassword(String password) {
+<b class="fc">&nbsp;        this.password = password;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Integer getRoleId() {
+<b class="fc">&nbsp;        return roleId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setRoleId(Integer roleId) {
+<b class="nc">&nbsp;        this.roleId = roleId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getUsername() {
+<b class="fc">&nbsp;        return username;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setUsername(String username) {
+<b class="fc">&nbsp;        this.username = username;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;User&gt; getConnections() {
+<b class="fc">&nbsp;        return connections;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setConnections(List&lt;User&gt; connections) {
+<b class="fc">&nbsp;        this.connections = connections;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean addConnection(User connection) {
+<b class="fc">&nbsp;        if(this.connections==null)</b>
+<b class="nc">&nbsp;            this.connections = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        if(connection!=null &amp;&amp; !connection.isEmpty() &amp;&amp; !this.equals(connection) &amp;&amp; !this.connections.contains(connection))</b>
+<b class="fc">&nbsp;            return this.connections.add(connection);</b>
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isEmpty() {
+<b class="fc">&nbsp;        return (this.getUsername() == null</b>
+<b class="fc">&nbsp;                || this.getPassword() == null</b>
+<b class="fc">&nbsp;                || this.getEmail() == null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object obj) {
+<b class="fc">&nbsp;        if (obj == null) {</b>
+<b class="fc">&nbsp;            if (this.isEmpty())</b>
+<b class="fc">&nbsp;                return true;</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (obj.getClass() != this.getClass()) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        User objUser = (User) obj;</b>
+<b class="fc">&nbsp;        if(objUser.isEmpty() &amp;&amp; this.isEmpty())</b>
+<b class="fc">&nbsp;            return true;</b>
+<b class="fc">&nbsp;        if (objUser.getId() == this.getId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objUser.getAccountBalance() == this.getAccountBalance()</b>
+<b class="fc">&nbsp;                &amp;&amp; objUser.getCurrencyId() == this.getCurrencyId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objUser.getEmail() == this.getEmail()</b>
+<b class="fc">&nbsp;                &amp;&amp; objUser.getIban() == this.getIban()</b>
+<b class="fc">&nbsp;                &amp;&amp; objUser.getPassword() == this.getPassword()</b>
+<b class="fc">&nbsp;                &amp;&amp; objUser.getRoleId() == this.getRoleId()</b>
+<b class="fc">&nbsp;                &amp;&amp; objUser.getUsername() == this.getUsername()) {</b>
+<b class="fc">&nbsp;            if (objUser.getConnections() == null &amp;&amp; this.getConnections() == null)</b>
+<b class="nc">&nbsp;                return true;</b>
+<b class="fc">&nbsp;            if (!(objUser.getConnections() != null &amp;&amp; this.getConnections() != null))</b>
+<b class="nc">&nbsp;                return false;</b>
+<b class="fc">&nbsp;            if (objUser.getConnections().equals(this.getConnections()))</b>
+<b class="fc">&nbsp;                return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-09-08 11:40</div>
+</div>
+</body>
+</html>
